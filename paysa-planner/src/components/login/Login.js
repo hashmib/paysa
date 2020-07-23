@@ -58,6 +58,7 @@ export default function Login() {
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false)
   const [submitted, setSubmitted] = useState(false);
   
     //const loggingIn = useSelector(state => state.authentication.loggingIn);
@@ -76,7 +77,7 @@ export default function Login() {
         console.log(inputs)
         //e.preventDefault();
 
-        axios.post('/login', { inputs })
+        axios.post('/login', { username, password, remember })
 
         // setSubmitted(true);
         // if (username && password) {
@@ -128,6 +129,7 @@ export default function Login() {
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
+            onChange={(e)=>setRemember(e.target.checked)}
           />
           <Button
             type="submit"
@@ -141,7 +143,7 @@ export default function Login() {
           <Grid container>
             <Grid item xs>
               <RouteLink to="/forgot">
-              <Link href="#" variant="body2">
+              <Link variant="body2">
                 Forgot password?
               </Link>
               </RouteLink>

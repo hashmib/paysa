@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', router);
 
 router.post('/login', (req, res) => {
-    console.log('request received')
+    console.log('Login Request Received')
     console.log(req.body); //shows query paramters sent
     res.send("Hello!"); 
 });
