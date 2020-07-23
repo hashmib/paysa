@@ -34,8 +34,6 @@ router.post('/login', (req, res) => {
     	console.log("Login Failed")
     	res.send({"login-success": false});
     }
-
-    //res.send("Hello!"); 
 });
 app.listen('8080', () => console.log('listening on 8080'));
 

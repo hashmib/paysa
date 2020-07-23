@@ -14,7 +14,7 @@ const ReactRouter = () => {
 	return (
 		<Router>
 				<Switch>
-					<Route exact path="/login" component={withRouter(Login)} />
+					<Route path="/login" component={withRouter(Login)} />
 					<Route exact path="/register" component={withRouter(Register)} />
 					<Route exact path="/forgot" component={withRouter(Forgot)} />
 				</Switch>

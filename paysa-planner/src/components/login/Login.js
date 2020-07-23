@@ -77,7 +77,13 @@ export default function Login() {
         console.log(inputs)
         //e.preventDefault();
 
+        //todo: implement callback function when login successful, and add error handling for failure
         axios.post('/login', { username, password, remember })
+        .then((response) => {
+          console.log(response["login-success"]);
+        }, (error) => {
+          console.log(error);
+        });
 
         // setSubmitted(true);
         // if (username && password) {
