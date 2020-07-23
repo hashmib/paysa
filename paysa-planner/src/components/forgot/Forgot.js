@@ -106,20 +106,22 @@ export default function Forgot() {
           >
             Rest Password
           </Button>
-          <Router>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <RouteLink to="/login">
+              <Link variant="body2">
                 Login
               </Link>
+              </RouteLink>
             </Grid>
             <Grid item>
+              <RouteLink to="/register">
               <Link variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
+              </RouteLink>
             </Grid>
           </Grid>
-          </Router>
         </form>
       </div>
     </Container>

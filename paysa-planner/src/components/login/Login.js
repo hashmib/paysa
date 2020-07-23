@@ -135,20 +135,22 @@ export default function Login() {
           >
             Sign In
           </Button>
-          <Router>
           <Grid container>
             <Grid item xs>
+              <RouteLink to="/forgot">
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
+              </RouteLink>
             </Grid>
             <Grid item>
-              <Link component={RouteLink} to={"/register"} variant="body2">
+            <RouteLink to="/register">
+              <Link variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
+            </RouteLink>
             </Grid>
           </Grid>
-          </Router>
         </form>
       </div>
       <Box mt={8}>
