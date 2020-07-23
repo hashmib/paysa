@@ -12,6 +12,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link as RouteLink
+} from "react-router-dom";
 
 function Copyright() {
   return (
@@ -57,15 +63,15 @@ export default function Login() {
     //const dispatch = useDispatch();
 
     // reset login status
-    useEffect(() => { 
-        //dispatch(userActions.logout()); 
-    }, []);
+    // useEffect(() => { 
+    //     dispatch(userActions.logout()); 
+    // }, []);
 
     
 
     function handleSubmit(e) {
         const inputs = username + " " + password
-        alert(inputs)
+        //alert(inputs)
         console.log(inputs)
         //e.preventDefault();
 
@@ -129,6 +135,7 @@ export default function Login() {
           >
             Sign In
           </Button>
+          <Router>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
@@ -136,11 +143,12 @@ export default function Login() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link component={RouteLink} to={"/register"} variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
+          </Router>
         </form>
       </div>
       <Box mt={8}>
