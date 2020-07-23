@@ -71,7 +71,7 @@ export default function Login() {
 
     function handleSubmit(e) {
         const inputs = username + " " + password
-        //alert(inputs)
+        alert(inputs)
         console.log(inputs)
         //e.preventDefault();
 

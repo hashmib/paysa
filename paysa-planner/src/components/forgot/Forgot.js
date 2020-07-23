@@ -104,7 +104,7 @@ export default function Forgot() {
             color="primary"
             className={classes.submit}
           >
-            Rest Password
+            Reset Password
           </Button>
           <Grid container>
             <Grid item xs>
