@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';  
 
 class Register extends React.Component {  
-   handleLogin = () => {  
+   handleRegister = () => {  
    alert("HANDLE REGISTER FUNCTION");  
 }  
 render() {  
@@ -21,7 +21,7 @@ render() {
    <Typography component="h1" variant="h5">  
       Register  
    </Typography>  
-   <form onSubmit={this.handleLogin}>  
+   <form onSubmit={this.handleRegister}>  
    <TextField  
       variant="outlined"  
       margin="normal"  
