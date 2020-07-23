@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
+    "concurrently": "^5.2.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -26,7 +27,8 @@
     "start-server": "node src/server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "concurrently \"npm run start-server\" \"npm run start-app\" --kill-others"
   },
   "eslintConfig": {
     "extends": "react-app"

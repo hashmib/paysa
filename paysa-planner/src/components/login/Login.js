@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
 import {
   BrowserRouter as Router,
   Switch,
@@ -71,9 +72,11 @@ export default function Login() {
 
     function handleSubmit(e) {
         const inputs = username + " " + password
-        alert(inputs)
+        //alert(inputs)
         console.log(inputs)
         //e.preventDefault();
+
+        axios.post('/login', { inputs })
 
         // setSubmitted(true);
         // if (username && password) {
