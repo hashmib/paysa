@@ -6,6 +6,12 @@ import {
 
 function Home() {
 
+// this is a temporary home page
+// we need to make it look nice
+
+[userID, setUserId] = setState("001") 
+// the home component needs to have a state variable for user id
+// that's how we know what user is logged in 
 
   return (
     <div className="Home">

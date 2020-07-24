@@ -5,8 +5,17 @@ import './css/index.css';
 import App from './components/App';
 import * as serviceWorker from './tests/serviceWorker';
 
+
+// BASICALLY THIS IS SAYING,
+// LOOK AT INDEX.HTML
+// INSIDE THE ELEMENT WITH ID 'ROOT' (WHICH IS EMPTY)
+// RENDER THE 'APP' COMPONENT
+// SO PUT <App /> INSIDE document.getElementById('root')
+
 ReactDOM.render(
-    	<App /> ,
+  <React.StrictMode>
+    	<App />
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

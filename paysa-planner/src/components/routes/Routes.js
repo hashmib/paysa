@@ -10,6 +10,14 @@ import {
 	withRouter
 } from "react-router-dom";
 
+// @ALI 
+// JUST READ THIS LINK
+// https://www.freecodecamp.org/news/react-router-in-5-minutes/
+
+
+// YOU NEED TO SPEND SOME TIME CONCEPTUALLY UNDERSTANDING
+// WHAT REACT ROUTER IS DOING
+
 const ReactRouter = () => {
 	return (
 		<Router>
