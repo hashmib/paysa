@@ -74,15 +74,16 @@ export default function Login() {
     function handleSubmit(e) {
         const inputs = username + " " + password
         //alert(inputs)
+        console.log("monster")
         console.log(inputs)
         //e.preventDefault();
 
         //todo: implement callback function when login successful, and add error handling for failure
-        axios.post('/login', { username, password, remember })
+        axios.post('/login', { username, password })
         .then((response) => {
-          console.log(response["login-success"]);
+          console.log(response.body)
         }, (error) => {
-          console.log(error);
+          console.log("no response received from server");
         });
 
         // setSubmitted(true);
@@ -90,7 +91,6 @@ export default function Login() {
         //     dispatch(userActions.login(username, password));
         // }
     }
-
 
     const classes = useStyles();
 

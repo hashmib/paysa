@@ -1,39 +1,16 @@
-const express = require('express');
+// Sets up the express server
+const app = require('express')();
+const routes = require('./routes');
 const bodyParser = require('body-parser')
 
-
-let app = express();
-let router = express.Router();
+// To format in JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/', router);
+// Connect all our routes to our application
+app.use('/', routes);
 
-function checkCredentials(req) {
-	const correctCredentials = {
-		username: "admin",
-		password: "pass"
-	}
-	if (req.username == correctCredentials.username 
-		&& req.password ==correctCredentials.password) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-
-router.post('/login', (req, res) => {
-    console.log('Login Request Received')
-    //console.log(req.body); //shows query paramters sent
-
-    if(checkCredentials(req.body)) {
-    	console.log("Login Successful")
-    	res.send({"login-success": true});
-    } else {
-    	console.log("Login Failed")
-    	res.send({"login-success": false});
-    }
-});
+// Listen to incoming HTTP requests on port 8080
 app.listen('8080', () => console.log('listening on 8080'));
+
 
