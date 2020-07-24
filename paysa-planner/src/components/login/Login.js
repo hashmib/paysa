@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useSelector, useDispatch} from 'react';
+import React, {useState} from 'react'; //, useEffect, useSelector, useDispatch
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,8 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import {
-  BrowserRouter as Router,
+  //BrowserRouter as Router,
   Switch,
+  useHistory,
   Route,
   Link as RouteLink
 } from "react-router-dom";
@@ -60,6 +61,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false)
   const [submitted, setSubmitted] = useState(false);
+  const history = useHistory();
   
     //const loggingIn = useSelector(state => state.authentication.loggingIn);
     //const dispatch = useDispatch();
@@ -72,16 +74,21 @@ export default function Login() {
     
 
     function handleSubmit(e) {
+        e.preventDefault();
         const inputs = username + " " + password
         //alert(inputs)
         console.log("monster")
         console.log(inputs)
-        //e.preventDefault();
+        
 
         //todo: implement callback function when login successful, and add error handling for failure
         axios.post('/login', { username, password })
         .then((response) => {
-          console.log(response.body)
+          console.log(response)
+
+          if (response.data.auth) {
+            history.push("/home");
+          }
         }, (error) => {
           console.log("no response received from server");
         });

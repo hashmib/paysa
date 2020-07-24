@@ -1,12 +1,12 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import Login from "../login/Login"
 import Register from "../register/Register"
 import Forgot from "../forgot/Forgot"
+import Home from "../home/Home"
 import {
 	BrowserRouter as Router,
 	Switch,
 	Route,
-	Link,
 	withRouter
 } from "react-router-dom";
 
@@ -15,8 +15,10 @@ const ReactRouter = () => {
 		<Router>
 				<Switch>
 					<Route path="/login" component={withRouter(Login)} />
-					<Route exact path="/register" component={withRouter(Register)} />
-					<Route exact path="/forgot" component={withRouter(Forgot)} />
+					<Route path="/register" component={withRouter(Register)} />
+					<Route path="/forgot" component={withRouter(Forgot)} />
+					<Route path="/home" component={withRouter(Home)} />
+					//TODO: //<Route component={Error}/>
 				</Switch>
 		</Router>
 	)
