@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
 import {
   BrowserRouter as Router,
   Switch,
@@ -67,18 +68,20 @@ export default function Register() {
     //     dispatch(userActions.logout()); 
     // }, []);
 
-    
-
+  
     function handleSubmit(e) {
-        const inputs = username + " " + password
-        alert(inputs)
-        console.log(inputs)
-        //e.preventDefault();
+        e.preventDefault();
 
         // setSubmitted(true);
         // if (username && password) {
         //     dispatch(userActions.login(username, password));
         // }
+
+        // TODO: adeel, can you promisify this and do the history navigate to home page
+        axios.post('/register', { username, password })
+          .then((response) => {
+            console.log(response)
+          });
     }
 
 
