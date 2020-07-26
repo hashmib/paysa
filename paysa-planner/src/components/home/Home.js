@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import {
-	Link as RouterLink
-} from 'react-router-dom'
-
+import {Link as RouterLink} from 'react-router-dom'
+import Dashboard from '../dashboard/Dashboard'
 
 function Home() {
 
@@ -15,7 +13,7 @@ const [userID, setUserId] = useState("001")
 
   return (
     <div className="Home">
-    	HOME
+    	<Dashboard />
     	<RouterLink to="/login">
     		<button > Log Out </button>
     	</RouterLink>
