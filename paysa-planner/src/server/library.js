@@ -12,41 +12,32 @@ module.exports = {
         return hash;
     },
 
+    // todo: buggy 
     // Authenticates existing user 
-    authenticateUser: function(req) {
-        //todo ali
-
-        // get username, password from db
-        // check that theyre equal
-        const correctCredentials = {
-            username: "admin",
-            password: "pass"
-        }
-    
-        console.log("req.username: ", req.username)
-        console.log("correct.username: ", correctCredentials.username)
-        console.log("req.password: ", req.password)
-        console.log("correct.password: ", correctCredentials.password)
-        
-        return (req.username == correctCredentials.username 
-            && req.password ==correctCredentials.password);
+    authenticateUser: function(username, hash_pwd) {
+        let query = 'SELECT username, password FROM users WHERE username = \'' + username + '\'';
+        mysql.query(query, function(err, data, fields) {
+            if (err) throw err;
+        });
+        return true;
     },
 
+    // todo: check if username already exists in database
+    // todo: add correct error handling
+    // Returns boolean if registration successful
     registerUser: function(username, hashed_pwd) {
-        // TODO ALI Check if user exists
         //var query1 = mysql.query('SELECT COUNT(username) FROM USERS WHERE EXISTS ')
 
-        // Create New User
+        let query = 'INSERT INTO users(username, password) VALUES(?)';
         let values = [
             username,
             hashed_pwd
         ];
         
-        var query = mysql.query('INSERT INTO users(username, password) VALUES(?)', [values], function(err, data, fields) {
+        let ex = mysql.query(query, [values], function(err, data, fields) {
             if (err) throw err;
-            return true;
         });
 
-
+        return true;
     }
 }

@@ -80,7 +80,8 @@ export default function Register() {
         // TODO: adeel, can you promisify this and do the history navigate to home page
         axios.post('/register', { username, password })
           .then((response) => {
-            console.log(response)
+            console.log(response.data.status)
+            console.log(response.data.message)
           });
     }
 
