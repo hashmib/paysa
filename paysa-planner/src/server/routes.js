@@ -15,6 +15,7 @@ routes.post('/login', (request, response) => {
 
 routes.post('/register', (request, response) => {
     console.log('Registration request recieved')
+    lib.registerUser(response.body.username, response.body.password);
     
 });
 

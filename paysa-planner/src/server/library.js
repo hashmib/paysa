@@ -1,5 +1,6 @@
 // Server-side Function Library
 const crypto = require('crypto');
+var mysql = require('./connectdb');
 
 
 module.exports = {
@@ -25,7 +26,14 @@ module.exports = {
         
         return (req.username == correctCredentials.username 
             && req.password ==correctCredentials.password);
+    },
+
+    registerUser: function(username, hashed_pwd) {
+        var query = mysql.query('SELECT * FROM users', function(err, data, fields) {P
+            if (err) throw err;
+            console.log(data);
+        });
+
+
     }
-
-
 }

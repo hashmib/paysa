@@ -2,16 +2,9 @@
 const app = require('express')();
 const routes = require('./routes');
 const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
 
-// Set up DB
-require('dotenv').config()
-mongoose.connect(process.env.USERDATABASE_URL, { useNewUrlParser: true})
-const db = mongoose.connection
-
-// Check DB connected
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('connected to user database'))
+// Import and connect db
+const mysql = require('./connectdb')
 
 // To format in JSON
 app.use(bodyParser.json());
