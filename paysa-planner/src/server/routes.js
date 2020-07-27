@@ -15,7 +15,10 @@ routes.post('/login', (request, response) => {
 
 routes.post('/register', (request, response) => {
     console.log('Registration request recieved')
-    lib.registerUser(request.body.username, request.body.password);
+    
+    // Get SHA256 hash of password and check with userdb
+    encrypted_pwd = lib.getHashedPassword(request.body.password);
+    lib.registerUser(request.body.username, encrypted_pwd);
     
 });
 
