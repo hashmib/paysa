@@ -29,7 +29,7 @@ module.exports = {
     },
 
     registerUser: function(username, hashed_pwd) {
-        var query = mysql.query('SELECT * FROM users', function(err, data, fields) {P
+        var query = mysql.query('SELECT * FROM users', function(err, data, fields) {
             if (err) throw err;
             console.log(data);
         });
