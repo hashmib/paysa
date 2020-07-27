@@ -1,6 +1,7 @@
 // Sets up the express server and database
 const app = require('express')();
 const routes = require('./routes');
+const cors = require('cors');
 const bodyParser = require('body-parser')
 
 // Import and connect db

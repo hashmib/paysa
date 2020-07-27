@@ -12,32 +12,44 @@ module.exports = {
         return hash;
     },
 
-    // todo: buggy 
     // Authenticates existing user 
-    authenticateUser: function(username, hash_pwd) {
+    authenticateUser: async function(username, hash_pwd) {
         let query = 'SELECT username, password FROM users WHERE username = \'' + username + '\'';
-        mysql.query(query, function(err, data, fields) {
-            if (err) throw err;
-        });
-        return true;
+        try {
+            const result = await new Promise((resolve, reject) => {
+                mysql.query(query, (error, results, fields) => {
+                    if (error) return reject(error);
+                    return resolve(results);
+                });
+            });
+
+            return (hash_pwd === result[0].password)
+        } catch (err) {
+            console.log("error querying database");
+            return false;
+        }
     },
 
     // todo: check if username already exists in database
-    // todo: add correct error handling
     // Returns boolean if registration successful
-    registerUser: function(username, hashed_pwd) {
-        //var query1 = mysql.query('SELECT COUNT(username) FROM USERS WHERE EXISTS ')
-
+    registerUser: async function(username, hashed_pwd) {
         let query = 'INSERT INTO users(username, password) VALUES(?)';
         let values = [
             username,
             hashed_pwd
         ];
-        
-        let ex = mysql.query(query, [values], function(err, data, fields) {
-            if (err) throw err;
-        });
 
-        return true;
+        try {
+            const result = await new Promise((resolve, reject) => {
+                mysql.query(query, [values], (error, results, fields) => {
+                    if (error) return reject(error);
+                    return resolve(results);
+                });
+            });
+            return true;
+        } catch (err) {
+            console.log("error querying database");
+            return false;
+        }
     }
 }

@@ -4,35 +4,36 @@ const lib = require('./library');
 
 //todo: auth and user session + cookie
 routes.post('/login', (request, response) => {
-    console.log('Login Request Received')
+    console.log('login req received')
 
     hashed_pwd = lib.getHashedPassword(request.body.password);
 
-    if (lib.authenticateUser(request.body.username, hashed_pwd)) {
-        response.json({
-            status: 200,
-            message: "User Authorized"
-        });
-    }
-    else{
-        response.json({
-            status: 401,
-            message: "Unauthorized"
-        });
-    }
+    lib.authenticateUser(request.body.username, hashed_pwd).then(function(auth) {
+        if (auth) {
+            response.status(200).json({authenticated : true})
+        }
+        else {
+            response.status(401).json({authenticated: false})
+        }
+        }, function(error) {
+            console.error("Failed!", error);
+        })
 });
 
 routes.post('/register', (request, response) => {
-    console.log('Registration request recieved')
+    console.log('registration request received')
     
     hashed_pwd = lib.getHashedPassword(request.body.password);
-    created = lib.registerUser(request.body.username, hashed_pwd);
 
-    console.log(created)
-    
-    if (created) response.json({
-        status: 201,
-        message: "New user created successfully"
+    lib.registerUser(request.body.username, hashed_pwd).then(function(auth) {
+        if (auth) {
+            response.status(200).json({created: true})
+        }
+        else {
+            response.status(400).json({created: false})
+        }   
+    }, function(error) {
+        console.error("Failed!", error);
     })
 });
 

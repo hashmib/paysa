@@ -108,13 +108,9 @@ export default function Login() {
         //todo: implement callback function when login successful, and add error handling for failure
         axios.post('/login', { username, password })
         .then((response) => {
-          console.log(response)
-
-          if (response.data.auth) {
-            history.push("/home");
-          }
-        }, (error) => {
-          console.log("no response received from server");
+          history.push("/home");
+        }, (error) => { // will be called when server sends 401 response
+            console.log("unauthorized");
         });
 
         //DON'T WORRY ABOUT THIS CODE. IGNORE IT. 
