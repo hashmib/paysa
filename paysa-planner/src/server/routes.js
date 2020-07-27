@@ -14,10 +14,8 @@ routes.post('/login', (request, response) => {
 });
 
 routes.post('/register', (request, response) => {
-    console.log('Registration recieved')
-    console.log(request.body.username)
-    hashed_pass = lib.getHashedPassword(request.body.password)
-    console.log(hashed_pass)
+    console.log('Registration request recieved')
+    
 });
 
 module.exports = routes;
