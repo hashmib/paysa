@@ -8,16 +8,15 @@ routes.post('/login', (request, response) => {
 
     hashed_pwd = lib.getHashedPassword(request.body.password);
 
-    lib.authenticateUser(request.body.username, hashed_pwd).then(function(auth) {
+    lib.authenticateUser(request.body.username, hashed_pwd)
+    .then(auth => {
         if (auth) {
             response.status(200).json({authenticated : true})
-        }
-        else {
+        } else {
             response.status(401).json({authenticated: false})
-        }
-        }, function(error) {
-            console.error("Failed!", error);
-        })
+    }}, error => {
+        console.error("Failed!", error);
+    })
 });
 
 routes.post('/register', (request, response) => {
@@ -25,14 +24,13 @@ routes.post('/register', (request, response) => {
     
     hashed_pwd = lib.getHashedPassword(request.body.password);
 
-    lib.registerUser(request.body.username, hashed_pwd).then(function(auth) {
+    lib.registerUser(request.body.username, hashed_pwd)
+    .then(auth => {
         if (auth) {
-            response.status(200).json({created: true})
-        }
-        else {
-            response.status(400).json({created: false})
-        }   
-    }, function(error) {
+            response.status(200).json({created: true, message: "registration success"})
+        } else {
+            response.status(400).json({created: false, message: "username already taken"})
+    }}, error => {
         console.error("Failed!", error);
     })
 });

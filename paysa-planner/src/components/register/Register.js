@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import {
   BrowserRouter as Router,
+  useHistory,
   Switch,
   Route,
   Link as RouteLink
@@ -59,6 +60,8 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const history = useHistory()
   
     //const loggingIn = useSelector(state => state.authentication.loggingIn);
     //const dispatch = useDispatch();
@@ -80,10 +83,17 @@ export default function Register() {
         // TODO: adeel, can you promisify this and do the history navigate to home page
         axios.post('/register', { username, password })
           .then((response) => {
-            console.log(response.data.created)
-          });
+            if(response.data.created) {
+              console.log(response)
+              history.push("/login");
+            } else {
+              alert("Registration failed, " + response.data.message)
+            }
+          }, error => {
+              console.log("registration error")
+            }
+          );
     }
-
 
     const classes = useStyles();
 
