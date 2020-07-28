@@ -1,8 +1,5 @@
 import React from 'react';
 import '../css/App.css';
-import Login from "./login/Login"
-import Register from "./register/Register"
-import Forgot from "./forgot/Forgot"
 import ReactRouter from './routes/Routes';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"; //this makes it dark mode
 
