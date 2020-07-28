@@ -40,39 +40,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Forgot() {
-
-  
   const [email, setEmail] = useState('');
-
   const [submitted, setSubmitted] = useState(false);
   
-    //const loggingIn = useSelector(state => state.authentication.loggingIn);
-    //const dispatch = useDispatch();
+  function handleSubmit(e) {
+    const inputs = email
+    alert(inputs)
+    console.log(inputs)
+    //e.preventDefault();
+    // setSubmitted(true);
+    // if (username && password) {
+    //     dispatch(userActions.login(username, password));
+    // }
+  }
 
-    // reset login status
-    // useEffect(() => { 
-    //     dispatch(userActions.logout()); 
-    // }, []);
-
-    
-
-    function handleSubmit(e) {
-        const inputs = email
-        alert(inputs)
-        console.log(inputs)
-        //e.preventDefault();
-
-        // setSubmitted(true);
-        // if (username && password) {
-        //     dispatch(userActions.login(username, password));
-        // }
-    }
-
-
-    const classes = useStyles();
-
-
-
+  const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">

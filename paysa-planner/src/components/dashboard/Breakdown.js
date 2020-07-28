@@ -8,9 +8,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-const useStyles = makeStyles({
-
-});
+const useStyles = makeStyles({});
 
 export default function Breakdown() {
   const classes = useStyles();

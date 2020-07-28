@@ -114,7 +114,6 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -160,7 +159,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
+            {/* Today Chart */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 <Chart />
@@ -172,7 +171,7 @@ export default function Dashboard() {
                 <Breakdown />
               </Paper>
             </Grid>
-            {/* Recent Orders */}
+            {/* Activity */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Activity />
