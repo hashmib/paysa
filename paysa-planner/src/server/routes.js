@@ -25,11 +25,11 @@ routes.post('/register', (request, response) => {
     hashed_pwd = lib.getHashedPassword(request.body.password);
     
     lib.registerUser(request.body.username, hashed_pwd)
-    .then(auth => {
-        if (auth) {
+    .then(userAdded => {
+        if (userAdded) {
             response.status(200).json({created: true, message: "registration success"})
         } else {
-            response.status(400).json({created: false, message: "username already taken"})
+            response.status(200).json({created: false, message: "username already taken"})
     }}, error => {
         console.error("Failed!", error);
     })

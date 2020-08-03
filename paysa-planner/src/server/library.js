@@ -19,11 +19,15 @@ module.exports = {
             const result = await new Promise((resolve, reject) => {
                 mysql.query(query, (error, results, fields) => {
                     if (error) return reject(error);
-                    return resolve(results);
+                    if (results[0].password === hash_pwd) {
+                        return resolve(true)
+                    }
+                    else {
+                        return resolve(false)
+                    }
                 });
             });
-
-            return (hash_pwd === result[0].password)
+            return result;
         } catch (err) {
             console.log("error querying database");
             return false;
@@ -34,56 +38,50 @@ module.exports = {
         let userExistQuery = "SELECT COUNT(*) AS total FROM users WHERE username = ?";
         
         try {
-            let exists = false;
             const result = await new Promise((resolve, reject) => {
                 mysql.query(userExistQuery, username, (error, results, fields) => {
                     if (error) return reject(error);
-                    console.log(results[0].total);
-                    if (results[0].total > 0)
-                    {
-                        exists = true;
-                        console.log("inside if statement");
-                        console.log(exists);
-                    }   
-                    return resolve(results);
+                    if (results[0].total > 0) {
+                        return resolve(false);
+                    }
+                    return resolve(true);
                 });
-                console.log(exists);               
-                return exists;
             });
+            return result;
         } catch (err) {
             console.log("error querying database");
-            return false;
         }
     },
 
-    // todo: check if username already exists in database
+
+    addUserEntry: async function(username, password) {
+        let query = 'INSERT INTO users(username, password) VALUES(?)';
+        let values = [
+            username,
+            password
+        ];
+
+        try {
+            const result = await new Promise((resolve, reject) => {
+                mysql.query(query, [values], (error, results, fields) => {
+                    if (error) return reject(error);
+                    return resolve(true);
+                });
+            });
+            return result;
+        } catch (err) {
+            console.log("error querying database");
+        }
+    },
+
     // Returns boolean if registration successful
     registerUser: async function(username, hashed_pwd) {
-        this.checkUserExists(username)
-        .then(async exists => {
-            if (exists) {
-                return false;
-            }
-            else {
-                let query = 'INSERT INTO users(username, password) VALUES(?)';
-                let values = [
-                    username,
-                    hashed_pwd
-                ];
-
-                try {
-                    const result = await new Promise((resolve, reject) => {
-                        mysql.query(query, [values], (error, results, fields) => {
-                            if (error) return reject(error);
-                            return resolve(results);
-                        });
-                    });
-                    return true;
-                } catch (err) {
-                    console.log("error querying database");
-                    return false;
-                }
+        const userExist = this.checkUserExists(username);
+        userExist.then(async authorized => {
+            if (authorized) {
+                const addedUser = this.addUserEntry(username, hashed_pwd);
             }
         })
+        return userExist;
     }
 }
