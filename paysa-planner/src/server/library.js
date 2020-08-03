@@ -30,19 +30,29 @@ module.exports = {
         }
     },
 
-    checkUserExists: function(username) {
-        var exists = true;
+    checkUserExists: async function(username) {
         let userExistQuery = "SELECT COUNT(*) AS total FROM users WHERE username = ?";
         
         try {
+            let exists = false;
             const result = await new Promise((resolve, reject) => {
                 mysql.query(userExistQuery, username, (error, results, fields) => {
                     if (error) return reject(error);
+                    console.log(results[0].total);
+                    if (results[0].total > 0)
+                    {
+                        exists = true;
+                        console.log("inside if statement");
+                        console.log(exists);
+                    }   
                     return resolve(results);
                 });
+                console.log(exists);               
+                return exists;
             });
         } catch (err) {
             console.log("error querying database");
+            return false;
         }
     },
 
@@ -50,7 +60,7 @@ module.exports = {
     // Returns boolean if registration successful
     registerUser: async function(username, hashed_pwd) {
         this.checkUserExists(username)
-        .then(exists => {
+        .then(async exists => {
             if (exists) {
                 return false;
             }
