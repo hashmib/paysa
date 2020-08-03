@@ -30,26 +30,50 @@ module.exports = {
         }
     },
 
-    // todo: check if username already exists in database
-    // Returns boolean if registration successful
-    registerUser: async function(username, hashed_pwd) {
-        let query = 'INSERT INTO users(username, password) VALUES(?)';
-        let values = [
-            username,
-            hashed_pwd
-        ];
-
+    checkUserExists: function(username) {
+        var exists = true;
+        let userExistQuery = "SELECT COUNT(*) AS total FROM users WHERE username = ?";
+        
         try {
             const result = await new Promise((resolve, reject) => {
-                mysql.query(query, [values], (error, results, fields) => {
+                mysql.query(userExistQuery, username, (error, results, fields) => {
                     if (error) return reject(error);
                     return resolve(results);
                 });
             });
-            return true;
         } catch (err) {
             console.log("error querying database");
-            return false;
         }
+    },
+
+    // todo: check if username already exists in database
+    // Returns boolean if registration successful
+    registerUser: async function(username, hashed_pwd) {
+        this.checkUserExists(username)
+        .then(exists => {
+            if (exists) {
+                return false;
+            }
+            else {
+                let query = 'INSERT INTO users(username, password) VALUES(?)';
+                let values = [
+                    username,
+                    hashed_pwd
+                ];
+
+                try {
+                    const result = await new Promise((resolve, reject) => {
+                        mysql.query(query, [values], (error, results, fields) => {
+                            if (error) return reject(error);
+                            return resolve(results);
+                        });
+                    });
+                    return true;
+                } catch (err) {
+                    console.log("error querying database");
+                    return false;
+                }
+            }
+        })
     }
 }

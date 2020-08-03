@@ -23,7 +23,7 @@ routes.post('/register', (request, response) => {
     console.log('registration request received')
     
     hashed_pwd = lib.getHashedPassword(request.body.password);
-
+    
     lib.registerUser(request.body.username, hashed_pwd)
     .then(auth => {
         if (auth) {
