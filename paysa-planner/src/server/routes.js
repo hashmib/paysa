@@ -2,7 +2,6 @@ const routes = require('express').Router();
 const lib = require('./library');
 
 
-//todo: auth and user session + cookie
 routes.post('/login', (request, response) => {
     console.log('login req received')
 
@@ -13,7 +12,7 @@ routes.post('/login', (request, response) => {
         if (auth) {
             response.status(200).json({authenticated : true})
         } else {
-            response.status(401).json({authenticated: false})
+            response.status(200).json({authenticated: false})
     }}, error => {
         console.error("Failed!", error);
     })
