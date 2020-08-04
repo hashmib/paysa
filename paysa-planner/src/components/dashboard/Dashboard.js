@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -114,6 +114,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+
+  useEffect(() => {
+    axios.get('/home', {})
+      .then((response) => {
+        if (!response.data.logged_in) {
+          history.push("/login");
+        } else {
+          console.log("response.data.logged_in: ", response.data.logged_in)
+        }
+      }, (error) => { // will be called when server sends 401 response
+          console.log("error connecting to server");
+      });
+  })
+
+
+
+
+
+
+
   const history = useHistory(); 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);

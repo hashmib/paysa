@@ -27,7 +27,6 @@ routes.use((req, res, next) => {
 
 // Check for logged-in users
 var sessionChecker = (req, res, next) => {
-    console.log(req.session.user)
     if (req.session.user && req.cookies.user_sid) {
         res.status(200).json({logged_in: true})
     }
@@ -39,6 +38,13 @@ var sessionChecker = (req, res, next) => {
 routes.get('/login', (request, response) => {
     sessionChecker(request, response);
 });
+
+routes.get('/home', (request, response) => {
+    sessionChecker(request, response);
+
+    //todo
+});
+
  
 routes.post('/login', (request, response) => {
     console.log('login req received')
@@ -77,8 +83,7 @@ routes.post('/register', (request, response) => {
 routes.post('/logout', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie('user_sid');
-    } else {
-        res.redirect('/login');
+        res.status(200).json({logged_out: true});
     }
 });
 
