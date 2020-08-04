@@ -1,6 +1,38 @@
 const routes = require('express').Router();
+const session = require("express-session");
 const lib = require('./library');
 
+
+// Express Sessions
+routes.use(session({
+    key: 'user_sid',
+    secret: 'poplarstreet',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000
+    }
+}));
+
+// Check if user cookie still saved in browser and user is not set, then automatically log the user out.
+routes.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sid');        
+    }
+    next();
+});
+
+// Check for logged-in users
+var sessionChecker = (req, res, next) => {
+    console.log("yo")
+    if (req.session.user && req.cookies.user_sid) {
+        res.redirect('/home');
+    } else {
+        next();
+    }    
+};
+
+routes.get('/login', sessionChecker, (request, response));
 
 routes.post('/login', (request, response) => {
     console.log('login req received')
@@ -10,6 +42,7 @@ routes.post('/login', (request, response) => {
     lib.authenticateUser(request.body.username, hashed_pwd)
     .then(auth => {
         if (auth) {
+            request.session.user = request.body.username;
             response.status(200).json({authenticated : true})
         } else {
             response.status(200).json({authenticated: false})

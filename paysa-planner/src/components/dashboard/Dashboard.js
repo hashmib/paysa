@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
@@ -22,6 +23,14 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Breakdown from './Breakdown';
 import Activity from './Activity';
+
+import axios from 'axios';
+import {
+  Switch,
+  useHistory,
+  Route,
+  Link as RouteLink
+} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -105,6 +114,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+  const history = useHistory(); 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -113,6 +123,17 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  function handleLogOut(e) {
+    e.preventDefault(); // this line prevents the annoying refresh
+
+        //todo: implement callback function when login successful, and add error handling for failure
+        axios.post('/logout')
+        .then((response) => {
+          history.push("/login");
+        }, (error) => { // will be called when server sends 401 response
+            console.log("error logging out");
+        });
+  }
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   return (
     <div className={classes.root}>
@@ -136,6 +157,12 @@ export default function Dashboard() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={handleLogOut}>
+            LOG OUT
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
