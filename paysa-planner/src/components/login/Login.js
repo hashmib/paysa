@@ -1,4 +1,4 @@
-import React, {useState} from 'react'; //, useEffect, useSelector, useDispatch
+import React, {useState, useEffect} from 'react'; //, useEffect, useSelector, useDispatch
 
 // ALL OF THESE ARE READY-MADE COMPONENTS
 // THAT WE WILL IMPORT FROM MATERIAL UI
@@ -97,6 +97,17 @@ export default function Login() {
     // useEffect(() => { 
     //     dispatch(userActions.logout()); 
     // }, []);
+
+    useEffect(() => {
+      axios.get('/login', {})
+      .then((response) => {
+        if (response.loggedIn) {
+          history.push("/home");
+        }
+      }, (error) => { // will be called when server sends 401 response
+          console.log("error connecting to server");
+      });
+    })
 
     
 

@@ -30,7 +30,6 @@ module.exports = {
             return result;
         } catch (err) {
             console.log("error querying database");
-            return false;
         }
     },
 
