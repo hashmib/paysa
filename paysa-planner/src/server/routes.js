@@ -32,7 +32,9 @@ var sessionChecker = (req, res, next) => {
     }    
 };
 
-routes.get('/login', sessionChecker, (request, response));
+routes.get('/login', (request, response) => {
+    sessionChecker(request, response)
+});
 
 routes.post('/login', (request, response) => {
     console.log('login req received')
