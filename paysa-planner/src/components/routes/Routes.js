@@ -15,6 +15,7 @@ const ReactRouter = () => {
 				<Route path="/register" component={withRouter(Register)} />
 				<Route path="/forgot" component={withRouter(Forgot)} />
 				<Route path="/home" component={withRouter(Home)} />
+				<Route component={withRouter(Login)} />
 			</Switch>
 		</Router>
 	)
