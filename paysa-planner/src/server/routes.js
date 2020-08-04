@@ -1,7 +1,10 @@
 const routes = require('express').Router();
+var cookieParser = require('cookie-parser');
 const session = require("express-session");
 const lib = require('./library');
 
+// initialize cookie-parser to allow us access the cookies stored in the browser. 
+routes.use(cookieParser());
 
 // Express Sessions
 routes.use(session({
@@ -32,10 +35,8 @@ var sessionChecker = (req, res, next) => {
     }    
 };
 
-routes.get('/login', (request, response) => {
-    sessionChecker(request, response)
-});
-
+routes.get('/login', sessionChecker, (request, response));
+ 
 routes.post('/login', (request, response) => {
     console.log('login req received')
 
