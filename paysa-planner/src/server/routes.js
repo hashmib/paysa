@@ -51,6 +51,7 @@ routes.post('/login', (request, response) => {
     })
 });
 
+
 routes.post('/register', (request, response) => {
     console.log('registration request received')
     
@@ -65,6 +66,14 @@ routes.post('/register', (request, response) => {
     }}, error => {
         console.error("Failed!", error);
     })
+});
+
+routes.post('/logout', (request, response) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.clearCookie('user_sid');
+    } else {
+        res.redirect('/login');
+    }
 });
 
 module.exports = routes;
