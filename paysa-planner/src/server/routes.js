@@ -29,8 +29,11 @@ routes.use((req, res, next) => {
 var sessionChecker = (req, res, next) => {
     console.log(req.session.user)
     if (req.session.user && req.cookies.user_sid) {
-        res.redirect('/home');
-    }   
+        res.status(200).json({logged_in: true})
+    }
+    else {
+        res.status(200).json({logged_in: false})
+    }
 };
 
 routes.get('/login', (request, response) => {

@@ -101,7 +101,7 @@ export default function Login() {
     useEffect(() => {
       axios.get('/login', {})
       .then((response) => {
-        if (response.loggedIn) {
+        if (response.data.logged_in) {
           history.push("/home");
         }
       }, (error) => { // will be called when server sends 401 response
