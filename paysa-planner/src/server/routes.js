@@ -1,9 +1,9 @@
 const routes = require('express').Router();
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const session = require("express-session");
 const lib = require('./library');
 
-// initialize cookie-parser to allow us access the cookies stored in the browser. 
+// Initialize cookie-parser
 routes.use(cookieParser());
 
 // Express Sessions
@@ -35,7 +35,9 @@ var sessionChecker = (req, res, next) => {
     }    
 };
 
-routes.get('/login', sessionChecker, (request, response));
+routes.get('/login', (request, respone) => {
+    sessionChecker(request, response);
+});
  
 routes.post('/login', (request, response) => {
     console.log('login req received')
@@ -71,7 +73,7 @@ routes.post('/register', (request, response) => {
     })
 });
 
-routes.post('/logout', (request, response) => {
+routes.post('/logout', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie('user_sid');
     } else {
