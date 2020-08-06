@@ -115,6 +115,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
 
+
+  const history = useHistory(); 
+
   useEffect(() => {
     axios.get('/home', {})
       .then((response) => {
@@ -134,7 +137,7 @@ export default function Dashboard() {
 
 
 
-  const history = useHistory(); 
+  
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {

@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 // which is more like a class in OOP
 // so it has a state which includes data that the component needs
 // things like username, password, etc
-function Login (history)  {
+export default function Login ()  {
 
   
   const [username, setUsername] = useState('');
@@ -83,7 +83,7 @@ function Login (history)  {
   // this is for React Router Dom
   // READ THIS LINK:
   // https://serverless-stack.com/chapters/redirect-on-login-and-logout.html
-  //const history = useHistory(); 
+  const history = useHistory(); 
   
 
 
@@ -217,5 +217,3 @@ function Login (history)  {
     </Container>
   );
 }
-
-export default Login;

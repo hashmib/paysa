@@ -12,11 +12,10 @@ const ReactRouter = () => {
 	return (
 		<Router>
 			<Switch>
-				<Route path="/login" render={(<Login history={history} />)} />
+				<Route path="/login" component={withRouter(Login)} />
 				<Route path="/register" component={withRouter(Register)} />
 				<Route path="/forgot" component={withRouter(Forgot)} />
 				<Route path="/home" component={withRouter(Home)} />
-				<Route component={withRouter(Home)} />
 			</Switch>
 		</Router>
 	)
