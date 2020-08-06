@@ -24,12 +24,10 @@ import {
   Switch,
   useHistory,
   Route,
+  withRouter,
   Link as RouteLink
 } from "react-router-dom";
 
-
-// this is kinda useless... just for aesthetics
-// don't let it confuse you
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -73,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 // which is more like a class in OOP
 // so it has a state which includes data that the component needs
 // things like username, password, etc
-export default function Login() {
+function Login (history)  {
 
   
   const [username, setUsername] = useState('');
@@ -85,7 +83,7 @@ export default function Login() {
   // this is for React Router Dom
   // READ THIS LINK:
   // https://serverless-stack.com/chapters/redirect-on-login-and-logout.html
-  const history = useHistory(); 
+  //const history = useHistory(); 
   
 
 
@@ -120,7 +118,12 @@ export default function Login() {
         //todo: implement callback function when login successful, and add error handling for failure
         axios.post('/login', { username, password })
         .then((response) => {
-          history.push("/home");
+          if(response.data.authenticated) {
+            history.push("/home");
+          }
+          else {
+            alert("Sorry that user name password combo doesnt exist.")
+          }
         }, (error) => { // will be called when server sends 401 response
             console.log("unauthorized");
         });
@@ -214,3 +217,5 @@ export default function Login() {
     </Container>
   );
 }
+
+export default Login;

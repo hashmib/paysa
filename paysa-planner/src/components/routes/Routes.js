@@ -5,13 +5,14 @@ import Forgot from "../forgot/Forgot"
 import Home from "../home/Home"
 //import Error from "../error/Error"
 //<Route component={withRouter(Error)}/>
-import {BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, useHistory, withRouter} from "react-router-dom";
 
 const ReactRouter = () => {
+	const history = useHistory()
 	return (
 		<Router>
 			<Switch>
-				<Route path="/login" component={withRouter(Login)} />
+				<Route path="/login" render={(<Login history={history} />)} />
 				<Route path="/register" component={withRouter(Register)} />
 				<Route path="/forgot" component={withRouter(Forgot)} />
 				<Route path="/home" component={withRouter(Home)} />

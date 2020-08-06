@@ -4,7 +4,7 @@ const session = require("express-session");
 const lib = require('./library');
 
 
-// -------------------------------- cookie & session ----------------------------//
+// -------------------------------- cookie & session ---------------------------- //
 // Initialize cookie-parser and session
 routes.use(cookieParser());
 routes.use(session({
@@ -35,7 +35,7 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
-// -------------------------------- API Endpoints ----------------------------//
+// -------------------------------- API Endpoints ---------------------------- //
 
 
 routes.get('/login', (request, response) => {
