@@ -1,4 +1,4 @@
-// Sets up the express server and database
+// Sets up the express server and middleware
 const app = require('express')();
 const routes = require('./routes');
 const cors = require('cors');

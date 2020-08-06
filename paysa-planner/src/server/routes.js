@@ -3,10 +3,10 @@ const cookieParser = require('cookie-parser');
 const session = require("express-session");
 const lib = require('./library');
 
-// Initialize cookie-parser
-routes.use(cookieParser());
 
-// Express Sessions
+// -------------------------------- cookie & session ----------------------------//
+// Initialize cookie-parser and session
+routes.use(cookieParser());
 routes.use(session({
     key: 'user_sid',
     secret: 'poplarstreet',
@@ -17,7 +17,7 @@ routes.use(session({
     }
 }));
 
-// Check if user cookie still saved in browser and user is not set, then automatically log the user out.
+// Log out inactive user
 routes.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user) {
         res.clearCookie('user_sid');        
@@ -35,20 +35,19 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
+// -------------------------------- API Endpoints ----------------------------//
+
+
 routes.get('/login', (request, response) => {
     sessionChecker(request, response);
 });
 
 routes.get('/home', (request, response) => {
     sessionChecker(request, response);
-
-    //todo
 });
 
  
 routes.post('/login', (request, response) => {
-    console.log('login req received')
-
     hashed_pwd = lib.getHashedPassword(request.body.password);
 
     lib.authenticateUser(request.body.username, hashed_pwd)
@@ -60,13 +59,12 @@ routes.post('/login', (request, response) => {
             response.status(200).json({authenticated: false})
     }}, error => {
         console.error("Failed!", error);
+        response.status(500).json("database issues")
     })
 });
 
 
-routes.post('/register', (request, response) => {
-    console.log('registration request received')
-    
+routes.post('/register', (request, response) => {    
     hashed_pwd = lib.getHashedPassword(request.body.password);
     
     lib.registerUser(request.body.username, hashed_pwd)

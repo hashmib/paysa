@@ -104,8 +104,9 @@ export default function Login() {
         if (response.data.logged_in) {
           history.push("/home");
         }
-      }, (error) => { // will be called when server sends 401 response
+      }, (error) => { // will be called when server sends 500 response
           console.log("error connecting to server");
+          alert("Server error. Please refresh!")
       });
     })
 
