@@ -42,7 +42,7 @@ routes.get('/login', (request, response) => {
     sessionChecker(request, response);
 });
 
-routes.get('/home', (request, response) => {
+routes.get('/index', (request, response) => {
     sessionChecker(request, response);
 });
 

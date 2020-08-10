@@ -1,36 +1,28 @@
-import React, {useEffect} from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Breakdown from './Breakdown';
-import Activity from './Activity';
-
 import axios from 'axios';
-import {
-  Switch,
-  useHistory,
-  Route,
-  Link as RouteLink
-} from "react-router-dom";
+import clsx from 'clsx';
+import React, { useEffect } from 'react';
+import Activity from './Activity';
+import Breakdown from './Breakdown';
+import Chart from './Chart';
+import { mainListItems, secondaryListItems } from './listItems';
+
 
 const drawerWidth = 240;
 
@@ -113,16 +105,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
-
-
-  const history = useHistory(); 
+export default function Dashboard(props) {
 
   useEffect(() => {
-    axios.get('/home', {})
+    axios.get('/index', {})
       .then((response) => {
         if (!response.data.logged_in) {
-          history.push("/login");
+          props.history.push("/login");
         } else {
           console.log("response.data.logged_in: ", response.data.logged_in)
         }
@@ -152,7 +141,7 @@ export default function Dashboard() {
         //todo: implement callback function when login successful, and add error handling for failure
         axios.post('/logout')
         .then((response) => {
-          history.push("/login");
+          props.history.push("/login");
         }, (error) => { // will be called when server sends 401 response
             console.log("error logging out");
         });

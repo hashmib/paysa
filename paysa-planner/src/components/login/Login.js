@@ -1,32 +1,26 @@
-import React, {useState, useEffect} from 'react'; //, useEffect, useSelector, useDispatch
-
 // ALL OF THESE ARE READY-MADE COMPONENTS
 // THAT WE WILL IMPORT FROM MATERIAL UI
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Container from '@material-ui/core/Container';
-
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 // THIS IS THE THING WE USE TO COMMUNICATE WITH THE SERVER
 import axios from 'axios';
-
+import React, { useEffect, useState } from 'react'; //, useEffect, useSelector, useDispatch
 // REACT ROUTER DOM 
-import {
-  Switch,
-  useHistory,
-  Route,
-  withRouter,
-  Link as RouteLink
-} from "react-router-dom";
+import { Link as RouteLink } from "react-router-dom";
+
+
+
 
 function Copyright() {
   return (
@@ -71,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 // which is more like a class in OOP
 // so it has a state which includes data that the component needs
 // things like username, password, etc
-export default function Login ()  {
+export default function Login (props)  {
 
   
   const [username, setUsername] = useState('');
@@ -83,7 +77,6 @@ export default function Login ()  {
   // this is for React Router Dom
   // READ THIS LINK:
   // https://serverless-stack.com/chapters/redirect-on-login-and-logout.html
-  const history = useHistory(); 
   
 
 
@@ -100,7 +93,7 @@ export default function Login ()  {
       axios.get('/login', {})
       .then((response) => {
         if (response.data.logged_in) {
-          history.push("/home");
+          props.history.push("/home");
         }
       }, (error) => { // will be called when server sends 500 response
           console.log("error connecting to server");
@@ -113,13 +106,12 @@ export default function Login ()  {
     // get's called when LOGIN button is pressed
     function handleSubmit(e) {
         e.preventDefault(); // this line prevents the annoying refresh
-        const inputs = username + " " + password
 
         //todo: implement callback function when login successful, and add error handling for failure
         axios.post('/login', { username, password })
         .then((response) => {
           if(response.data.authenticated) {
-            history.push("/home");
+            props.history.push("/index");
           }
           else {
             alert("Sorry that user name password combo doesnt exist.")

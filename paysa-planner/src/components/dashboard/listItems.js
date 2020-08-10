@@ -1,12 +1,12 @@
-import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import React from 'react';
 
 export const mainListItems = (
   <div>
