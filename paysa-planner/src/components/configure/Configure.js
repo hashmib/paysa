@@ -1,6 +1,7 @@
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
+    },
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
     },
   },
 }));
@@ -45,7 +50,9 @@ monthlyIncomeCustom.propTypes = {
 export default function Configure() {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    monthlyIncome: '1320',
+    monthlyIncome: '2500',
+    expenseName: '',
+    expenseAmount: '1000',
   });
 
   const handleChange = (event) => {
@@ -71,6 +78,36 @@ export default function Configure() {
             }}
         />
         </div>
-        </Container>
+        
+        <br /> <br /> <br /> <br />
+        <h2>Great! Add some expenses you think you'll be making every month. You can specify a start and end time to these!</h2>
+
+        <div>
+        <TextField
+          id="outlined-multiline-flexible"
+          label="Expense Name"
+          multiline
+          rowsMax={4}
+          value={values.expenseName}
+          onChange={handleChange}
+          variant="outlined"
+        />
+        {' '}
+
+        <TextField
+            label="Expense Amount"
+            value={values.expenseAmount}
+            onChange={handleChange}
+            name="expenseAmount"
+            id="formatted-numberformat-input"
+            InputProps={{
+            inputComponent: monthlyIncomeCustom,
+            }}
+        /></div>
+        <br />
+        <Button variant="contained" color="primary">
+          Add Expense
+        </Button>
+    </Container>
   );
 }
