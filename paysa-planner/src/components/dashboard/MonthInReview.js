@@ -5,11 +5,11 @@ import Title from './Title';
 
 const useStyles = makeStyles((theme) => ({}));
 
-export default function Activity() {
+export default function MonthInReview() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Month In Review</Title>
     </React.Fragment>
   );
 }

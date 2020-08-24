@@ -4,7 +4,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PieChartIcon from '@material-ui/icons/PieChart';
+import HistoryIcon from '@material-ui/icons/History';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React from 'react';
 
@@ -18,19 +18,20 @@ export const mainListItems = (
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <PieChartIcon />
+        <HistoryIcon />
       </ListItemIcon>
-      <ListItemText primary="Charts" />
+      <ListItemText primary="History" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
-      <ListItemText primary="Settings" />
+      <ListItemText primary="Configure" />
     </ListItem>
   </div>
 );
 
+/*
 export const secondaryListItems = (
   <div>
     <ListSubheader inset>Previous Budgets</ListSubheader>
@@ -48,3 +49,4 @@ export const secondaryListItems = (
     </ListItem>
   </div>
 );
+*/

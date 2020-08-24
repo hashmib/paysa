@@ -18,9 +18,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import axios from 'axios';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import Activity from './Activity';
-import Breakdown from './Breakdown';
-import Chart from './Chart';
+import MonthInReview from './MonthInReview';
+import UpcomingPayments from './UpcomingPayments';
+import SpendingBreakdown from './SpendingBreakdown';
+import Overall from './Overall';
 import { mainListItems, secondaryListItems } from './listItems';
 
 
@@ -164,16 +165,19 @@ export default function Dashboard(props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
+          {/*}
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          */}
           <Button 
             variant="contained" 
-            color="primary"
+            component="span"
+            color="tertiary"
             onClick={handleLogOut}>
-            LOG OUT
+            Log Out
           </Button>
         </Toolbar>
       </AppBar>
@@ -191,29 +195,35 @@ export default function Dashboard(props) {
         </div>
         <Divider />
         <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
+        {/*<Divider />
+        <List>{secondaryListItems}</List>*/}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Today Chart */}
+            {/* Overall */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <Chart />
+                <Overall />
               </Paper>
             </Grid>
-            {/* Budget Breakdown */}
+            {/* Breakdown */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <Breakdown />
+                <SpendingBreakdown />
               </Paper>
             </Grid>
-            {/* Activity */}
-            <Grid item xs={12}>
+            {/* Month In Review */}
+            <Grid item xs={12} md={8} lg={9}>
               <Paper className={classes.paper}>
-                <Activity />
+                <MonthInReview />
+              </Paper>
+            </Grid>
+            {/* Upcoming Payments */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={classes.paper}>
+                <UpcomingPayments />
               </Paper>
             </Grid>
           </Grid>
