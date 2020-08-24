@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function monthlyIncomeCustom(props) {
+function formattedAmount(props) {
   const { inputRef, onChange, ...other } = props;
 
   return (
@@ -41,26 +41,79 @@ function monthlyIncomeCustom(props) {
   );
 }
 
-monthlyIncomeCustom.propTypes = {
+formattedAmount.propTypes = {
   inputRef: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
+const createExpenseField = (index, handleExpenseChange) => {    
+  return (
+    <div>
+    <TextField
+      id="standard-basic"
+      label="Expense Name"
+      name="expenseName"
+      //multiline
+      rowsMax={4}
+      value={expenseName}
+      onChange={handleExpenseChange}
+    />
+    {' '}
+
+    <TextField
+        label="Expense Amount"
+        value={expenseAmount}
+        onChange={handleExpenseChange}
+        name="expenseAmount"
+        id="formatted-numberformat-input"
+        InputProps={{
+        inputComponent: formattedAmount,
+        }}
+    />
+  </div>
+  )
+}
+
+
 export default function Configure() {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     monthlyIncome: '2500',
-    expenseName: '',
-    expenseAmount: '1000',
+    //expenseName: '',
+    //expenseAmount: '1000',
   });
 
+  
+
+  const [expenses, setExpenses] = React.useState(
+    [
+      {name:  '',
+      amount: ''}
+        ,]
+  )
+
+  
+
   const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
+    console.log(event.target.value)
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
+
+  const handleAddExpense = () => {
+    console.log("add expense")
+    const index = expenses.length;
+    const expenseName = "expenseName" + index;
+    const expenseAmount =  "expenseAmount" + index;
+    setValues({
+      expenseName: '',
+      expenseAmount: ''
+    })
+    setExpenses(expenses.push(
+      {name: '',
+      amount: ''}
+      ))
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -74,7 +127,7 @@ export default function Configure() {
             name="monthlyIncome"
             id="formatted-numberformat-input"
             InputProps={{
-            inputComponent: monthlyIncomeCustom,
+            inputComponent: formattedAmount,
             }}
         />
         </div>
@@ -82,30 +135,15 @@ export default function Configure() {
         <br /> <br /> <br /> <br />
         <h2>Great! Add some expenses you think you'll be making every month. You can specify a start and end time to these!</h2>
 
-        <div>
-        <TextField
-          id="outlined-multiline-flexible"
-          label="Expense Name"
-          multiline
-          rowsMax={4}
-          value={values.expenseName}
-          onChange={handleChange}
-          variant="outlined"
-        />
-        {' '}
+            {
+          expenses.map(() => {
+              return(createExpenseField(handleChange))
+          })
 
-        <TextField
-            label="Expense Amount"
-            value={values.expenseAmount}
-            onChange={handleChange}
-            name="expenseAmount"
-            id="formatted-numberformat-input"
-            InputProps={{
-            inputComponent: monthlyIncomeCustom,
-            }}
-        /></div>
+            }
+
         <br />
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleAddExpense}>
           Add Expense
         </Button>
     </Container>
