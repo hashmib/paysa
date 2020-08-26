@@ -47,33 +47,33 @@ formattedAmount.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-const createExpenseField = (index, handleExpenseChange) => {    
-  return (
-    <div>
-    <TextField
-      id="standard-basic"
-      label="Expense Name"
-      name="expenseName"
-      //multiline
-      rowsMax={4}
-      value={expenseName}
-      onChange={handleExpenseChange}
-    />
-    {' '}
+// const createExpenseField = (index, handleExpenseChange) => {    
+//   return (
+//     <div>
+//     <TextField
+//       id="standard-basic"
+//       label="Expense Name"
+//       name="expenseName"
+//       //multiline
+//       rowsMax={4}
+//       //value={expenseName}
+//       onChange={handleExpenseChange}
+//     />
+//     {' '}
 
-    <TextField
-        label="Expense Amount"
-        value={expenseAmount}
-        onChange={handleExpenseChange}
-        name="expenseAmount"
-        id="formatted-numberformat-input"
-        InputProps={{
-        inputComponent: formattedAmount,
-        }}
-    />
-  </div>
-  )
-}
+//     <TextField
+//         label="Expense Amount"
+//         //value={expenseAmount}
+//         onChange={handleExpenseChange}
+//         name="expenseAmount"
+//         id="formatted-numberformat-input"
+//         InputProps={{
+//         inputComponent: formattedAmount,
+//         }}
+//     />
+//   </div>
+//   )
+// }
 
 
 export default function Configure() {
@@ -83,38 +83,54 @@ export default function Configure() {
     //expenseName: '',
     //expenseAmount: '1000',
   });
+  const [fields, setFields] = React.useState({
+    inputs: [{addedInput: ""}]
+
+  })
 
   
 
-  const [expenses, setExpenses] = React.useState(
-    [
-      {name:  '',
-      amount: ''}
-        ,]
-  )
+  // const [expenses, setExpenses] = React.useState(
+  //   [
+  //     {name:  '',
+  //     amount: ''}
+  //       ,]
+  // )
 
+  const addClick = () => {
+    setFields(fields => ({ 
+    	inputs: [...fields.inputs, { addedInput: ""}]
+    }))
+  }
+
+  const handleFieldsChange = (i, e) => {
+    let currentFields = [...fields.inputs]
+    currentFields[i] = {...currentFields[i], ["addedInput"]: e.target.value}
+    setFields({inputs: currentFields})
+  }
+
+  const renderInputFields = () => {
+    return (
+      fields.inputs.map((element, index) => (
+      <TextField
+        label="Expense Amount"
+        value={element.addedInput}
+        onChange={handleFieldsChange(index)}
+        name="addedInput"
+        id="formatted-numberformat-input"
+        InputProps={{
+        inputComponent: formattedAmount,
+        }}
+    />
+     ))
+     )
+  }
   
 
   const handleChange = (event) => {
     console.log(event.target.value)
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-
-  const handleAddExpense = () => {
-    console.log("add expense")
-    const index = expenses.length;
-    const expenseName = "expenseName" + index;
-    const expenseAmount =  "expenseAmount" + index;
-    setValues({
-      expenseName: '',
-      expenseAmount: ''
-    })
-    setExpenses(expenses.push(
-      {name: '',
-      amount: ''}
-      ))
-  }
-
   return (
     <Container component="main" maxWidth="xs">
      <CssBaseline />
@@ -135,15 +151,10 @@ export default function Configure() {
         <br /> <br /> <br /> <br />
         <h2>Great! Add some expenses you think you'll be making every month. You can specify a start and end time to these!</h2>
 
-            {
-          expenses.map(() => {
-              return(createExpenseField(handleChange))
-          })
-
-            }
-
+           {renderInputFields()}
+             
         <br />
-        <Button variant="contained" color="primary" onClick={handleAddExpense}>
+        <Button variant="contained" color="primary" onClick={addClick}>
           Add Expense
         </Button>
     </Container>
