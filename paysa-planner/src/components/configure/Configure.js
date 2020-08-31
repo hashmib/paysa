@@ -10,6 +10,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import NumberFormat from 'react-number-format';
+import { TextareaAutosize } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  button: {
+    display: "block",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: '25%'
+  }
 }));
 
 function formattedAmount(props) {
@@ -95,7 +104,6 @@ export default function Configure() {
   const stepOneContent = () => {
     return (
         <Container component="main" maxWidth="xs">
-         <CssBaseline />
             <div className={classes.root}>
             <Typography variant="h6" component="h2" gutterBottom>
               Monthly Take Home
@@ -119,7 +127,6 @@ export default function Configure() {
   const stepTwoContent = () => {
     return (
         <Container component="main" maxWidth="xs">
-         <CssBaseline />
             <div className={classes.root}>
           <Typography variant="h6" component="h2" gutterBottom>
             Expenses
@@ -219,6 +226,8 @@ export default function Configure() {
   };
 
   return (
+    <div>
+    <CssBaseline />
     <div className={classes.root}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
@@ -277,6 +286,7 @@ export default function Configure() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }
