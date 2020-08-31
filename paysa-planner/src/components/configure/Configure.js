@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import NumberFormat from 'react-number-format';
@@ -17,11 +18,14 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
+  expense: {
+    display: "flex",
+    justifyContent: "space-between",
+  }
 }));
 
 function formattedAmount(props) {
   const { inputRef, onChange, ...other } = props;
-
   return (
     <NumberFormat
       {...other}
@@ -47,85 +51,31 @@ formattedAmount.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-// const createExpenseField = (index, handleExpenseChange) => {    
-//   return (
-//     <div>
-//     <TextField
-//       id="standard-basic"
-//       label="Expense Name"
-//       name="expenseName"
-//       //multiline
-//       rowsMax={4}
-//       //value={expenseName}
-//       onChange={handleExpenseChange}
-//     />
-//     {' '}
-
-//     <TextField
-//         label="Expense Amount"
-//         //value={expenseAmount}
-//         onChange={handleExpenseChange}
-//         name="expenseAmount"
-//         id="formatted-numberformat-input"
-//         InputProps={{
-//         inputComponent: formattedAmount,
-//         }}
-//     />
-//   </div>
-//   )
-// }
-
-
 export default function Configure() {
   const classes = useStyles();
+
   const [values, setValues] = React.useState({
     monthlyIncome: '2500',
     //expenseName: '',
     //expenseAmount: '1000',
   });
-  const [fields, setFields] = React.useState({
-    inputs: [{addedInput: ""}]
-
-  })
-
-  
-
-  // const [expenses, setExpenses] = React.useState(
-  //   [
-  //     {name:  '',
-  //     amount: ''}
-  //       ,]
-  // )
-
+  const [fields, setFields] = React.useState(
+    [{addedInput: "", label: ""}]
+  )
   const addClick = () => {
-    setFields(fields => ({ 
-    	inputs: [...fields.inputs, { addedInput: ""}]
-    }))
+    setFields(fields => (
+    	[...fields, { addedInput: "", label: ""}]
+    ))
   }
-
-  const handleFieldsChange = (i, e) => {
-    let currentFields = [...fields.inputs]
-    currentFields[i] = {...currentFields[i], ["addedInput"]: e.target.value}
-    setFields({inputs: currentFields})
+  const handleFieldsChange = (element, index, event) => {
+    console.log("hello")
+    console.log(event.target.value)
+    let currentFields = [...fields]
+    console.log(fields)
+    console.log(index)
+    currentFields[index] = {...currentFields[index], [event.target.name]: event.target.value}
+    setFields(currentFields)
   }
-
-  const renderInputFields = () => {
-    return (
-      fields.inputs.map((element, index) => (
-      <TextField
-        label="Expense Amount"
-        value={element.addedInput}
-        onChange={handleFieldsChange(index)}
-        name="addedInput"
-        id="formatted-numberformat-input"
-        InputProps={{
-        inputComponent: formattedAmount,
-        }}
-    />
-     ))
-     )
-  }
-  
 
   const handleChange = (event) => {
     console.log(event.target.value)
@@ -135,7 +85,9 @@ export default function Configure() {
     <Container component="main" maxWidth="xs">
      <CssBaseline />
         <div className={classes.root}>
-        <h1>Please enter your monthly take home</h1>
+        <Typography variant="h6" component="h2" gutterBottom>
+          Monthly Take Home
+        </Typography>
         <TextField
             label="Monthly Income"
             value={values.monthlyIncome}
@@ -146,17 +98,33 @@ export default function Configure() {
             inputComponent: formattedAmount,
             }}
         />
-        </div>
-        
-        <br /> <br /> <br /> <br />
-        <h2>Great! Add some expenses you think you'll be making every month. You can specify a start and end time to these!</h2>
-
-           {renderInputFields()}
-             
-        <br />
+      <Typography variant="h6" component="h2" gutterBottom>
+        Expenses
+      </Typography>
+        {fields.map((element, index) => (
+          <div className={classes.expense}>
+          <TextField
+            label="Expense"
+            value={element.label}
+            onChange={(event) => handleFieldsChange(element, index, event)}
+            name="label"
+          />
+          <TextField
+            label="Amount"
+            value={element.addedInput}
+            onChange={(event) => handleFieldsChange(element, index, event)}
+            name="addedInput"
+            id="formatted-numberformat-input"
+            InputProps={{
+            inputComponent: formattedAmount,
+            }}
+          />
+          </div>
+        ))}   
         <Button variant="contained" color="primary" onClick={addClick}>
           Add Expense
         </Button>
+        </div>
     </Container>
   );
 }
