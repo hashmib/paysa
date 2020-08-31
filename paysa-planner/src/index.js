@@ -12,9 +12,7 @@ import * as serviceWorker from './tests/serviceWorker';
 // SO PUT <App /> INSIDE document.getElementById('root')
 
 ReactDOM.render(
-  <React.StrictMode>
-    	<App />
-  </React.StrictMode>,
+  <App />,
   document.getElementById('root')
 );
 

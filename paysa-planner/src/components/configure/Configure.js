@@ -13,6 +13,7 @@ import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: '100%',
     '& > *': {
       margin: theme.spacing(1),
     },
@@ -24,7 +25,14 @@ const useStyles = makeStyles((theme) => ({
   expense: {
     display: "flex",
     justifyContent: "space-between",
-  }
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 function formattedAmount(props) {
@@ -54,13 +62,16 @@ formattedAmount.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-function Step1() {
+function getSteps() {
+  return ['Monthly Income', 'Expenses', 'Step3'];
+}
+
+export default function Configure() {
   const classes = useStyles();
+  //stuff for step 1
 
   const [values, setValues] = useState({
     monthlyIncome: '2500',
-    //expenseName: '',
-    //expenseAmount: '1000',
   });
   const [fields, setFields] = useState(
     [{addedInput: "", label: ""}]
@@ -71,11 +82,7 @@ function Step1() {
     ))
   }
   const handleFieldsChange = (element, index, event) => {
-    console.log("hello")
-    console.log(event.target.value)
     let currentFields = [...fields]
-    console.log(fields)
-    console.log(index)
     currentFields[index] = {...currentFields[index], [event.target.name]: event.target.value}
     setFields(currentFields)
   }
@@ -84,74 +91,87 @@ function Step1() {
     console.log(event.target.value)
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-  return (
-    <Container component="main" maxWidth="xs">
-     <CssBaseline />
-        <div className={classes.root}>
-        <Typography variant="h6" component="h2" gutterBottom>
-          Monthly Take Home
-        </Typography>
-        <TextField
-            label="Monthly Income"
-            value={values.monthlyIncome}
-            onChange={handleChange}
-            name="monthlyIncome"
-            id="formatted-numberformat-input"
-            InputProps={{
-            inputComponent: formattedAmount,
-            }}
-        />
-        <br />
-      <Typography variant="h6" component="h2" gutterBottom>
-        Expenses
-      </Typography>
-        {fields.map((element, index) => (
-          <div className={classes.expense}>
-          <TextField
-            label="Expense"
-            value={element.label}
-            onChange={(event) => handleFieldsChange(element, index, event)}
-            name="label"
-          />
-          <TextField
-            label="Amount"
-            value={element.addedInput}
-            onChange={(event) => handleFieldsChange(element, index, event)}
-            name="addedInput"
-            id="formatted-numberformat-input"
-            InputProps={{
-            inputComponent: formattedAmount,
-            }}
-          />
-          </div>
-        ))}   
-        <Button variant="contained" color="primary" onClick={addClick}>
-          Add Expense
-        </Button>
-        </div>
-    </Container>
-  );
-}
 
-function getSteps() {
-  return ['Monthly Income + Expenses', 'Step2', 'Step3'];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return Step1();
-    case 1:
-      return 'Step 2';
-    case 2:
-      return 'Step 3';
-    default:
-      return 'Unknown step';
+  const stepOneContent = () => {
+    return (
+        <Container component="main" maxWidth="xs">
+         <CssBaseline />
+            <div className={classes.root}>
+            <Typography variant="h6" component="h2" gutterBottom>
+              Monthly Take Home
+            </Typography>
+            <TextField
+                label="Monthly Income"
+                value={values.monthlyIncome}
+                onChange={handleChange}
+                name="monthlyIncome"
+                id="formatted-numberformat-input"
+                InputProps={{
+                inputComponent: formattedAmount,
+                }}
+            />
+            </div>
+        </Container>
+      );
   }
-}
 
-export default function Configure() {
-  const classes = useStyles();
+  
+  const stepTwoContent = () => {
+    return (
+        <Container component="main" maxWidth="xs">
+         <CssBaseline />
+            <div className={classes.root}>
+          <Typography variant="h6" component="h2" gutterBottom>
+            Expenses
+          </Typography>
+            {fields.map((element, index) => (
+              <div className={classes.expense}>
+              <TextField
+                label="Expense"
+                value={element.label}
+                onChange={(event) => handleFieldsChange(element, index, event)}
+                name="label"
+              />
+              <TextField
+                label="Amount"
+                value={element.addedInput}
+                onChange={(event) => handleFieldsChange(element, index, event)}
+                name="addedInput"
+                id="formatted-numberformat-input"
+                InputProps={{
+                inputComponent: formattedAmount,
+                }}
+              />
+              </div>
+            ))}   
+            <Button variant="contained" color="primary" onClick={addClick}>
+              Add Expense
+            </Button>
+            </div>
+        </Container>
+      );
+  }
+
+
+  // end of step 1 stuff
+
+  //adding this here
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return stepOneContent();
+      case 1:
+        return stepTwoContent();
+      case 2:
+        return 'Step 3';
+      default:
+        return 'Unknown step';
+    }
+  }
+  //end  of adding this here
+
+
+
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = getSteps();
@@ -229,7 +249,7 @@ export default function Configure() {
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+            {getStepContent(activeStep)}
             <div>
               <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                 Back
