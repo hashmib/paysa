@@ -80,7 +80,7 @@ export default function Configure() {
   //stuff for step 1
 
   const [values, setValues] = useState({
-    monthlyIncome: '2500',
+    monthlyIncome: '',
   });
   const [fields, setFields] = useState(
     [{addedInput: "", label: ""}]
@@ -200,6 +200,8 @@ export default function Configure() {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+    console.log(values);
+    console.log(fields);
   };
 
   const handleBack = () => {
