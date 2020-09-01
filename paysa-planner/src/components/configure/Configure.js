@@ -10,6 +10,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import NumberFormat from 'react-number-format';
+import Grid from '@material-ui/core/Grid';
 import { TextareaAutosize } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,13 +35,18 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  buttonRow: {
+    maxWidth: "md",
+    display: "flex",
+    justifyContent: "space-between",
+  },
   button: {
-    display: "block",
+    minHeight: theme.spacing(6),
+    width: '50%',
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: '25%'
   }
 }));
 
@@ -72,7 +78,7 @@ formattedAmount.propTypes = {
 };
 
 function getSteps() {
-  return ['Monthly Income', 'Expenses', 'Step3'];
+  return ['Monthly Income', 'Expenses', 'Step 3'];
 }
 
 export default function Configure() {
@@ -103,7 +109,7 @@ export default function Configure() {
 
   const stepOneContent = () => {
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
             <div className={classes.root}>
             <Typography variant="h6" component="h2" gutterBottom>
               Monthly Take Home
@@ -126,7 +132,7 @@ export default function Configure() {
   
   const stepTwoContent = () => {
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
             <div className={classes.root}>
           <Typography variant="h6" component="h2" gutterBottom>
             Expenses
@@ -159,10 +165,6 @@ export default function Configure() {
       );
   }
 
-
-  // end of step 1 stuff
-
-  //adding this here
   const getStepContent = (step) => {
     switch (step) {
       case 0:
@@ -175,31 +177,12 @@ export default function Configure() {
         return 'Unknown step';
     }
   }
-  //end  of adding this here
-
 
 
   const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set());
   const steps = getSteps();
-
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
     console.log(values);
     console.log(fields);
   };
@@ -208,39 +191,18 @@ export default function Configure() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
   const handleReset = () => {
     setActiveStep(0);
   };
 
   return (
-    <div>
+    <Container component="main" maxWidth="md">
     <CssBaseline />
     <div className={classes.root}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = <Typography variant="caption">Optional</Typography>;
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -260,22 +222,27 @@ export default function Configure() {
           </div>
         ) : (
           <div>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            style={{ minHeight: '80vh' }}
+          >
+            <Grid item maxWidth="sm">
             {getStepContent(activeStep)}
-            <div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+            </Grid>   
+          </Grid> 
+            <div className={classes.buttonRow}>
+              <Button 
+              variant="contained"
+              color="default"
+              disabled={activeStep === 0} 
+              onClick={handleBack} 
+              className={classes.button}>
                 Back
               </Button>
-              {isStepOptional(activeStep) && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSkip}
-                  className={classes.button}
-                >
-                  Skip
-                </Button>
-              )}
-
               <Button
                 variant="contained"
                 color="primary"
@@ -289,6 +256,6 @@ export default function Configure() {
         )}
       </div>
     </div>
-    </div>
+    </Container>
   );
 }
