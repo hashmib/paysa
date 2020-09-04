@@ -97,7 +97,7 @@ function getSteps() {
   return ['Monthly Income', 'Expenses', 'Complete'];
 }
 
-export default function Configure() {
+export default function Configure(props) {
   const classes = useStyles();
   
   // <--------------------------- Monthly Income ---------------------->
@@ -262,7 +262,18 @@ export default function Configure() {
     data["income"] = values;
     data["expenses"] = expenses;
 
+    props.history.push("/configure");
+
     axios.post('/configure', { data })
+    .then((response) => {
+      if(response.data.added) {
+        props.history.push("/index");
+      } else {
+        alert("Configure failed, " + response.data.message);
+      }}, 
+    error => {
+      console.log("configure error");
+})
   }
 
   return (

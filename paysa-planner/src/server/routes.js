@@ -70,6 +70,7 @@ routes.post('/register', (request, response) => {
     lib.registerUser(request.body.username, hashed_pwd)
     .then(userAdded => {
         if (userAdded) {
+            request.session.user = request.body.username;
             response.status(200).json({created: true, message: "registration success"})
         } else {
             response.status(200).json({created: false, message: "username already taken"})
