@@ -85,4 +85,9 @@ routes.post('/logout', (req, res) => {
     }
 });
 
+
+routes.post('/configure', (req, res) => {
+    console.log(req.body.data.expenses);
+});
+
 module.exports = routes;

@@ -12,6 +12,15 @@ import StepLabel from '@material-ui/core/StepLabel';
 import NumberFormat from 'react-number-format';
 import Grid from '@material-ui/core/Grid';
 import { TextareaAutosize } from '@material-ui/core';
+import axios from 'axios';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+//todo: everything should technically be under fields
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,7 +56,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-  }
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 function formattedAmount(props) {
@@ -78,36 +94,22 @@ formattedAmount.propTypes = {
 };
 
 function getSteps() {
-  return ['Monthly Income', 'Expenses', 'Step 3'];
+  return ['Monthly Income', 'Expenses', 'Complete'];
 }
 
 export default function Configure() {
   const classes = useStyles();
-  //stuff for step 1
-
+  
+  // <--------------------------- Monthly Income ---------------------->
   const [values, setValues] = useState({
     monthlyIncome: '',
   });
-  const [fields, setFields] = useState(
-    [{addedInput: "", label: ""}]
-  )
-  const addClick = () => {
-    setFields(fields => (
-    	[...fields, { addedInput: "", label: ""}]
-    ))
-  }
-  const handleFieldsChange = (element, index, event) => {
-    let currentFields = [...fields]
-    currentFields[index] = {...currentFields[index], [event.target.name]: event.target.value}
-    setFields(currentFields)
-  }
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const stepOneContent = () => {
+  const setIncome = () => {
     return (
         <Container component="main" maxWidth="sm">
             <div className={classes.root}>
@@ -128,14 +130,31 @@ export default function Configure() {
         </Container>
       );
   }
+  //------------------------------------------------------------------->
 
+
+
+  // <--------------------------- Expenses ---------------------------->
+  const [fields, setFields] = useState(
+    [{addedInput: "", label: "", date: ""}]
+  )
+  const addClick = () => {
+    setFields(fields => (
+    	[...fields, { addedInput: "", label: "", date: ""}]
+    ))
+  }
+  const handleFieldsChange = (element, index, event) => {
+    let currentFields = [...fields]
+    currentFields[index] = {...currentFields[index], [event.target.name]: event.target.value}
+    setFields(currentFields)
+  }
   
-  const stepTwoContent = () => {
+  const setExpenses = () => {
     return (
         <Container component="main" maxWidth="sm">
             <div className={classes.root}>
           <Typography variant="h6" component="h2" gutterBottom>
-            Expenses
+            Add a recurring expense, and select frequency
           </Typography>
             {fields.map((element, index) => (
               <div className={classes.expense}>
@@ -155,6 +174,45 @@ export default function Configure() {
                 inputComponent: formattedAmount,
                 }}
               />
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label">Date</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={element.date}
+                  name="date"
+                  onChange={(event) => handleFieldsChange(element, index, event)}
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={7}>7</MenuItem>
+                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={9}>9</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  <MenuItem value={11}>11</MenuItem>
+                  <MenuItem value={12}>12</MenuItem>
+                  <MenuItem value={13}>13</MenuItem>
+                  <MenuItem value={14}>14</MenuItem>
+                  <MenuItem value={15}>15</MenuItem>
+                  <MenuItem value={16}>16</MenuItem>
+                  <MenuItem value={17}>17</MenuItem>
+                  <MenuItem value={18}>18</MenuItem>
+                  <MenuItem value={19}>19</MenuItem>
+                  <MenuItem value={20}>20</MenuItem>
+                  <MenuItem value={21}>21</MenuItem>
+                  <MenuItem value={22}>22</MenuItem>
+                  <MenuItem value={23}>23</MenuItem>
+                  <MenuItem value={24}>24</MenuItem>
+                  <MenuItem value={25}>25</MenuItem>
+                  <MenuItem value={26}>26</MenuItem>
+                  <MenuItem value={27}>27</MenuItem>
+                  <MenuItem value={28}>28</MenuItem>
+                </Select>
+              </FormControl>
               </div>
             ))}   
             <Button variant="contained" color="primary" onClick={addClick}>
@@ -164,27 +222,29 @@ export default function Configure() {
         </Container>
       );
   }
+  //------------------------------------------------------------------->
 
+
+  //-------------------- Stepper Functionality ------------------------->
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return stepOneContent();
+        return setIncome();
       case 1:
-        return stepTwoContent();
+        return setExpenses();
       case 2:
-        return 'Step 3';
+        return(<Typography className={classes.instructions}>
+                  All steps completed - click finish to continue!
+               </Typography>);
       default:
         return 'Unknown step';
     }
   }
 
-
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    console.log(values);
-    console.log(fields);
   };
 
   const handleBack = () => {
@@ -194,6 +254,16 @@ export default function Configure() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  //------------------------------------------------------------------->
+
+  const handleFinishAndRedirect = () => {
+    var data = {}
+    data["income"] = values;
+    data["expenses"] = fields;
+
+    axios.post('/configure', { data })
+  }
 
   return (
     <Container component="main" maxWidth="md">
@@ -213,12 +283,7 @@ export default function Configure() {
       <div>
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
+          {handleFinishAndRedirect()}
           </div>
         ) : (
           <div>
