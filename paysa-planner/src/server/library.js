@@ -82,5 +82,16 @@ module.exports = {
             }
         })
         return userExist;
+    },
+
+
+    addUserTransaction: async function(income, expenses, recurring) {
+        // Populate User Transaction db
+        console.log('todo')
+
+
+        // Populate Transaction db
     }
+
+    
 }
