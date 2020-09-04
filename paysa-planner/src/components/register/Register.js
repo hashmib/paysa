@@ -49,21 +49,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Register(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  //const [submitted, setSubmitted] = useState(false);
   const history = props.history;
-  //const loggingIn = useSelector(state => state.authentication.loggingIn);
-  //const dispatch = useDispatch();
-  // reset login status
-  // useEffect(() => { 
-  //     dispatch(userActions.logout()); 
-  // }, []);
+
   function handleSubmit(e) {
     e.preventDefault();
-    // setSubmitted(true);
-    // if (username && password) {
-    //     dispatch(userActions.login(username, password));
-    // }
-    // TODO: adeel, can you promisify this and do the history navigate to home page
     axios.post('/register', { username, password })
       .then((response) => {
         if(response.data.created) {
