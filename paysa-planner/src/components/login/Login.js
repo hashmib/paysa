@@ -1,5 +1,3 @@
-// ALL OF THESE ARE READY-MADE COMPONENTS
-// THAT WE WILL IMPORT FROM MATERIAL UI
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -13,14 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-// THIS IS THE THING WE USE TO COMMUNICATE WITH THE SERVER
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'; //, useEffect, useSelector, useDispatch
-// REACT ROUTER DOM 
+import React, { useEffect, useState } from 'react';
 import { Link as RouteLink } from "react-router-dom";
-
-
-
 
 function Copyright() {
   return (
@@ -35,10 +28,6 @@ function Copyright() {
   );
 }
 
-// in Material UI, this is how you create themes and styles
-// this of the useStyles object
-// as basically being a CSS file 
-// specificially for this component only
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -59,35 +48,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-// this is a function called Login
-// but in reality it's a component
-// which is more like a class in OOP
-// so it has a state which includes data that the component needs
-// things like username, password, etc
 export default function Login (props)  {
+  const classes = useStyles();
 
-  
+  //-------------------- Hooks ------------------------->
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false)
   const [submitted, setSubmitted] = useState(false);
-  
-
-  // this is for React Router Dom
-  // READ THIS LINK:
-  // https://serverless-stack.com/chapters/redirect-on-login-and-logout.html
-  
-
-
-    // IGNORE THESE LINES
-    //const loggingIn = useSelector(state => state.authentication.loggingIn);
-    //const dispatch = useDispatch();
-
-    // reset login status
-    // useEffect(() => { 
-    //     dispatch(userActions.logout()); 
-    // }, []);
+  //---------------------------------------------------->
 
     useEffect(() => {
       axios.get('/login', {})
@@ -101,13 +70,8 @@ export default function Login (props)  {
       });
     })
 
-    
-
-    // get's called when LOGIN button is pressed
     function handleSubmit(e) {
-        e.preventDefault(); // this line prevents the annoying refresh
-
-        //todo: implement callback function when login successful, and add error handling for failure
+        e.preventDefault();
         axios.post('/login', { username, password })
         .then((response) => {
           if(response.data.authenticated) {
@@ -116,26 +80,11 @@ export default function Login (props)  {
           else {
             alert("Sorry that user name password combo doesnt exist.")
           }
-        }, (error) => { // will be called when server sends 401 response
+        }, (error) => { 
             console.log("unauthorized");
         });
-
-        //DON'T WORRY ABOUT THIS CODE. IGNORE IT. 
-        //WE MIGHT USE IT LATER THO
-        // setSubmitted(true);
-        // if (username && password) {
-        //     dispatch(userActions.login(username, password));
-        // }
     }
 
-    const classes = useStyles();
-
-
-
-  // THINK OF THIS AS BEING LIKE HTML
-  // BUT BETTER
-  // LIKE HTML MIXED WITH JAVASCRIPT
-  // THAT'S KINDA WHAT REACT IS
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
