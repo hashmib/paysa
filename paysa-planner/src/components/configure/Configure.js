@@ -262,12 +262,21 @@ export default function Configure(props) {
     data["income"] = values;
     data["expenses"] = expenses;
 
-    props.history.push("/configure");
+        props.history.push({
+          pathname: '/index',
+          search: '?query=abc',
+          state: { testVar: "hello world" }
+        })
 
     axios.post('/configure', { data })
     .then((response) => {
       if(response.data.added) {
         props.history.push("/index");
+        // props.history.push({
+        //   pathname: '/index',
+        //   search: '?query=abc',
+        //   state: { testVar: "hello world" }
+        // })
       } else {
         alert("Configure failed, " + response.data.message);
       }}, 
