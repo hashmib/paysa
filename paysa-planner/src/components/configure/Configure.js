@@ -136,11 +136,11 @@ export default function Configure() {
 
   // <--------------------------- Expenses ---------------------------->
   const [expenses, setExpenses] = useState(
-    [{addedInput: "", label: "", date: ""}]
+    [{expenseValue: "", label: "", date: ""}]
   )
   const addClick = () => {
     setExpenses(expenses => (
-    	[...expenses, { addedInput: "", label: "", date: ""}]
+    	[...expenses, { expenseValue: "", label: "", date: ""}]
     ))
   }
   const handleExpensesChange = (element, index, event) => {
@@ -166,9 +166,9 @@ export default function Configure() {
               />
               <TextField
                 label="Amount"
-                value={element.addedInput}
+                value={element.expenseValue}
                 onChange={(event) => handleExpensesChange(element, index, event)}
-                name="addedInput"
+                name="expenseValue"
                 id="formatted-numberformat-input"
                 InputProps={{
                 inputComponent: formattedAmount,
