@@ -38,6 +38,8 @@ CREATE TABLE Transactions(
 );
 show tables;
 EOFMYSQL
+
+# Usage
 else
-echo "Badbadnotgood"
+echo "Usage: -d for delete | -i for initiate"
 fi
