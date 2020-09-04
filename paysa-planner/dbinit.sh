@@ -25,12 +25,19 @@ CREATE TABLE Users(
     PRIMARY KEY (id)
 );
 
+CREATE TABLE UserTransaction(
+    userid INT,
+    tr_id INT,
+    recurring BOOLEAN,
+    month INT,
+    expense BOOLEAN,
+    PRIMARY KEY (userid)
+);
+
 CREATE TABLE Transactions(
     id INT AUTO_INCREMENT,
     amount INT,
     description VARCHAR(100),
-    expense BOOLEAN,
-    month INT,
     userid INT,
     time DATETIME,
     PRIMARY KEY (id),
