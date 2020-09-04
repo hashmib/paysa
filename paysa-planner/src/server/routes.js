@@ -86,9 +86,12 @@ routes.post('/logout', (req, res) => {
     }
 });
 
-
+// TODO : SANITIZE DATA?
 routes.post('/configure', (req, res) => {
-    console.log(req.body.data.expenses);
+    var income = req.body.data.income;
+    var expenses = req.body.data.expenses;
+
+    lib.addUserTransaction(income, expenses, true)
 });
 
 module.exports = routes;
