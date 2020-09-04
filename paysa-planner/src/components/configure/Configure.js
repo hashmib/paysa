@@ -262,21 +262,23 @@ export default function Configure(props) {
     data["income"] = values;
     data["expenses"] = expenses;
 
-        props.history.push({
-          pathname: '/index',
-          search: '?query=abc',
-          state: { testVar: "hello world" }
-        })
+    // FOR TEST PURPOSES ONLY
+    // REMOVE WHEN SERVER WORK IS COMPLETE
+    props.history.push({
+      pathname: '/index',
+      //search: '?query=abc',
+      state: { data }
+    })
+    // ----------------------------------->
 
     axios.post('/configure', { data })
     .then((response) => {
       if(response.data.added) {
-        props.history.push("/index");
-        // props.history.push({
-        //   pathname: '/index',
-        //   search: '?query=abc',
-        //   state: { testVar: "hello world" }
-        // })
+        props.history.push({
+          pathname: '/index',
+          //search: '?query=abc',
+          state: { data }
+        })
       } else {
         alert("Configure failed, " + response.data.message);
       }}, 

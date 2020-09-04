@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(props) {
 
   console.log(":::")
-  //console.log(props.testVar)
+  console.log("::::", props.history.location.state)
 
   useEffect(() => {
     axios.get('/index', {})
