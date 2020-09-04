@@ -109,7 +109,7 @@ export default function Configure() {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const setIncome = () => {
+  const stepIncome = () => {
     return (
         <Container component="main" maxWidth="sm">
             <div className={classes.root}>
@@ -135,39 +135,39 @@ export default function Configure() {
 
 
   // <--------------------------- Expenses ---------------------------->
-  const [fields, setFields] = useState(
+  const [expenses, setExpenses] = useState(
     [{addedInput: "", label: "", date: ""}]
   )
   const addClick = () => {
-    setFields(fields => (
-    	[...fields, { addedInput: "", label: "", date: ""}]
+    setExpenses(expenses => (
+    	[...expenses, { addedInput: "", label: "", date: ""}]
     ))
   }
-  const handleFieldsChange = (element, index, event) => {
-    let currentFields = [...fields]
-    currentFields[index] = {...currentFields[index], [event.target.name]: event.target.value}
-    setFields(currentFields)
+  const handleExpensesChange = (element, index, event) => {
+    let currentExpenses = [...expenses]
+    currentExpenses[index] = {...currentExpenses[index], [event.target.name]: event.target.value}
+    setExpenses(currentExpenses)
   }
   
-  const setExpenses = () => {
+  const stepExpenses = () => {
     return (
         <Container component="main" maxWidth="sm">
             <div className={classes.root}>
           <Typography variant="h6" component="h2" gutterBottom>
             Add a recurring expense, and select frequency
           </Typography>
-            {fields.map((element, index) => (
+            {expenses.map((element, index) => (
               <div className={classes.expense}>
               <TextField
                 label="Expense"
                 value={element.label}
-                onChange={(event) => handleFieldsChange(element, index, event)}
+                onChange={(event) => handleExpensesChange(element, index, event)}
                 name="label"
               />
               <TextField
                 label="Amount"
                 value={element.addedInput}
-                onChange={(event) => handleFieldsChange(element, index, event)}
+                onChange={(event) => handleExpensesChange(element, index, event)}
                 name="addedInput"
                 id="formatted-numberformat-input"
                 InputProps={{
@@ -181,7 +181,7 @@ export default function Configure() {
                   id="demo-simple-select"
                   value={element.date}
                   name="date"
-                  onChange={(event) => handleFieldsChange(element, index, event)}
+                  onChange={(event) => handleExpensesChange(element, index, event)}
                 >
                   <MenuItem value={1}>1</MenuItem>
                   <MenuItem value={2}>2</MenuItem>
@@ -229,9 +229,9 @@ export default function Configure() {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return setIncome();
+        return stepIncome();
       case 1:
-        return setExpenses();
+        return stepExpenses();
       case 2:
         return(<Typography className={classes.instructions}>
                   All steps completed - click finish to continue!
@@ -260,7 +260,7 @@ export default function Configure() {
   const handleFinishAndRedirect = () => {
     var data = {}
     data["income"] = values;
-    data["expenses"] = fields;
+    data["expenses"] = expenses;
 
     axios.post('/configure', { data })
   }
