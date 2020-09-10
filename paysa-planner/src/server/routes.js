@@ -51,15 +51,16 @@ routes.post('/login', (request, response) => {
     hashed_pwd = lib.getHashedPassword(request.body.password);
 
     lib.authenticateUser(request.body.username, hashed_pwd)
-    .then(auth => {
-        if (auth) {
-            request.session.user = request.body.username;
-            response.status(200).json({authenticated : true})
+    .then(userID => {
+        // Non-existent entry returns -1
+        if (userID == -1) {
+            response.status(200).json({authenticated : false})
         } else {
-            response.status(200).json({authenticated: false})
+            request.session.user = userID;
+            response.status(200).json({authenticated: true})
     }}, error => {
         console.error("Failed!", error);
-        response.status(500).json("database issues")
+        response.status(500).json("failed to return result from user database")
     })
 });
 
@@ -68,12 +69,12 @@ routes.post('/register', (request, response) => {
     hashed_pwd = lib.getHashedPassword(request.body.password);
     
     lib.registerUser(request.body.username, hashed_pwd)
-    .then(userAdded => {
-        if (userAdded) {
-            request.session.user = request.body.username;
-            response.status(200).json({created: true, message: "registration success"})
-        } else {
+    .then(newUserID => {
+        if (newUserID == -1) {
             response.status(200).json({created: false, message: "username already taken"})
+        } else {
+            request.session.user = newUserID;
+            response.status(200).json({created: true, message: "registration success"})
     }}, error => {
         console.error("Failed!", error);
     })
@@ -88,8 +89,13 @@ routes.post('/logout', (req, res) => {
 
 // TODO : SANITIZE DATA?
 routes.post('/configure', (req, res) => {
-    var income = req.body.data.income;
-    var expenses = req.body.data.expenses;
+    let income = req.body.data.income;
+    let expenses = req.body.data.expenses;
+    let userID = req.session.user;
+
+    console.log(userID)
+    console.log(income)
+    console.log(expenses)
 
     lib.addUserTransaction(income, expenses, true)
 });

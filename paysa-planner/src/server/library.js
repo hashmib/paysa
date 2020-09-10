@@ -1,6 +1,7 @@
 // Server-side Function Library
 const crypto = require('crypto');
 var mysql = require('./connectdb');
+const { resolve } = require('path');
 
 
 module.exports = {
@@ -14,16 +15,17 @@ module.exports = {
 
     // Authenticates existing user 
     authenticateUser: async function(username, hash_pwd) {
-        let query = 'SELECT username, password FROM users WHERE username = \'' + username + '\'';
+        let query = 'SELECT username, password, id FROM users WHERE username = \'' + username + '\'';
+        let error_id = -1;
         try {
             const result = await new Promise((resolve, reject) => {
                 mysql.query(query, (error, results, fields) => {
                     if (error) return reject(error);
                     if (results[0].password === hash_pwd) {
-                        return resolve(true)
+                        return resolve(results[0].id)
                     }
                     else {
-                        return resolve(false)
+                        return resolve(error_id)
                     }
                 });
             });
@@ -34,7 +36,6 @@ module.exports = {
     },
 
     checkUserExists: async function(username) {
-        let userExistQuery = "SELECT COUNT(*) AS total FROM users WHERE username = ?";
         
         try {
             const result = await new Promise((resolve, reject) => {
@@ -55,6 +56,8 @@ module.exports = {
 
     addUserEntry: async function(username, password) {
         let query = 'INSERT INTO users(username, password) VALUES(?)';
+        let userExistQuery = "SELECT COUNT(*) AS total FROM users WHERE username = ?";
+        let userid_query = 'SELECT id from users WHERE username = ?'
         let values = [
             username,
             password
@@ -62,10 +65,26 @@ module.exports = {
 
         try {
             const result = await new Promise((resolve, reject) => {
+                // Check if username exists in database
+                mysql.query(userExistQuery, username,(error, exists, fields) => {
+                    if (error) return reject(error);
+                    if (exists[0].total > 0) {
+                        return resolve(-1);
+                    }
+                });
+
+                // Insert new user into db
                 mysql.query(query, [values], (error, results, fields) => {
                     if (error) return reject(error);
-                    return resolve(true);
                 });
+
+                // Get user id of newlyadded 
+                mysql.query(userid_query, username,(error, ids, fields) => {
+                    if (error) return reject(error);
+
+                    return resolve(ids[0].id)
+                });
+
             });
             return result;
         } catch (err) {
@@ -73,15 +92,8 @@ module.exports = {
         }
     },
 
-    // Returns boolean if registration successful
     registerUser: async function(username, hashed_pwd) {
-        const userExist = this.checkUserExists(username);
-        userExist.then(async authorized => {
-            if (authorized) {
-                const addedUser = this.addUserEntry(username, hashed_pwd);
-            }
-        })
-        return userExist;
+        return this.addUserEntry(username, hashed_pwd);
     },
 
 
