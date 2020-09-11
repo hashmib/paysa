@@ -89,8 +89,8 @@ routes.post('/logout', (req, res) => {
 
 // TODO : SANITIZE DATA?
 routes.post('/configure', (req, res) => {
-    let income = req.body.data.income;
-    let expenses = req.body.data.expenses;
+    let income = req.body.income;
+    let expenses = req.body.expenses;
     let userID = req.session.user;
 
     lib.handleConfigure(income, expenses, userID)

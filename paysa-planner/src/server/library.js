@@ -5,6 +5,9 @@ const { resolve } = require('path');
 
 
 module.exports = {
+    getFormattedDate: function(date) {
+        return date.toISOString().slice(0, 19).replace('T', ' ');
+    },
 
     getFormattedDateToday: function() {
         return new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -92,19 +95,12 @@ module.exports = {
     }]
     */
     
-    addRecurrence: async function(type, data, userid) {
+    addRecurringExpense: async function(data, userid) {
         let currentDate = this.getFormattedDateToday();
-        
-        if (type == "expense") {
-            console.log(data)
-        }
-        else {
-            console.log('income')
-        }
     },
 
     handleConfigure: async function(income, expenses, userid) {
-        let addedExpenses = this.addRecurrence("expense", expenses, userid);
+        let addedExpenses = this.addRecurringExpense(expenses, userid);
         addedExpenses.then(promiseData => {
             console.log('temp')
         });
