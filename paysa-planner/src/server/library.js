@@ -6,6 +6,10 @@ const { resolve } = require('path');
 
 module.exports = {
 
+    getFormattedDateToday: function() {
+        return new Date().toISOString().slice(0, 19).replace('T', ' ');
+    },
+
     // Returns SHA-256 hash of user's password to be stored in db
     getHashedPassword: function(password) {
         const sha256 = crypto.createHash('sha256');
@@ -34,25 +38,6 @@ module.exports = {
             console.log("error querying database");
         }
     },
-
-    checkUserExists: async function(username) {
-        
-        try {
-            const result = await new Promise((resolve, reject) => {
-                mysql.query(userExistQuery, username, (error, results, fields) => {
-                    if (error) return reject(error);
-                    if (results[0].total > 0) {
-                        return resolve(false);
-                    }
-                    return resolve(true);
-                });
-            });
-            return result;
-        } catch (err) {
-            console.log("error querying database");
-        }
-    },
-
 
     addUserEntry: async function(username, password) {
         let query = 'INSERT INTO users(username, password) VALUES(?)';
@@ -96,13 +81,35 @@ module.exports = {
         return this.addUserEntry(username, hashed_pwd);
     },
 
+    
+    /* Expected format of expense
+    [{
+        expenseValue: 
+        label:
+        start:
+        end:
+        frequency:
+    }]
+    */
+    
+    addRecurrence: async function(type, data, userid) {
+        let currentDate = this.getFormattedDateToday();
+        
+        if (type == "expense") {
+            console.log(data)
+        }
+        else {
+            console.log('income')
+        }
+    },
 
-    addUserTransaction: async function(income, expenses, recurring) {
-        // Populate User Transaction db
-        console.log('todo')
+    handleConfigure: async function(income, expenses, userid) {
+        let addedExpenses = this.addRecurrence("expense", expenses, userid);
+        addedExpenses.then(promiseData => {
+            console.log('temp')
+        });
 
 
-        // Populate Transaction db
     }
 
     

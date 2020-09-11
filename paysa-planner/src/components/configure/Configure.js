@@ -135,8 +135,9 @@ export default function Configure(props) {
 
 
   // <--------------------------- Expenses ---------------------------->
+
   const [expenses, setExpenses] = useState(
-    [{expenseValue: "", label: "", date: ""}]
+    [{expenseValue: "", label: "", start: "", end: new Date(2021, 6, 7), frequency: "monthly"}]
   )
   const addClick = () => {
     setExpenses(expenses => (
@@ -175,20 +176,7 @@ export default function Configure(props) {
                 inputComponent: formattedAmount,
                 }}
               />
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Date</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={element.date}
-                  name="date"
-                  onChange={(event) => handleExpensesChange(element, index, event)}
-                >
-                  {days.map((day) => {
-                    return (<MenuItem value={day}>{day}</MenuItem>)
-                  })}
-                </Select>
-              </FormControl>
+              {dateSelect(element, index)}
               </div>
             ))}   
             <Button variant="contained" color="primary" onClick={addClick}>
@@ -199,6 +187,40 @@ export default function Configure(props) {
       );
   }
   //------------------------------------------------------------------->
+
+
+
+  //-------------------- Date Select ------------------------->
+  const dateSelect = (element, index) => {
+    const days = Array.from(Array(31), (_, i) => i + 1);
+    return (
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">Date</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={element.date}
+          name="date"
+          onChange={(event) => handleExpensesChange(element, index, event)}
+        >
+          {days.map((day) => {
+            return (<MenuItem value={day}>{day}</MenuItem>)
+          })}
+        </Select>
+      </FormControl>
+    );
+  }
+
+
+
+//------------------------------------------------------------------->
+
+
+
+  
+
+  
+
 
 
   //-------------------- Stepper Functionality ------------------------->

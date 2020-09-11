@@ -25,23 +25,35 @@ CREATE TABLE Users(
     PRIMARY KEY (id)
 );
 
-CREATE TABLE UserTransaction(
+CREATE TABLE Recurrences(
+    recurrence_id INT AUTO_INCREMENT,
     userid INT,
-    tr_id INT,
-    recurring BOOLEAN,
-    month INT,
-    expense BOOLEAN,
-    PRIMARY KEY (userid)
+    type VARCHAR(10),
+    amount INT,
+    description VARCHAR(100),
+    start_date DATETIME,
+    end_date DATETIME,
+    last_date DATETIME,
+    frequency VARCHAR(10),
+    PRIMARY KEY (recurrence_id),
+    FOREIGN KEY (userid) REFERENCES users(id)
 );
 
 CREATE TABLE Transactions(
-    id INT AUTO_INCREMENT,
+    id INT AUTO_INCREMENT, 
     amount INT,
     description VARCHAR(100),
     userid INT,
     time DATETIME,
     PRIMARY KEY (id),
     FOREIGN KEY (userid) REFERENCES users(id)
+);
+
+CREATE TABLE Ledger(
+    userid INT,
+    tr_id INT,
+    type VARCHAR(10),
+    PRIMARY KEY (tr_id),
 );
 show tables;
 EOFMYSQL

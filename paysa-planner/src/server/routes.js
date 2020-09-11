@@ -93,11 +93,7 @@ routes.post('/configure', (req, res) => {
     let expenses = req.body.data.expenses;
     let userID = req.session.user;
 
-    console.log(userID)
-    console.log(income)
-    console.log(expenses)
-
-    lib.addUserTransaction(income, expenses, true)
+    lib.handleConfigure(income, expenses, userID)
 });
 
 module.exports = routes;
