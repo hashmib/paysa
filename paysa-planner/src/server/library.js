@@ -2,9 +2,22 @@
 const crypto = require('crypto');
 var mysql = require('./connectdb');
 const { resolve } = require('path');
+var async = require('async');
 
 
 module.exports = {
+    // SQL Functions
+    insertIntoDB: async function(insertQuery, values) {
+        return new Promise((resolve, reject) => {
+            mysql.query(insertQuery, [values], (error, results, fields) => {
+                if (error) reject(error);
+                else {
+                    resolve(true)
+                }
+            });
+        });
+    },
+
     getFormattedDate: function(date) {
         return date.toISOString().slice(0, 19).replace('T', ' ');
     },
@@ -85,7 +98,9 @@ module.exports = {
     },
 
     
-    /* Expected format of expense
+    /* 
+    
+    Expected format of expense
     [{
         expenseValue: 
         label:
@@ -93,19 +108,39 @@ module.exports = {
         end:
         frequency:
     }]
+
+    Note: lastdate will be null until currentDate = startDate -> should write a function to account for that
     */
-    
-    addRecurringExpense: async function(data, userid) {
+    addRecurringExpense: async function(expenses, userid) {
         let currentDate = this.getFormattedDateToday();
+        let tr_type = 'expense';
+        let query = 'INSERT INTO Recurrences(userid, type, amount, description, start_date, end_date, frequency) VALUES(?)';
+
+        let promises = [];
+        expenses.map((expense) => {
+            let values = [
+                userid,
+                tr_type,
+                expense['expenseValue'],
+                expense['label'],
+                expense['start'],
+                expense['end'],
+                expense['frequency']
+            ];
+            promises.push(this.insertIntoDB(query, values));
+        });
+        return Promise.all(promises)
     },
 
     handleConfigure: async function(income, expenses, userid) {
-        let addedExpenses = this.addRecurringExpense(expenses, userid);
-        addedExpenses.then(promiseData => {
-            console.log('temp')
+        let addedExpenses = this.addRecurringExpense(expenses, 13);
+        addedExpenses.then(added => {
+            console.log("/configure - expenses added successfully")
+        }, error => {
+            console.log("/configure - error inserting into recurring db");
         });
 
-
+        return true;
     }
 
     

@@ -1,5 +1,6 @@
 const routes = require('express').Router();
 const cookieParser = require('cookie-parser');
+const { response } = require('express');
 const session = require("express-session");
 const lib = require('./library');
 
@@ -94,6 +95,14 @@ routes.post('/configure', (req, res) => {
     let userID = req.session.user;
 
     lib.handleConfigure(income, expenses, userID)
+    .then(completed => {
+        if (completed) {
+            res.status(200).json({changesConfirmed: true, message: "recurring transactions were added successfully"});
+        }
+        else {
+            res.status(200).json({changesConfirmed: false, message: "An error occured."})
+        }
+    })
 });
 
 module.exports = routes;

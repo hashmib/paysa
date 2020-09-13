@@ -12,6 +12,14 @@ EOFMYSQL
 echo "paysa db deleted"
 
 # Initiate database
+elif [[ $1 == '-st' ]];
+then
+mysql -u "$MYSQL_USER" -p"$MYSQL_PASS" <<EOFMYSQL
+use paysadb;
+show tables;
+EOFMYSQL
+
+# Initiate database
 elif [[ $1 == '-i' ]];
 then
 mysql -u "$MYSQL_USER" -p"$MYSQL_PASS" <<EOFMYSQL
@@ -25,6 +33,15 @@ CREATE TABLE Users(
     PRIMARY KEY (id)
 );
 
+CREATE TABLE Transactions(
+    id INT AUTO_INCREMENT, 
+    amount INT,
+    description VARCHAR(100),
+    userid INT,
+    time DATETIME,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE Recurrences(
     recurrence_id INT AUTO_INCREMENT,
     userid INT,
@@ -35,25 +52,14 @@ CREATE TABLE Recurrences(
     end_date DATETIME,
     last_date DATETIME,
     frequency VARCHAR(10),
-    PRIMARY KEY (recurrence_id),
-    FOREIGN KEY (userid) REFERENCES users(id)
-);
-
-CREATE TABLE Transactions(
-    id INT AUTO_INCREMENT, 
-    amount INT,
-    description VARCHAR(100),
-    userid INT,
-    time DATETIME,
-    PRIMARY KEY (id),
-    FOREIGN KEY (userid) REFERENCES users(id)
+    PRIMARY KEY (recurrence_id)
 );
 
 CREATE TABLE Ledger(
     userid INT,
     tr_id INT,
     type VARCHAR(10),
-    PRIMARY KEY (tr_id),
+    PRIMARY KEY (tr_id)
 );
 show tables;
 EOFMYSQL
