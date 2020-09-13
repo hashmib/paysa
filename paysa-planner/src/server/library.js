@@ -132,15 +132,44 @@ module.exports = {
         return Promise.all(promises)
     },
 
+
+    addRecurringIncome: async function(incomes, userid) {
+        let tr_type = 'income';
+        let query = 'INSERT INTO Recurrences(userid, type, amount, description, start_date, end_date, frequency) VALUES(?)';
+
+        let promises = [];
+        expenses.map((income) => {
+            let values = [
+                userid,
+                tr_type,
+                income['incomeValue'],
+                income['label'],
+                income['start'],
+                income['end'],
+                income['frequency']
+            ];
+            promises.push(this.insertIntoDB(query, values));
+        });
+        return Promise.all(promises)
+    },
+
+    // todo: error handling
     handleConfigure: async function(income, expenses, userid) {
-        let addedExpenses = this.addRecurringExpense(expenses, 13);
+        let addedExpenses = this.addRecurringExpense(expenses, 5);
         addedExpenses.then(added => {
             console.log("/configure - expenses added successfully")
         }, error => {
             console.log("/configure - error inserting into recurring db");
         });
 
-        return true;
+        let addedIncomes = this.addRecurringIncome(income, 825);
+        addedIncomes.then(added => {
+            console.log("/configure - incomes added successfully")
+        }, error => {
+            console.log("/configure - error inserting income recurring db");
+        });
+
+        return addedIncomes;
     }
 
     

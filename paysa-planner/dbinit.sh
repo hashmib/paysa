@@ -46,7 +46,7 @@ CREATE TABLE Recurrences(
     recurrence_id INT AUTO_INCREMENT,
     userid INT,
     type VARCHAR(10),
-    amount INT,
+    amount INT NOT NULL,
     description VARCHAR(100),
     start_date DATETIME,
     end_date DATETIME,
