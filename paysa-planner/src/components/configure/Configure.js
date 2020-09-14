@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -18,6 +18,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 //todo: everything should technically be under fields
 
@@ -136,12 +139,23 @@ export default function Configure(props) {
 
   // <--------------------------- Expenses ---------------------------->
 
+        /* Expected format of data
+    [{
+        expenseValue: 
+        label:
+        start:
+        end:
+        frequency:
+    }]
+    */
+
+
   const [expenses, setExpenses] = useState(
-    [{expenseValue: "", label: "", start: "", end: new Date(2021, 6, 7), frequency: "monthly"}]
+    [{expenseValue: "", label: "", start: new Date(), end: "", frequency: ""}]
   )
   const addClick = () => {
     setExpenses(expenses => (
-    	[...expenses, { expenseValue: "", label: "", date: ""}]
+    	[...expenses, { expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
     ))
   }
   const handleExpensesChange = (element, index, event) => {
@@ -176,7 +190,24 @@ export default function Configure(props) {
                 inputComponent: formattedAmount,
                 }}
               />
-              {dateSelect(element, index)}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                disablePast="true"
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Recur Until"
+                value={element.end}
+                name="end"
+                onChange={(event) => handleExpensesChange(element, index, {target:{name: "end", value: event}})}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+            {frequencySelect(element, index)}
               </div>
             ))}   
             <Button variant="contained" color="primary" onClick={addClick}>
@@ -191,23 +222,26 @@ export default function Configure(props) {
 
 
   //-------------------- Date Select ------------------------->
-  const dateSelect = (element, index) => {
-    const days = Array.from(Array(31), (_, i) => i + 1);
+  const frequencySelect = (element, index) => {
+    const frequencies = ["Weekly", "Biweekly", "Monthly"]
     return (
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Date</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={element.date}
-          name="date"
-          onChange={(event) => handleExpensesChange(element, index, event)}
-        >
-          {days.map((day) => {
-            return (<MenuItem value={day}>{day}</MenuItem>)
+        <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={element.frequency}
+            name="frequency"
+            onChange={(event) => handleExpensesChange(element, index, event)}
+          >
+          {frequencies.map((freq) => {
+            return (<MenuItem value={freq}>{freq}</MenuItem>)
           })}
         </Select>
       </FormControl>
+      
+
+
     );
   }
 
@@ -255,19 +289,13 @@ export default function Configure(props) {
 
   //------------------------------------------------------------------->
 
+
+
   const handleFinishAndRedirect = () => {
     var data = {}
     data["income"] = values;
     data["expenses"] = expenses;
 
-    // FOR TEST PURPOSES ONLY
-    // REMOVE WHEN SERVER WORK IS COMPLETE
-    props.history.push({
-      pathname: '/index',
-      //search: '?query=abc',
-      state: { data }
-    })
-    // ----------------------------------->
 
     axios.post('/configure', { data })
     .then((response) => {
