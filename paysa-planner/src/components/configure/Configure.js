@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
+  income: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
   expense: {
     display: "flex",
     justifyContent: "space-between",
@@ -75,11 +79,11 @@ function formattedAmount(props) {
     <NumberFormat
       {...other}
       getInputRef={inputRef}
-      onValueChange={(values) => {
+      onValueChange={(incomes) => {
         onChange({
           target: {
             name: props.name,
-            value: values.value,
+            value: incomes.value,
           },
         });
       }}
@@ -104,32 +108,114 @@ export default function Configure(props) {
   const classes = useStyles();
   
   // <--------------------------- Monthly Income ---------------------->
-  const [values, setValues] = useState({
-    monthlyIncome: '',
-  });
+  const [incomes, setIncomes] = useState(
+    [{incomeValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
+  );
 
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+  const addIncomesClick = () => {
+    setIncomes(incomes => (
+    	[...incomes, { incomeValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
+    ))
+  };
+
+  const handleIncomesChange = (element, index, event) => {
+    let currentIncomes = [...incomes]
+    currentIncomes[index] = {...currentIncomes[index], [event.target.name]: event.target.value}
+    setIncomes(currentIncomes)
   };
 
   const stepIncome = () => {
+    // return (
+    //     <Container component="main" maxWidth="sm">
+    //         <div className={classes.root}>
+    //         <Typography variant="h6" component="h2" gutterBottom>
+    //           Monthly Take Home
+    //         </Typography>
+    //         <TextField
+    //             label="Monthly Income"
+    //             value={incomes.incomeValue}
+    //             onChange={handleChange}
+    //             name="incomeValue"
+    //             id="formatted-numberformat-input"
+    //             InputProps={{
+    //             inputComponent: formattedAmount,
+    //             }}
+    //         />
+    //         </div>
+    //     </Container>
+    //   );
+    const days = Array.from(Array(31), (_, i) => i + 1);
     return (
         <Container component="main" maxWidth="sm">
-            <div className={classes.root}>
+          <div className={classes.root}>
             <Typography variant="h6" component="h2" gutterBottom>
-              Monthly Take Home
+              Add your recurring earnings
             </Typography>
-            <TextField
-                label="Monthly Income"
-                value={values.monthlyIncome}
-                onChange={handleChange}
-                name="monthlyIncome"
-                id="formatted-numberformat-input"
-                InputProps={{
-                inputComponent: formattedAmount,
-                }}
-            />
-            </div>
+              {incomes.map((element, index) => (
+                <div className={classes.income}>
+                  <TextField
+                    label="Earning"
+                    value={element.label}
+                    onChange={(event) => handleIncomesChange(element, index, event)}
+                    name="label"
+                  />
+                  <TextField
+                    label="Amount"
+                    value={element.incomeValue}
+                    onChange={(event) => handleIncomesChange(element, index, event)}
+                    name="incomeValue"
+                    id="formatted-numberformat-input"
+                    InputProps={{
+                    inputComponent: formattedAmount,
+                    }}
+                  />
+                {// TODO: fix onChange jugar in both below
+                }
+                <MuiPickersUtilsProvider utils={DateFnsUtils} flexGrow={1}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    disablePast="true"
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Start Date"
+                    value={element.start}
+                    name="start"
+                    onChange={(event) => handleIncomesChange(element, index, {target:{name: "start", value: event}})}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+                
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    disablePast="true"
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Repeat Until"
+                    value={element.end}
+                    name="end"
+                    onChange={(event) => handleIncomesChange(element, index, {target:{name: "end", value: event}})}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                    />
+                  </MuiPickersUtilsProvider>
+
+                {frequencySelect(element, index, "incomes")}
+              </div>
+            ))}   
+
+              <Button variant="contained" color="primary" onClick={addIncomesClick}>
+                Add Income
+              </Button>
+
+          </div>
         </Container>
       );
   }
@@ -151,9 +237,9 @@ export default function Configure(props) {
 
 
   const [expenses, setExpenses] = useState(
-    [{expenseValue: "", label: "", start: new Date(), end: "", frequency: ""}]
+    [{expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
   )
-  const addClick = () => {
+  const addExpensesClick = () => {
     setExpenses(expenses => (
     	[...expenses, { expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
     ))
@@ -168,52 +254,75 @@ export default function Configure(props) {
     const days = Array.from(Array(31), (_, i) => i + 1);
     return (
         <Container component="main" maxWidth="sm">
-            <div className={classes.root}>
-          <Typography variant="h6" component="h2" gutterBottom>
-            Add a recurring expense, and select frequency
-          </Typography>
-            {expenses.map((element, index) => (
-              <div className={classes.expense}>
-              <TextField
-                label="Expense"
-                value={element.label}
-                onChange={(event) => handleExpensesChange(element, index, event)}
-                name="label"
-              />
-              <TextField
-                label="Amount"
-                value={element.expenseValue}
-                onChange={(event) => handleExpensesChange(element, index, event)}
-                name="expenseValue"
-                id="formatted-numberformat-input"
-                InputProps={{
-                inputComponent: formattedAmount,
-                }}
-              />
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                disablePast="true"
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Recur Until"
-                value={element.end}
-                name="end"
-                onChange={(event) => handleExpensesChange(element, index, {target:{name: "end", value: event}})}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </MuiPickersUtilsProvider>
-            {frequencySelect(element, index)}
-              </div>
-            ))}   
-            <Button variant="contained" color="primary" onClick={addClick}>
-              Add Expense
-            </Button>
-            </div>
+          <div className={classes.root}>
+            <Typography variant="h6" component="h2" gutterBottom>
+              Add your recurring expenses
+            </Typography>
+              {expenses.map((element, index) => (
+                <div className={classes.expense}>
+                <TextField
+                  label="Expense"
+                  value={element.label}
+                  onChange={(event) => handleExpensesChange(element, index, event)}
+                  name="label"
+                />
+                <TextField
+                  label="Amount"
+                  value={element.expenseValue}
+                  onChange={(event) => handleExpensesChange(element, index, event)}
+                  name="expenseValue"
+                  id="formatted-numberformat-input"
+                  InputProps={{
+                  inputComponent: formattedAmount,
+                  }}
+                />
+              {// TODO: fix onChange jugar in both below
+              }
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  disablePast="true"
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Start Date"
+                  value={element.start}
+                  name="start"
+                  onChange={(event) => handleExpensesChange(element, index, {target:{name: "start", value: event}})}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+              
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  disablePast="true"
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Repeat Until"
+                  value={element.end}
+                  name="end"
+                  onChange={(event) => handleExpensesChange(element, index, {target:{name: "end", value: event}})}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+
+              {frequencySelect(element, index, "expenses")}
+                </div>
+              ))}   
+
+              <Button variant="contained" color="primary" onClick={addExpensesClick}>
+                Add Expense
+              </Button>
+
+          </div>
         </Container>
       );
   }
@@ -222,27 +331,45 @@ export default function Configure(props) {
 
 
   //-------------------- Date Select ------------------------->
-  const frequencySelect = (element, index) => {
+  const frequencySelect = (element, index, mode) => {
     const frequencies = ["Weekly", "Biweekly", "Monthly"]
-    return (
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={element.frequency}
-            name="frequency"
-            onChange={(event) => handleExpensesChange(element, index, event)}
-          >
-          {frequencies.map((freq) => {
-            return (<MenuItem value={freq}>{freq}</MenuItem>)
-          })}
-        </Select>
-      </FormControl>
-      
+    if (mode == "expenses") {
+      return (
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={element.frequency}
+              name="frequency"
+              onChange={(event) => handleExpensesChange(element, index, event)}
+            >
+            {frequencies.map((freq) => {
+              return (<MenuItem value={freq}>{freq}</MenuItem>)
+            })}
+          </Select>
+        </FormControl>
+      );
+    }
+    else {
+      return (
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={element.frequency}
+              name="frequency"
+              onChange={(event) => handleIncomesChange(element, index, event)}
+            >
+            {frequencies.map((freq) => {
+              return (<MenuItem value={freq}>{freq}</MenuItem>)
+            })}
+          </Select>
+        </FormControl>
+      );
+    }
 
-
-    );
   }
 
 
@@ -292,18 +419,13 @@ export default function Configure(props) {
 
 
   const handleFinishAndRedirect = () => {
-    var data = {}
-    data["income"] = values;
-    data["expenses"] = expenses;
-
-
-    axios.post('/configure', { data })
+    axios.post('/configure', { incomes, expenses })
     .then((response) => {
       if(response.data.added) {
         props.history.push({
           pathname: '/index',
           //search: '?query=abc',p
-          state: { data }
+          state: { incomes, expenses }
         })
       } else {
         alert("Configure failed, " + response.data.message);
