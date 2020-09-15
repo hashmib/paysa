@@ -158,14 +158,14 @@ module.exports = {
 
     // todo: error handling
     handleConfigure: async function(income, expenses, userid) {
-        let addedExpenses = this.addRecurringExpense(expenses, userid);
+        let addedExpenses = this.addRecurringExpense(expenses, 3);
         addedExpenses.then(added => {
             console.log("/configure - expenses added successfully")
         }, error => {
             console.log("/configure - error inserting into recurring db");
         });
 
-        let addedIncomes = this.addRecurringIncome(income, userid);
+        let addedIncomes = this.addRecurringIncome(income, 3);
         addedIncomes.then(added => {
             console.log("/configure - incomes added successfully")
         }, error => {

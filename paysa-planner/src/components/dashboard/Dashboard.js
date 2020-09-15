@@ -20,7 +20,7 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import MonthInReview from './MonthInReview';
 import UpcomingPayments from './UpcomingPayments';
-import SpendingBreakdown from './SpendingBreakdown';
+import OneTimePayment from './OneTimePayment';
 import Overall from './Overall';
 import { mainListItems, secondaryListItems } from './listItems';
 
@@ -214,7 +214,7 @@ export default function Dashboard(props) {
             {/* Breakdown */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <SpendingBreakdown />
+                <OneTimePayment />
               </Paper>
             </Grid>
             {/* Month In Review */}

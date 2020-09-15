@@ -146,7 +146,7 @@ export default function Configure(props) {
     //   );
     const days = Array.from(Array(31), (_, i) => i + 1);
     return (
-        <Container component="main" maxWidth="sm">
+        <Container component="main" maxWidth="md">
           <div className={classes.root}>
             <Typography variant="h6" component="h2" gutterBottom>
               Add your recurring earnings
@@ -171,14 +171,11 @@ export default function Configure(props) {
                   />
                 {// TODO: fix onChange jugar in both below
                 }
-                <MuiPickersUtilsProvider utils={DateFnsUtils} flexGrow={1}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
-                    disableToolbar
-                    disablePast="true"
-                    variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
-                    id="date-picker-inline"
+                    id="date-picker-dialog"
                     label="Start Date"
                     value={element.start}
                     name="start"
@@ -191,12 +188,9 @@ export default function Configure(props) {
                 
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
-                    disableToolbar
-                    disablePast="true"
-                    variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
-                    id="date-picker-inline"
+                    id="date-picker-dialog"
                     label="Repeat Until"
                     value={element.end}
                     name="end"
@@ -206,7 +200,7 @@ export default function Configure(props) {
                     }}
                     />
                   </MuiPickersUtilsProvider>
-
+                  
                 {frequencySelect(element, index, "incomes")}
               </div>
             ))}   
@@ -253,7 +247,7 @@ export default function Configure(props) {
   const stepExpenses = () => {
     const days = Array.from(Array(31), (_, i) => i + 1);
     return (
-        <Container component="main" maxWidth="sm">
+        <Container component="main" maxWidth="md">
           <div className={classes.root}>
             <Typography variant="h6" component="h2" gutterBottom>
               Add your recurring expenses
@@ -280,9 +274,6 @@ export default function Configure(props) {
               }
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  disableToolbar
-                  disablePast="true"
-                  variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   id="date-picker-inline"
@@ -298,9 +289,6 @@ export default function Configure(props) {
               
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  disableToolbar
-                  disablePast="true"
-                  variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
                   id="date-picker-inline"
@@ -421,7 +409,7 @@ export default function Configure(props) {
   const handleFinishAndRedirect = () => {
     axios.post('/configure', { incomes, expenses })
     .then((response) => {
-      if(response.data.added) {
+      if(response.data.changesConfirmed) {
         props.history.push({
           pathname: '/index',
           //search: '?query=abc',p
@@ -436,7 +424,7 @@ export default function Configure(props) {
   }
 
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="lg">
     <CssBaseline />
     <div className={classes.root}>
       <Stepper activeStep={activeStep}>
