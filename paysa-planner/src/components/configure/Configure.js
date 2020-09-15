@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import RemoveCircleOutlineOutlinedIcon from '@material-ui/icons/RemoveCircleOutlineOutlined';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
@@ -71,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  removeButton: {
+    marginTop: theme.spacing(4),
+  }
 }));
 
 function formattedAmount(props) {
@@ -118,6 +122,12 @@ export default function Configure(props) {
     ))
   };
 
+  const removeIncomesClick = (element, index) => {
+    let currentIncomes = [...incomes];
+    currentIncomes.splice(index, 1);
+    setIncomes(currentIncomes)
+  }
+
   const handleIncomesChange = (element, index, event) => {
     let currentIncomes = [...incomes]
     currentIncomes[index] = {...currentIncomes[index], [event.target.name]: event.target.value}
@@ -125,26 +135,6 @@ export default function Configure(props) {
   };
 
   const stepIncome = () => {
-    // return (
-    //     <Container component="main" maxWidth="sm">
-    //         <div className={classes.root}>
-    //         <Typography variant="h6" component="h2" gutterBottom>
-    //           Monthly Take Home
-    //         </Typography>
-    //         <TextField
-    //             label="Monthly Income"
-    //             value={incomes.incomeValue}
-    //             onChange={handleChange}
-    //             name="incomeValue"
-    //             id="formatted-numberformat-input"
-    //             InputProps={{
-    //             inputComponent: formattedAmount,
-    //             }}
-    //         />
-    //         </div>
-    //     </Container>
-    //   );
-    const days = Array.from(Array(31), (_, i) => i + 1);
     return (
         <Container component="main" maxWidth="md">
           <div className={classes.root}>
@@ -153,6 +143,9 @@ export default function Configure(props) {
             </Typography>
               {incomes.map((element, index) => (
                 <div className={classes.income}>
+                <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => removeIncomesClick(element, index)}>
+                  Remove Income
+                </RemoveCircleOutlineOutlinedIcon>
                   <TextField
                     label="Earning"
                     value={element.label}
@@ -237,10 +230,18 @@ export default function Configure(props) {
     [{expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
   )
   const addExpensesClick = () => {
+    console.log("add expense")
     setExpenses(expenses => (
     	[...expenses, { expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
     ))
   }
+
+  const removeExpensesClick = (element, index) => {
+    let currentExpenses = [...expenses];
+    currentExpenses.splice(index, 1);
+    setExpenses(currentExpenses)
+  }
+
   const handleExpensesChange = (element, index, event) => {
     let currentExpenses = [...expenses]
     currentExpenses[index] = {...currentExpenses[index], [event.target.name]: event.target.value}
@@ -248,7 +249,6 @@ export default function Configure(props) {
   }
   
   const stepExpenses = () => {
-    const days = Array.from(Array(31), (_, i) => i + 1);
     return (
         <Container component="main" maxWidth="md">
           <div className={classes.root}>
@@ -257,6 +257,9 @@ export default function Configure(props) {
             </Typography>
               {expenses.map((element, index) => (
                 <div className={classes.expense}>
+                <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => removeExpensesClick(element, index)}>
+                  Remove Expense
+                </RemoveCircleOutlineOutlinedIcon>
                 <TextField
                   label="Expense"
                   value={element.label}
@@ -277,6 +280,7 @@ export default function Configure(props) {
               }
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
+                  disablePast="true"
                   format="MM/dd/yyyy"
                   margin="normal"
                   id="date-picker-inline"
@@ -292,6 +296,8 @@ export default function Configure(props) {
               
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
+                  minDate={element.start}
+                  minDateMessage="Date should not be before start date"
                   format="MM/dd/yyyy"
                   margin="normal"
                   id="date-picker-inline"
