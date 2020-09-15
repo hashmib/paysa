@@ -173,6 +173,7 @@ export default function Configure(props) {
                 }
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
+                    disablePast="true"
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-dialog"
@@ -188,6 +189,8 @@ export default function Configure(props) {
                 
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
+                    minDate={element.start}
+                    minDateMessage="Date should not be before start date"
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-dialog"
