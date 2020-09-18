@@ -105,4 +105,11 @@ routes.post('/configure', (req, res) => {
     })
 });
 
+//TODO: ADD TO DATABASE AND FORMAT
+routes.post('/addexpense', (req, res) => {
+    let expenses = req.body.expenses;
+    console.log(expenses);
+    res.status(200).json({changesConfirmed: true, message: "recurring transactions were added successfully"});
+})
+
 module.exports = routes;

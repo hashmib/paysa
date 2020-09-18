@@ -224,13 +224,76 @@ export default function Configure(props) {
         frequency:
     }]
     */
+//explaining react fundamentals to ali
+    // export default function myComponent() {  // like a class
 
+    //   //javascript part
+    //   state: {
+    //     name = "ali"        
+    //   }
+
+    //   function handleButtonClick() { //this button changes your name
+    //     this.setState(
+    //       {
+    //         name = "adeel"
+    //       }
+    //     )
+
+    //   }
+
+    //   //html part
+    //   render (
+    //     <div>
+    //       <p>Hi {this.state.name}</p>
+    //     </div>
+
+    //     <button onClick={handleButtonClick()}>
+    //       CHANGE MY NAME
+    //     </button>
+
+    //   )
+
+    // }
+
+
+
+    //     export default function myComponent() {  // like a class
+
+    //   //javascript part
+    //   const [name, setName] = useState("ali")
+
+    //   function handleButtonClick() { //this button changes your name
+    //     setName("adeel")
+    //     )
+    //   }
+
+    //   //html part
+    //   render (
+    //     <div>
+    //       <p>Hi {this.state.name}</p>
+    //     </div>
+
+    //     <button onClick={handleButtonClick()}>
+    //       CHANGE MY NAME
+    //     </button>
+
+    //   )
+
+    // }
+
+    // square bracket [] --> array
+    // curly bracket {} --> object
 
   const [expenses, setExpenses] = useState(
-    [{expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
+    [
+      {expenseValue: "", 
+      label: "", 
+      start: new Date(), 
+      end: new Date(), 
+      frequency: ""}
+    ]
   )
   const addExpensesClick = () => {
-    console.log("add expense")
     setExpenses(expenses => (
     	[...expenses, { expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
     ))
@@ -238,7 +301,7 @@ export default function Configure(props) {
 
   const removeExpensesClick = (element, index) => {
     let currentExpenses = [...expenses];
-    currentExpenses.splice(index, 1);
+    currentExpenses.splice(index, 1); // start at this element and remove 1
     setExpenses(currentExpenses)
   }
 
