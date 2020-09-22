@@ -38,7 +38,7 @@ CREATE TABLE Transactions(
     amount INT,
     description VARCHAR(100),
     userid INT,
-    time DATETIME,
+    date DATETIME,
     PRIMARY KEY (id)
 );
 

@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: '25ch',
     },
+    expense: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
   }
 }));
 
@@ -73,7 +77,7 @@ export default function OneTimePayment() {
       label: "", 
       start: new Date(), 
       end: new Date(), 
-      frequency: ""}
+      frequency: "One Time"}
     ]
   )
   
@@ -100,26 +104,25 @@ export default function OneTimePayment() {
   };
 
   //-------------------- Date Select ------------------------->
-  const frequencySelect = (element, index, mode) => {
-    const frequencies = ["Weekly", "Biweekly", "Monthly"]
-    if (mode == "expenses") {
-      return (
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={element.frequency}
-              name="frequency"
-              onChange={(event) => handleExpensesChange(element, index, event)}
-            >
-            {frequencies.map((freq) => {
-              return (<MenuItem value={freq}>{freq}</MenuItem>)
-            })}
-          </Select>
-        </FormControl>
-      );
-    }
+  const frequencySelect = (element, index) => {
+    const frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
+    
+    return (
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={element.frequency}
+            name="frequency"
+            onChange={(event) => handleExpensesChange(element, index, event)}
+          >
+          {frequencies.map((freq) => {
+            return (<MenuItem value={freq}>{freq}</MenuItem>)
+          })}
+        </Select>
+      </FormControl>
+    );
   }
   //------------------------------------------------------------------->
   
@@ -156,59 +159,64 @@ export default function OneTimePayment() {
           <div className={classes.root}>
               {expenses.map((element, index) => (
                 <div className={classes.expense}>
-                <TextField
-                  label="Expense"
-                  value={element.label}
-                  onChange={(event) => handleExpensesChange(element, index, event)}
-                  name="label"
-                />
-                <TextField
-                  label="Amount"
-                  value={element.expenseValue}
-                  onChange={(event) => handleExpensesChange(element, index, event)}
-                  name="expenseValue"
-                  id="formatted-numberformat-input"
-                  InputProps={{
-                  inputComponent: formattedAmount,
-                  }}
-                />
-              {// TODO: fix onChange jugar in both below
-              }
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disablePast="true"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-inline"
-                  label="Start Date"
-                  value={element.start}
-                  name="start"
-                  onChange={(event) => handleExpensesChange(element, index, {target:{name: "start", value: event}})}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-              
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  minDate={element.start}
-                  minDateMessage="Date should not be before start date"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-inline"
-                  label="Repeat Until"
-                  value={element.end}
-                  name="end"
-                  onChange={(event) => handleExpensesChange(element, index, {target:{name: "end", value: event}})}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-
-              {frequencySelect(element, index, "expenses")}
+                  <TextField
+                    label="Expense"
+                    value={element.label}
+                    onChange={(event) => handleExpensesChange(element, index, event)}
+                    name="label"
+                  />
+                  <TextField
+                    label="Amount"
+                    value={element.expenseValue}
+                    onChange={(event) => handleExpensesChange(element, index, event)}
+                    name="expenseValue"
+                    id="formatted-numberformat-input"
+                    InputProps={{
+                    inputComponent: formattedAmount,
+                    }}
+                  />
+                {frequencySelect(element, index, handleExpensesChange)}
+                {// TODO: fix onChange jugar in both below
+                }
+                {element.frequency != "One Time" ?
+                (
+                <div>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      disablePast="true"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Start Date"
+                      value={element.start}
+                      name="start"
+                      onChange={(event) => handleExpensesChange(element, index, {target:{name: "start", value: event}})}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                  
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      minDate={element.start}
+                      minDateMessage="Date should not be before start date"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Repeat Until"
+                      value={element.end}
+                      name="end"
+                      onChange={(event) => handleExpensesChange(element, index, {target:{name: "end", value: event}})}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
                 </div>
+                ) :
+                (<div></div>)}
+              </div>
               ))}   
 
           </div>

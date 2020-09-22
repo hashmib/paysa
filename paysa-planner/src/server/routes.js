@@ -107,9 +107,20 @@ routes.post('/configure', (req, res) => {
 
 //TODO: ADD TO DATABASE AND FORMAT
 routes.post('/addexpense', (req, res) => {
-    let expenses = req.body.expenses;
+    let expense = req.body.expenses;
+    let userID = req.session.user;
+
+    lib.handleAddExpense(expense, userID)
+    .then(completed => {
+        if (completed) {
+            res.status(200).json({changesConfirmed: true, message: "recurring transaction was added successfully"});
+        }
+        else {
+            res.status(200).json({changesConfirmed: false, message: "An error occured."})
+        }
+    })
+    
     console.log(expenses);
-    res.status(200).json({changesConfirmed: true, message: "recurring transactions were added successfully"});
 })
 
 module.exports = routes;
