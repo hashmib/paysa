@@ -214,7 +214,7 @@ export default function Dashboard(props) {
             {/* Breakdown */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <OneTimePayment />
+                <UpcomingPayments />
               </Paper>
             </Grid>
             {/* Month In Review */}
@@ -226,7 +226,7 @@ export default function Dashboard(props) {
             {/* Upcoming Payments */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={classes.paper}>
-                <UpcomingPayments />
+                <OneTimePayment />
               </Paper>
             </Grid>
           </Grid>
