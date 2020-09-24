@@ -213,7 +213,7 @@ module.exports = {
 
         */
     fetchUpcomingPayments: async function (userid) {
-
+        console.log("fetching payments in library")
     }
 
     

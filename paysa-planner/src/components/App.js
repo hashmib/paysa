@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Dashboard from "./dashboard/Dashboard";
+import Index from "./index/Index"
 import Forgot from "./forgot/Forgot";
 import Login from "./login/Login";
 import Register from "./register/Register";
@@ -22,9 +22,9 @@ export default function App() {
           <Route path="/login" component={Login} /> 
           <Route path="/register" component={Register} />
           <Route path="/forgot" component={Forgot} />
-          <Route path="/index" component={Dashboard} />
+          <Route path="/index" component={Index} theme={darkTheme}/>
           <Route path="/configure" component={Configure} /> 
-          <Route component={Dashboard} />
+          <Route component={Index} />
         </Switch>
       </Router>
     </ThemeProvider>
