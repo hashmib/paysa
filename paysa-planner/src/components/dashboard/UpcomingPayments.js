@@ -1,15 +1,21 @@
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import Title from './Title';
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({}));
 
 export default function UpcomingPayments() {
   const classes = useStyles();
+
+  axios.get('/upcomingtransactions')
+  .then((response) => {
+    console.log("YOYOYOY")
+  });
+  
   return (
-    <React.Fragment>
-      <Title>Upcoming Payments</Title>
-    </React.Fragment>
+    <div>
+      hello
+    </div>
   );
 }

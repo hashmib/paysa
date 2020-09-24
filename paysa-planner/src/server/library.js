@@ -18,6 +18,17 @@ module.exports = {
         });
     },
 
+    fetchFromDB: async function(fetchQuery, values) {
+        return new Promise((resolve, reject) => {
+            mysql.query(fetchQuery, [values], (error, results, fields) => {
+                if (error) reject(error);
+                else {
+                    resolve(results)
+                }
+            });
+        });
+    },
+
     getFormattedDate: function(date) {
         return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
     },
@@ -108,7 +119,7 @@ module.exports = {
         end:
         frequency:
     }]
-    Note: lastdate will be null until currentDate = startDate -> should write a function to account for that
+    Note: lastdate will be NULL if currentDate < startDate
     */
     addRecurringExpense: async function(expenses, userid) {
         let currentDate = this.getFormattedDateToday();
@@ -175,6 +186,8 @@ module.exports = {
         return addedIncomes;
     },
 
+
+    // for dashboard button
     handleAddExpense: async function(expense, userid) {
         let addedExpense = this.addRecurringExpense(expense, userid);
         addedExpense.then(added => {
@@ -185,6 +198,23 @@ module.exports = {
 
         return addedExpenses;
     },
+
+
+        /* high level thinking
+        
+        return next 10 for now, will probably take some arg -> limit 
+        perhaps implement with infinite scroll later for the component
+
+        1. for all recurrences where last date = NULL
+                if limit is 10, then fetch all startDates in this month and next month
+
+
+        2. 
+
+        */
+    fetchUpcomingPayments: async function (userid) {
+
+    }
 
     
 }

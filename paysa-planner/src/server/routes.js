@@ -81,12 +81,26 @@ routes.post('/register', (request, response) => {
     })
 });
 
+
 routes.post('/logout', (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie('user_sid');
         res.status(200).json({logged_out: true});
     }
 });
+
+
+routes.get('/upcomingpayments', (req, res) => {
+    let userID = req.session.user;
+    console.log("fetching upcoming payments server-side");
+
+    lib.fetchUpcomingPayments(userID)
+    .then(upcoming => {
+        console.log(upcoming)
+    })
+    
+});
+
 
 // TODO : SANITIZE DATA?
 routes.post('/configure', (req, res) => {
