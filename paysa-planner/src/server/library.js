@@ -94,7 +94,7 @@ module.exports = {
     
     Expected format of expense
     [{
-        expenseValue: 
+        value: 
         label:
         start:
         end:
@@ -114,7 +114,7 @@ module.exports = {
             let values = [
                 userid,
                 tr_type,
-                expense['expenseValue'],
+                expense['value'],
                 expense['label'],
                 expense['start'],
                 expense['end'],
@@ -137,7 +137,7 @@ module.exports = {
             let values = [
                 userid,
                 tr_type,
-                income['incomeValue'],
+                income['value'],
                 income['label'],
                 income['start'],
                 income['end'],

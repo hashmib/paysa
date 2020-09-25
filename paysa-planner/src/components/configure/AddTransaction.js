@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         width: '25ch',
       },
     },
-    income: {
+    transaction: {
       display: "flex",
       justifyContent: "space-between",
     },
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export default function StepIncome(props) {
+export default function AddTransaction(props) {
     const classes = useStyles();
     return (
         <Container component="main" maxWidth="md">
@@ -40,22 +40,22 @@ export default function StepIncome(props) {
             <Typography variant="h6" component="h2" gutterBottom>
               Add your recurring earnings
             </Typography>
-              {props.incomes.map((element, index) => (
-                <div className={classes.income}>
-                <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => props.removeIncomesClick(element, index)}>
-                  Remove Income
+              {props.transactions.map((element, index) => (
+                <div className={classes.transaction}>
+                <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => props.removeClick(element, index)}>
+                  Remove {props.type}
                 </RemoveCircleOutlineOutlinedIcon>
                   <TextField
-                    label="Earning"
+                    label={props.type}
                     value={element.label}
-                    onChange={(event) => props.handleIncomesChange(element, index, event)}
+                    onChange={(event) => props.handleChange(element, index, event)}
                     name="label"
                   />
                   <TextField
                     label="Amount"
-                    value={element.incomeValue}
-                    onChange={(event) => props.handleIncomesChange(element, index, event)}
-                    name="incomeValue"
+                    value={element.value}
+                    onChange={(event) => props.handleChange(element, index, event)}
+                    name="value"
                     id="formatted-numberformat-input"
                     InputProps={{
                     inputComponent: formattedAmount,
@@ -72,7 +72,7 @@ export default function StepIncome(props) {
                     label="Start Date"
                     value={element.start}
                     name="start"
-                    onChange={(event) => props.handleIncomesChange(element, index, {target:{name: "start", value: event}})}
+                    onChange={(event) => props.handleChange(element, index, {target:{name: "start", value: event}})}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
@@ -89,19 +89,19 @@ export default function StepIncome(props) {
                     label="Repeat Until"
                     value={element.end}
                     name="end"
-                    onChange={(event) => props.handleIncomesChange(element, index, {target:{name: "end", value: event}})}
+                    onChange={(event) => props.handleChange(element, index, {target:{name: "end", value: event}})}
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
                     />
                   </MuiPickersUtilsProvider>
                   
-                <FrequencySelect element={element} index={index} handleChange={props.handleIncomesChange} />
+                <FrequencySelect element={element} index={index} handleChange={props.handleChange} />
               </div>
             ))}   
 
-              <Button variant="contained" color="primary" onClick={props.addIncomesClick}>
-                Add Income
+              <Button variant="contained" color="primary" onClick={props.addClick}>
+                Add {props.type}
               </Button>
 
           </div>
@@ -115,11 +115,11 @@ export default function StepIncome(props) {
       <NumberFormat
         {...other}
         getInputRef={inputRef}
-        onValueChange={(incomes) => {
+        onValueChange={(transactions) => {
           onChange({
             target: {
               name: props.name,
-              value: incomes.value,
+              value: transactions.value,
             },
           });
         }}

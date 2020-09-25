@@ -73,7 +73,7 @@ export default function OneTimePayment() {
 
   const [expenses, setExpenses] = useState(
     [
-      {expenseValue: "", 
+      {value: "", 
       label: "", 
       start: new Date(), 
       end: new Date(), 
@@ -83,7 +83,7 @@ export default function OneTimePayment() {
   
   const addExpensesClick = () => {
     setExpenses(expenses => (
-      [...expenses, { expenseValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
+      [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
     ))
   }
 
@@ -167,9 +167,9 @@ export default function OneTimePayment() {
                   />
                   <TextField
                     label="Amount"
-                    value={element.expenseValue}
+                    value={element.value}
                     onChange={(event) => handleExpensesChange(element, index, event)}
-                    name="expenseValue"
+                    name="value"
                     id="formatted-numberformat-input"
                     InputProps={{
                     inputComponent: formattedAmount,
