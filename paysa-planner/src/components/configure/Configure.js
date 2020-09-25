@@ -22,6 +22,7 @@ import Select from '@material-ui/core/Select';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import StepIncome from './StepIncome'
 
 //todo: everything should technically be under fields
 
@@ -115,100 +116,23 @@ export default function Configure(props) {
   const [incomes, setIncomes] = useState(
     [{incomeValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
   );
-
   const addIncomesClick = () => {
     setIncomes(incomes => (
     	[...incomes, { incomeValue: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
     ))
   };
-
   const removeIncomesClick = (element, index) => {
     let currentIncomes = [...incomes];
     currentIncomes.splice(index, 1);
     setIncomes(currentIncomes)
   }
-
   const handleIncomesChange = (element, index, event) => {
     let currentIncomes = [...incomes]
     currentIncomes[index] = {...currentIncomes[index], [event.target.name]: event.target.value}
     setIncomes(currentIncomes)
   };
 
-  const stepIncome = () => {
-    return (
-        <Container component="main" maxWidth="md">
-          <div className={classes.root}>
-            <Typography variant="h6" component="h2" gutterBottom>
-              Add your recurring earnings
-            </Typography>
-              {incomes.map((element, index) => (
-                <div className={classes.income}>
-                <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => removeIncomesClick(element, index)}>
-                  Remove Income
-                </RemoveCircleOutlineOutlinedIcon>
-                  <TextField
-                    label="Earning"
-                    value={element.label}
-                    onChange={(event) => handleIncomesChange(element, index, event)}
-                    name="label"
-                  />
-                  <TextField
-                    label="Amount"
-                    value={element.incomeValue}
-                    onChange={(event) => handleIncomesChange(element, index, event)}
-                    name="incomeValue"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                    inputComponent: formattedAmount,
-                    }}
-                  />
-                {// TODO: fix onChange jugar in both below
-                }
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disablePast="true"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Start Date"
-                    value={element.start}
-                    name="start"
-                    onChange={(event) => handleIncomesChange(element, index, {target:{name: "start", value: event}})}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
-                
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    minDate={element.start}
-                    minDateMessage="Date should not be before start date"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Repeat Until"
-                    value={element.end}
-                    name="end"
-                    onChange={(event) => handleIncomesChange(element, index, {target:{name: "end", value: event}})}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  
-                {frequencySelect(element, index, "incomes")}
-              </div>
-            ))}   
 
-              <Button variant="contained" color="primary" onClick={addIncomesClick}>
-                Add Income
-              </Button>
-
-          </div>
-        </Container>
-      );
-  }
   //------------------------------------------------------------------->
 
 
@@ -224,65 +148,6 @@ export default function Configure(props) {
         frequency:
     }]
     */
-//explaining react fundamentals to ali
-    // export default function myComponent() {  // like a class
-
-    //   //javascript part
-    //   state: {
-    //     name = "ali"        
-    //   }
-
-    //   function handleButtonClick() { //this button changes your name
-    //     this.setState(
-    //       {
-    //         name = "adeel"
-    //       }
-    //     )
-
-    //   }
-
-    //   //html part
-    //   render (
-    //     <div>
-    //       <p>Hi {this.state.name}</p>
-    //     </div>
-
-    //     <button onClick={handleButtonClick()}>
-    //       CHANGE MY NAME
-    //     </button>
-
-    //   )
-
-    // }
-
-
-
-    //     export default function myComponent() {  // like a class
-
-    //   //javascript part
-    //   const [name, setName] = useState("ali")
-
-    //   function handleButtonClick() { //this button changes your name
-    //     setName("adeel")
-    //     )
-    //   }
-
-    //   //html part
-    //   render (
-    //     <div>
-    //       <p>Hi {this.state.name}</p>
-    //     </div>
-
-    //     <button onClick={handleButtonClick()}>
-    //       CHANGE MY NAME
-    //     </button>
-
-    //   )
-
-    // }
-
-    // square bracket [] --> array
-    // curly bracket {} --> object
 
   const [expenses, setExpenses] = useState(
     [
@@ -448,7 +313,12 @@ export default function Configure(props) {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return stepIncome();
+        return(<StepIncome 
+                  incomes={incomes}
+                  addIncomesClick={addIncomesClick}
+                  removeIncomesClick={removeIncomesClick}
+                  handleIncomesChange={handleIncomesChange}
+                />);
       case 1:
         return stepExpenses();
       case 2:
