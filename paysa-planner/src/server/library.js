@@ -6,7 +6,7 @@ var async = require('async');
 
 
 module.exports = {
-    // SQL Functions
+
     insertIntoDB: async function(insertQuery, values) {
         return new Promise((resolve, reject) => {
             mysql.query(insertQuery, [values], (error, results, fields) => {
@@ -23,7 +23,10 @@ module.exports = {
             mysql.query(fetchQuery, [values], (error, results, fields) => {
                 if (error) reject(error);
                 else {
-                    resolve(results)
+                    if (results && results.length > 0) {
+                        resolve(results);
+                    }
+                    resolve(-1);
                 }
             });
         });
@@ -42,28 +45,6 @@ module.exports = {
         const sha256 = crypto.createHash('sha256');
         const hash = sha256.update(password).digest('base64');
         return hash;
-    },
-
-    // Authenticates existing user 
-    authenticateUser: async function(username, hash_pwd) {
-        let query = 'SELECT username, password, id FROM users WHERE username = \'' + username + '\'';
-        let error_id = -1;
-        try {
-            const result = await new Promise((resolve, reject) => {
-                mysql.query(query, (error, results, fields) => {
-                    if (error) return reject(error);
-                    if (results[0].password === hash_pwd) {
-                        return resolve(results[0].id)
-                    }
-                    else {
-                        return resolve(error_id)
-                    }
-                });
-            });
-            return result;
-        } catch (err) {
-            console.log("error querying database");
-        }
     },
 
     addUserEntry: async function(username, password) {
@@ -179,7 +160,7 @@ module.exports = {
         let addedIncomes = this.addRecurringIncome(income, userid);
         addedIncomes.then(added => {
             console.log("/configure - incomes added successfully")
-        }, error => {
+        },  error => {
             console.log("/configure - error inserting income recurring db");
         });
 
@@ -198,23 +179,4 @@ module.exports = {
 
         return addedExpenses;
     },
-
-
-        /* high level thinking
-        
-        return next 10 for now, will probably take some arg -> limit 
-        perhaps implement with infinite scroll later for the component
-
-        1. for all recurrences where last date = NULL
-                if limit is 10, then fetch all startDates in this month and next month
-
-
-        2. 
-
-        */
-    fetchUpcomingPayments: async function (userid) {
-        console.log("fetching payments in library")
-    }
-
-    
 }

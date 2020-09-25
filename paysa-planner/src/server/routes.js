@@ -3,6 +3,8 @@ const cookieParser = require('cookie-parser');
 const { response } = require('express');
 const session = require("express-session");
 const lib = require('./library');
+const auth_service = require('./authenticate')
+const payments_service = require('./payments')
 
 
 // -------------------------------- cookie & session ---------------------------- //
@@ -51,7 +53,7 @@ routes.get('/index', (request, response) => {
 routes.post('/login', (request, response) => {
     hashed_pwd = lib.getHashedPassword(request.body.password);
 
-    lib.authenticateUser(request.body.username, hashed_pwd)
+    auth_service.authenticateUser(request.body.username, hashed_pwd)
     .then(userID => {
         // Non-existent entry returns -1
         if (userID == -1) {
@@ -61,7 +63,7 @@ routes.post('/login', (request, response) => {
             response.status(200).json({authenticated: true})
     }}, error => {
         console.error("Failed!", error);
-        response.status(500).json("failed to return result from user database")
+        response.status(500).json("No User Exists.")
     })
 });
 
@@ -92,9 +94,9 @@ routes.post('/logout', (req, res) => {
 
 routes.get('/upcomingpayments', (req, res) => {
     let userID = req.session.user;
-    console.log("fetching upcoming payments server-side");
+    console.log("handling api - calling payments service");
 
-    lib.fetchUpcomingPayments(userID)
+    payments_service.fetchUpcomingPayments(userID)
     .then(upcoming => {
         console.log(upcoming)
     })
