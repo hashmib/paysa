@@ -96,7 +96,7 @@ routes.get('/upcomingpayments', (req, res) => {
     let userID = req.session.user;
     console.log("handling api - calling payments service");
 
-    payments_service.fetchUpcomingPayments(userID)
+    payments_service.fetchUpcomingPayments(1)
     .then(upcoming => {
         console.log(upcoming)
     })

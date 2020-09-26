@@ -19,13 +19,19 @@ module.exports = {
     },
 
     fetchFromDB: async function(fetchQuery, values) {
+        console.log(values)
         return new Promise((resolve, reject) => {
             mysql.query(fetchQuery, [values], (error, results, fields) => {
-                if (error) reject(error);
+                if (error){
+                     console.log('jarred')
+                     reject(error);
+                }
                 else {
                     if (results && results.length > 0) {
+                        console.log("in here")
                         resolve(results);
                     }
+                    console.log('yo?')
                     resolve(-1);
                 }
             });

@@ -16,14 +16,24 @@ module.exports = {
 
     */
 
-    fetchNextPaymentsList: async function (userid) {
-        let promises = [];
-        let query = "SELECT amount, description, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ? "
-        query += "AND ((last_date > UTC_TIMESTAMP() - INTERVAL 1 WEEK) OR last_date IS NULL)";
+    getRecurringExpenses: async function (userid) {
+        console.log(userid)
+        let type = "expense"
+        let recurringExpenseQuery = "SELECT amount, description, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ?";
+        let values = [
+            userid,
+            type
+        ];
+        const expenses = lib.fetchFromDB(recurringExpenseQuery, values);
+        expenses.then(results => {
+            console.log(results);
+        })
+
+
     },
 
     returnSortedPayments: async function (userid) {
-        const handler = this.fetchNextPaymentsList(userid);
+        const handler = this.getRecurringExpenses(userid);
         handler.then(promiseArray => {
             console.log(promiseArray);
         })
