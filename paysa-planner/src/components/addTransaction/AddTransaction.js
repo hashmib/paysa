@@ -7,10 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import FrequencySelect from './FrequencySelect'
 import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,21 +28,23 @@ const useStyles = makeStyles((theme) => ({
     },
     transaction: {
       display: "flex",
-      justifyContent: "space-between",
+      // justifyContent: "space-between",
     },
     removeButton: {
       marginTop: theme.spacing(4),
-    }
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+      },
   }));
 
 export default function AddTransaction(props) {
     const classes = useStyles();
+    let frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
+    if (props.recurring == true) { frequencies.shift() }
     return (
-        <Container component="main" maxWidth="md">
           <div className={classes.root}>
-            <Typography variant="h6" component="h2" gutterBottom>
-              Add your recurring earnings
-            </Typography>
               {props.transactions.map((element, index) => (
                 <div className={classes.transaction}>
                 <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => props.removeClick(element, index)}>
@@ -61,8 +66,28 @@ export default function AddTransaction(props) {
                     inputComponent: formattedAmount,
                     }}
                   />
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={element.frequency}
+                        name="frequency"
+                        onChange={(event) => props.handleChange(element, index, event)}
+                      >
+                      {frequencies.map((freq) => {
+                        return (<MenuItem value={freq}>{freq}</MenuItem>)
+                      })}
+                    </Select>
+                  </FormControl>
                 {// TODO: fix onChange jugar in both below
                 }
+
+                {element.frequency!="One Time" ? 
+                (
+                
+                  <div>
+
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disablePast="true"
@@ -96,7 +121,17 @@ export default function AddTransaction(props) {
                     />
                   </MuiPickersUtilsProvider>
                   
-                <FrequencySelect element={element} index={index} handleChange={props.handleChange} />
+                    </div>
+                  ) 
+                : (<div></div>)
+                }
+
+
+
+
+
+
+
               </div>
             ))}   
 
@@ -105,7 +140,6 @@ export default function AddTransaction(props) {
               </Button>
 
           </div>
-        </Container>
       );
   }
 

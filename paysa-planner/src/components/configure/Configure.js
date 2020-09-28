@@ -10,7 +10,9 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import 'date-fns';
-import AddTransaction from './AddTransaction'
+//import AddTransaction from './AddTransaction'
+import AddTransaction from '../addTransaction/AddTransaction'
+import { GlobalContext } from '../context/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,6 +101,7 @@ export default function Configure(props) {
           removeClick={removeIncomesClick}
           handleChange={handleIncomesChange}
           type={"Income"}
+          recurring={true}
         />);
       case 1:
         return (<AddTransaction
@@ -107,6 +110,7 @@ export default function Configure(props) {
                   removeClick={removeExpensesClick}
                   handleChange={handleExpensesChange}
                   type={"Expense"}
+                  recurring={true}
                 />);
       case 2:
         return (<Typography className={classes.instructions}>

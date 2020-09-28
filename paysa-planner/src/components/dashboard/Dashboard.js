@@ -17,10 +17,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import axios from 'axios';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import MonthInReview from './MonthInReview';
 import UpcomingPayments from './UpcomingPayments';
 import OneTimePayment from './OneTimePayment';
+
 import Overall from './Overall';
 import { mainListItems, secondaryListItems } from './listItems';
 
@@ -108,6 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard(props) {
 
+
   console.log(":::")
   console.log("::::", props.history.location.state)
 
@@ -122,7 +124,7 @@ export default function Dashboard(props) {
       }, (error) => { // will be called when server sends 401 response
           console.log("error connecting to server");
       });
-  })
+  }, [])
 
 
 
@@ -223,7 +225,7 @@ export default function Dashboard(props) {
                 <MonthInReview />
               </Paper>
             </Grid>
-            {/* Upcoming Payments */}
+            {/* Add Transaction */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={classes.paper}>
                 <OneTimePayment />

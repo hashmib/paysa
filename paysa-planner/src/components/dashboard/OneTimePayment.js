@@ -24,22 +24,27 @@ import NumberFormat from 'react-number-format';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
+import AddTransaction from '../addTransaction/AddTransaction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-    expense: {
-      display: "flex",
-      justifyContent: "space-between",
-    },
-  }
+    // width: '100%',
+    // '& > *': {
+    //   margin: theme.spacing(1),
+    // },
+    // '& .MuiTextField-root': {
+    //   margin: theme.spacing(1),
+    //   width: '100%',
+    // },
+    // expense: {
+    //   display: "flex",
+    //   justifyContent: "space-between",
+    // },
+  },
+  expense: {
+    // display: "flex",
+    // justifyContent: "space-between",
+  },
 }));
 
 function formattedAmount(props) {
@@ -71,27 +76,28 @@ formattedAmount.propTypes = {
 
 export default function OneTimePayment() {
 
-  const [expenses, setExpenses] = useState(
-    [
-      {value: "", 
-      label: "", 
-      start: new Date(), 
-      end: new Date(), 
-      frequency: "One Time"}
-    ]
-  )
-  
-  const addExpensesClick = () => {
-    setExpenses(expenses => (
-      [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
-    ))
-  }
 
-  const handleExpensesChange = (element, index, event) => {
-    let currentExpenses = [...expenses]
-    currentExpenses[index] = {...currentExpenses[index], [event.target.name]: event.target.value}
-    setExpenses(currentExpenses)
-  }
+
+    // <--------------------------- Expenses ---------------------------->
+    const [expenses, setExpenses] = useState(
+      [{ value: "", label: "", start: new Date(), end: new Date(), frequency: "One Time"}]
+    );
+    const addExpensesClick = () => {
+      setExpenses(expenses => (
+        [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: "One Time" }]
+      ))
+    };
+    const removeExpensesClick = (element, index) => {
+      let currentExpenses = [...expenses];
+      currentExpenses.splice(index, 1);
+      setExpenses(currentExpenses)
+    };
+    const handleExpensesChange = (element, index, event) => {
+      let currentExpenses = [...expenses]
+      currentExpenses[index] = { ...currentExpenses[index], [event.target.name]: event.target.value }
+      setExpenses(currentExpenses)
+    };
+
 
   const [open, setOpen] = React.useState(false);
 
@@ -104,26 +110,26 @@ export default function OneTimePayment() {
   };
 
   //-------------------- Date Select ------------------------->
-  const frequencySelect = (element, index) => {
-    const frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
+  // const frequencySelect = (element, index) => {
+  //   const frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
     
-    return (
-      <FormControl>
-        <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={element.frequency}
-            name="frequency"
-            onChange={(event) => handleExpensesChange(element, index, event)}
-          >
-          {frequencies.map((freq) => {
-            return (<MenuItem value={freq}>{freq}</MenuItem>)
-          })}
-        </Select>
-      </FormControl>
-    );
-  }
+  //   return (
+  //     <FormControl>
+  //       <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
+  //         <Select
+  //           labelId="demo-simple-select-label"
+  //           id="demo-simple-select"
+  //           value={element.frequency}
+  //           name="frequency"
+  //           onChange={(event) => handleExpensesChange(element, index, event)}
+  //         >
+  //         {frequencies.map((freq) => {
+  //           return (<MenuItem value={freq}>{freq}</MenuItem>)
+  //         })}
+  //       </Select>
+  //     </FormControl>
+  //   );
+  // }
   //------------------------------------------------------------------->
   
   const handleAddExpense = () => {
@@ -153,73 +159,16 @@ export default function OneTimePayment() {
     >
     Add Expense
   </Button>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
       <DialogTitle id="form-dialog-title">Add Expense</DialogTitle>
       <DialogContent>
-          <div className={classes.root}>
-              {expenses.map((element, index) => (
-                <div className={classes.expense}>
-                  <TextField
-                    label="Expense"
-                    value={element.label}
-                    onChange={(event) => handleExpensesChange(element, index, event)}
-                    name="label"
-                  />
-                  <TextField
-                    label="Amount"
-                    value={element.value}
-                    onChange={(event) => handleExpensesChange(element, index, event)}
-                    name="value"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                    inputComponent: formattedAmount,
-                    }}
-                  />
-                {frequencySelect(element, index, handleExpensesChange)}
-                {// TODO: fix onChange jugar in both below
-                }
-                {element.frequency != "One Time" ?
-                (
-                <div>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      disablePast="true"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="date-picker-inline"
-                      label="Start Date"
-                      value={element.start}
-                      name="start"
-                      onChange={(event) => handleExpensesChange(element, index, {target:{name: "start", value: event}})}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      minDate={element.start}
-                      minDateMessage="Date should not be before start date"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="date-picker-inline"
-                      label="Repeat Until"
-                      value={element.end}
-                      name="end"
-                      onChange={(event) => handleExpensesChange(element, index, {target:{name: "end", value: event}})}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                </div>
-                ) :
-                (<div></div>)}
-              </div>
-              ))}   
-
-          </div>
+          <AddTransaction
+                  transactions={expenses}
+                  addClick={addExpensesClick}
+                  removeClick={removeExpensesClick}
+                  handleChange={handleExpensesChange}
+                  type={"Expense"}
+            />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
