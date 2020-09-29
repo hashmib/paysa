@@ -97,8 +97,13 @@ routes.get('/upcomingpayments/:limit', (req, res) => {
     let queryLimit = req.params.limit;
 
     payments_service.fetchUpcomingPayments(1, queryLimit)
-    .then(upcoming => {
-        console.log(upcoming);
+    .then(payments => {
+        if (payments && payments.length > 0) {
+            res.status(200).json(payments);
+        }
+        else {
+            res.status(200);
+        }
     })
     
 });
