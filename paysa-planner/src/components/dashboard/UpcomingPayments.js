@@ -15,7 +15,7 @@ export default function UpcomingPayments() {
   
   return (
     <div>
-      hello
+      Upcoming Payment
     </div>
   );
 }

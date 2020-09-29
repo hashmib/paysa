@@ -92,13 +92,13 @@ routes.post('/logout', (req, res) => {
 });
 
 
-routes.get('/upcomingpayments', (req, res) => {
+routes.get('/upcomingpayments/:limit', (req, res) => {
     let userID = req.session.user;
-    console.log("handling api - calling payments service");
+    let queryLimit = req.params.limit;
 
-    payments_service.fetchUpcomingPayments(1)
+    payments_service.fetchUpcomingPayments(1, queryLimit)
     .then(upcoming => {
-        console.log(upcoming)
+        console.log(upcoming);
     })
     
 });

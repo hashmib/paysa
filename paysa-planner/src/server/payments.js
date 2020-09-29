@@ -12,42 +12,57 @@ module.exports = {
             if limit is 10, then fetch all startDates in this month and next month
 
 
-    2. 
+    2.      Object.keys(results).forEach(function(key) {
+                var row = results[key];
+                upcoming.push(row.amount);
+            })
 
     */
-
-    getRecurringExpenses: async function (userid) {
-        console.log(userid)
-        let type = "expense"
-        let recurringExpenseQuery = "SELECT amount, description, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ?";
-        let values = [
-            userid,
-            type
-        ];
-        const expenses = lib.fetchFromDB(recurringExpenseQuery, values);
-        expenses.then(results => {
-            console.log(results);
+    sortPaymentDates: function(data) {
+        return new Promise((resolve, reject) => {
+            resolve(data.sort(function(a,b){
+                return new Date(a.next_date) - new Date(b.next_date)
+              }));
         })
-
-
     },
 
-    returnSortedPayments: async function (userid) {
-        const handler = this.getRecurringExpenses(userid);
-        handler.then(promiseArray => {
-            console.log(promiseArray);
-        })
+    getNextPaymentDates: function(results, limit) {
+        return new Promise((resolve, reject) => {
+            let upcoming = [];
+            Object.keys(results).forEach(function(key) {
+                let row = results[key];
 
-        return handler;
+                // If last_date is null, new recurring expense, push start date
+                if (!row.last_date) {
+                    let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(row.start_date)}
+                    upcoming.push(data)
+                }
+
+                // Else play with frequencies
+                else {
+                    console.log('todo');
+                }
+            })
+            resolve(upcoming);
+        });
     },
 
+    handleGetPayments: async function (userid, limit) {
+        let recurringExpenseQuery = 'SELECT amount, description, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ? AND type  = ?';
+        let values = [userid, 'expense'];
 
-    fetchUpcomingPayments: async function (userid) {
-        console.log("in payments service")
-        const result = this.returnSortedPayments(userid);
-        result.then(upcoming => {
-            console.log(upcoming);
+        // Returns a promise (fetchDB call)
+        return lib.fetchFromDB(recurringExpenseQuery, values)
+        .then(results => {
+            // Parse results & return relevant data - return new promise 
+            return this.getNextPaymentDates(results, limit)
         })
-        return result;
+        .then(data => {
+            return this.sortPaymentDates(data);
+        })
+    },
+
+    fetchUpcomingPayments: async function (userid, limit) {
+        return this.handleGetPayments(userid, limit)
     }
 }
