@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -73,42 +73,53 @@ export default function Configure(props) {
     setIncomes(currentIncomes)
   };
   // <--------------------------- Expenses ---------------------------->
-  const [expenses, setExpenses] = useState(
-    [{ value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
-  );
-  const addExpensesClick = () => {
-    setExpenses(expenses => (
-      [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: "" }]
-    ))
-  };
-  const removeExpensesClick = (element, index) => {
-    let currentExpenses = [...expenses];
-    currentExpenses.splice(index, 1);
-    setExpenses(currentExpenses)
-  };
-  const handleExpensesChange = (element, index, event) => {
-    let currentExpenses = [...expenses]
-    currentExpenses[index] = { ...currentExpenses[index], [event.target.name]: event.target.value }
-    setExpenses(currentExpenses)
-  };
+  // const [expenses, setExpenses] = useState(
+  //   [{ value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
+  // );
+  // const addExpensesClick = () => {
+  //   setExpenses(expenses => (
+  //     [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: "" }]
+  //   ))
+  // };
+  // const removeExpensesClick = (element, index) => {
+  //   let currentExpenses = [...expenses];
+  //   currentExpenses.splice(index, 1);
+  //   setExpenses(currentExpenses)
+  // };
+  // const handleExpensesChange = (element, index, event) => {
+  //   let currentExpenses = [...expenses]
+  //   currentExpenses[index] = { ...currentExpenses[index], [event.target.name]: event.target.value }
+  //   setExpenses(currentExpenses)
+  // };
+
+  const expenses = [{ value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
+
+
+
+
+
   //-------------------- Stepper Functionality ------------------------->
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return (<AddTransaction
-          transactions={incomes}
-          addClick={addIncomesClick}
-          removeClick={removeIncomesClick}
-          handleChange={handleIncomesChange}
-          type={"Income"}
-          recurring={true}
-        />);
+        return (
+        // <AddTransaction
+        //   transactions={incomes}
+        //   addClick={addIncomesClick}
+        //   removeClick={removeIncomesClick}
+        //   handleChange={handleIncomesChange}
+        //   type={"Income"}
+        //   recurring={true}
+        // />
+        <p>hi</p>
+        );
       case 1:
         return (<AddTransaction
-                  transactions={expenses}
-                  addClick={addExpensesClick}
-                  removeClick={removeExpensesClick}
-                  handleChange={handleExpensesChange}
+                  // transactions={expenses}
+                  // addClick={addExpensesClick}
+                  // removeClick={removeExpensesClick}
+                  // handleChange={handleExpensesChange}
+                  initial={expenses}
                   type={"Expense"}
                   recurring={true}
                 />);
