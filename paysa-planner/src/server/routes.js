@@ -92,11 +92,12 @@ routes.post('/logout', (req, res) => {
 });
 
 
-routes.get('/upcomingpayments/:limit', (req, res) => {
+// api call will be in the form /upcomingpayments?sortBy=
+routes.get('/upcomingpayments', (req, res) => {
     let userID = req.session.user;
-    let queryLimit = req.params.limit;
+    let sortBy = req.query.sortBy;
 
-    payments_service.fetchUpcomingPayments(1, queryLimit)
+    payments_service.fetchUpcomingPayments(1, sortBy)
     .then(payments => {
         if (payments && payments.length > 0) {
             res.status(200).json(payments);
