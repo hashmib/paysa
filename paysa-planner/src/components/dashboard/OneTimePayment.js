@@ -25,6 +25,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
 import AddTransaction from '../addTransaction/AddTransaction';
+import { GlobalContext } from '../context/GlobalState';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,31 +110,11 @@ export default function OneTimePayment() {
   const handleClose = () => {
     setOpen(false);  
   };
-
-  //-------------------- Date Select ------------------------->
-  // const frequencySelect = (element, index) => {
-  //   const frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
-    
-  //   return (
-  //     <FormControl>
-  //       <InputLabel id="demo-simple-select-label">Frequency</InputLabel>
-  //         <Select
-  //           labelId="demo-simple-select-label"
-  //           id="demo-simple-select"
-  //           value={element.frequency}
-  //           name="frequency"
-  //           onChange={(event) => handleExpensesChange(element, index, event)}
-  //         >
-  //         {frequencies.map((freq) => {
-  //           return (<MenuItem value={freq}>{freq}</MenuItem>)
-  //         })}
-  //       </Select>
-  //     </FormControl>
-  //   );
-  // }
-  //------------------------------------------------------------------->
   
   const handleAddExpense = () => {
+
+   
+
     axios.post('/addexpense', { expenses })
     .then((response) => {
       if(response.data.changesConfirmed) {
@@ -162,13 +144,13 @@ export default function OneTimePayment() {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
       <DialogTitle id="form-dialog-title">Add Expense</DialogTitle>
       <DialogContent>
-          <AddTransaction
+          {/* <AddTransaction
                   transactions={expenses}
                   addClick={addExpensesClick}
                   removeClick={removeExpensesClick}
                   handleChange={handleExpensesChange}
                   type={"Expense"}
-            />
+            /> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
