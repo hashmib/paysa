@@ -10,7 +10,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import 'date-fns';
-//import AddTransaction from './AddTransaction'
+import useTransactionAdder from '../addTransaction/useTransactionAdder';
 import AddTransaction from '../addTransaction/AddTransaction'
 import { GlobalContext } from '../context/GlobalState';
 
@@ -54,72 +54,29 @@ function getSteps() {
 export default function Configure(props) {
   const classes = useStyles();
   // <--------------------------- Monthly Income ---------------------->
-  const [incomes, setIncomes] = useState(
-    [{ value: "", label: "", start: new Date(), end: new Date(), frequency: "" }]
-  );
-  const addIncomesClick = () => {
-    setIncomes(incomes => (
-      [...incomes, { value: "", label: "", start: new Date(), end: new Date(), frequency: "" }]
-    ))
-  };
-  const removeIncomesClick = (element, index) => {
-    let currentIncomes = [...incomes];
-    currentIncomes.splice(index, 1);
-    setIncomes(currentIncomes)
-  };
-  const handleIncomesChange = (element, index, event) => {
-    let currentIncomes = [...incomes]
-    currentIncomes[index] = { ...currentIncomes[index], [event.target.name]: event.target.value }
-    setIncomes(currentIncomes)
-  };
+  const [incomes, addIncomesClick, removeIncomesClick, handleIncomesChange] = useTransactionAdder()
   // <--------------------------- Expenses ---------------------------->
-  // const [expenses, setExpenses] = useState(
-  //   [{ value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
-  // );
-  // const addExpensesClick = () => {
-  //   setExpenses(expenses => (
-  //     [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: "" }]
-  //   ))
-  // };
-  // const removeExpensesClick = (element, index) => {
-  //   let currentExpenses = [...expenses];
-  //   currentExpenses.splice(index, 1);
-  //   setExpenses(currentExpenses)
-  // };
-  // const handleExpensesChange = (element, index, event) => {
-  //   let currentExpenses = [...expenses]
-  //   currentExpenses[index] = { ...currentExpenses[index], [event.target.name]: event.target.value }
-  //   setExpenses(currentExpenses)
-  // };
-
-  const expenses = [{ value: "", label: "", start: new Date(), end: new Date(), frequency: ""}]
-
-
-
-
-
+  const [expenses, addExpensesClick, removeExpensesClick, handleExpensesChange] = useTransactionAdder()
   //-------------------- Stepper Functionality ------------------------->
   const getStepContent = (step) => {
     switch (step) {
       case 0:
         return (
-        // <AddTransaction
-        //   transactions={incomes}
-        //   addClick={addIncomesClick}
-        //   removeClick={removeIncomesClick}
-        //   handleChange={handleIncomesChange}
-        //   type={"Income"}
-        //   recurring={true}
-        // />
-        <p>hi</p>
+        <AddTransaction
+          transactions={incomes}
+          add={addIncomesClick}
+          remove={removeIncomesClick}
+          handleChange={handleIncomesChange}
+          type={"Income"}
+          recurring={true}
+        />
         );
       case 1:
         return (<AddTransaction
-                  // transactions={expenses}
-                  // addClick={addExpensesClick}
-                  // removeClick={removeExpensesClick}
-                  // handleChange={handleExpensesChange}
-                  initial={expenses}
+                  transactions={expenses}
+                  add={addExpensesClick}
+                  remove={removeExpensesClick}
+                  handleChange={handleExpensesChange}
                   type={"Expense"}
                   recurring={true}
                 />);
