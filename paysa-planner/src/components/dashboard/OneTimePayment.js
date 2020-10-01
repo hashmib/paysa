@@ -25,6 +25,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
 import AddTransaction from '../addTransaction/AddTransaction';
+import useTransactionAdder from '../addTransaction/useTransactionAdder';
 import { GlobalContext } from '../context/GlobalState';
 
 
@@ -77,29 +78,8 @@ formattedAmount.propTypes = {
 };
 
 export default function OneTimePayment() {
-
-
-
-    // <--------------------------- Expenses ---------------------------->
-    const [expenses, setExpenses] = useState(
-      [{ value: "", label: "", start: new Date(), end: new Date(), frequency: "One Time"}]
-    );
-    const addExpensesClick = () => {
-      setExpenses(expenses => (
-        [...expenses, { value: "", label: "", start: new Date(), end: new Date(), frequency: "One Time" }]
-      ))
-    };
-    const removeExpensesClick = (element, index) => {
-      let currentExpenses = [...expenses];
-      currentExpenses.splice(index, 1);
-      setExpenses(currentExpenses)
-    };
-    const handleExpensesChange = (element, index, event) => {
-      let currentExpenses = [...expenses]
-      currentExpenses[index] = { ...currentExpenses[index], [event.target.name]: event.target.value }
-      setExpenses(currentExpenses)
-    };
-
+  // <--------------------------- Expenses ---------------------------->
+  const [expenses, addExpensesClick, removeExpensesClick, handleExpensesChange] = useTransactionAdder()
 
   const [open, setOpen] = React.useState(false);
 
@@ -112,9 +92,6 @@ export default function OneTimePayment() {
   };
   
   const handleAddExpense = () => {
-
-   
-
     axios.post('/addexpense', { expenses })
     .then((response) => {
       if(response.data.changesConfirmed) {
@@ -125,11 +102,10 @@ export default function OneTimePayment() {
       }}, 
     error => {
       console.log("configure error");
-})
+    })
   }
-
-
   const classes = useStyles();
+
   return (
     <div>
       <Button
@@ -144,13 +120,13 @@ export default function OneTimePayment() {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
       <DialogTitle id="form-dialog-title">Add Expense</DialogTitle>
       <DialogContent>
-          {/* <AddTransaction
+          <AddTransaction
                   transactions={expenses}
-                  addClick={addExpensesClick}
-                  removeClick={removeExpensesClick}
+                  add={addExpensesClick}
+                  remove={removeExpensesClick}
                   handleChange={handleExpensesChange}
                   type={"Expense"}
-            /> */}
+            />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
