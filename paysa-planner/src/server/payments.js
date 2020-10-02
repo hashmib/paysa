@@ -58,9 +58,38 @@ module.exports = {
 
                     // Else play with frequencies
                     else {
-                        console.log('todo');
-                    }
-                })
+                        let lastComputedDate = new Date(row.last_date);
+                        
+                        if (row.frequency == "Weekly") {
+                            lastComputedDate.setDate(lastComputedDate.getDate() + 7);
+                            while (lastComputedDate < endDateFromQuery) {
+                                // Push computed date to upcoming
+                                let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                upcoming.push(data);
+                                lastComputedDate.setDate(lastComputedDate.getDate() + 7);
+                            }
+                        }
+                        else if (row.frequency == "Biweekly") {
+                            lastComputedDate.setDate(lastComputedDate.getDate() + 14);
+                            while (lastComputedDate < endDateFromQuery) {
+                                // Push computed date to upcoming
+                                let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                upcoming.push(data);
+                                lastComputedDate.setDate(lastComputedDate.getDate() + 14);
+                            }
+                        }
+
+                        else if (row.frequency == "Monthly") {
+                            lastComputedDate.setDate(lastComputedDate.getDate() + 30);
+                            while (lastComputedDate < endDateFromQuery) {
+                                // Push computed date to upcoming
+                                let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                upcoming.push(data);
+                                lastComputedDate.setDate(lastComputedDate.getDate() + 30);
+                            }
+                        }
+                    } // else
+                }) // for loop
             }
             resolve(upcoming);
         });

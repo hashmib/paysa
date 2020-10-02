@@ -8,10 +8,15 @@ const useStyles = makeStyles((theme) => ({}));
 export default function UpcomingPayments() {
   const classes = useStyles();
 
-  axios.get('/upcomingtransactions')
+  axios.get('/upcomingpayments', {
+    params: {
+      sortBy: '30days'
+    }
+  })
   .then((response) => {
-    console.log("YOYOYOY")
-  });
+    console.log(response);
+  })
+
   
   return (
     <div>

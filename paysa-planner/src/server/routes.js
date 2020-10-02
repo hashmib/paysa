@@ -94,16 +94,16 @@ routes.post('/logout', (req, res) => {
 
 // api call will be in the form /upcomingpayments?sortBy=
 routes.get('/upcomingpayments', (req, res) => {
-    let userID = req.session.user;
+    let userID = req.session.user[0].id; // dunno why i have to do this - stupid annoying
     let sortBy = req.query.sortBy;
 
-    payments_service.fetchUpcomingPayments(1, sortBy)
+    payments_service.fetchUpcomingPayments(userID, sortBy)
     .then(payments => {
         if (payments && payments.length > 0) {
             res.status(200).json(payments);
         }
         else {
-            res.status(200);
+            res.status(204);
         }
     })
     
