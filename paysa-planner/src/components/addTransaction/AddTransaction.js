@@ -1,9 +1,9 @@
-import React, {useState, useCallback} from 'react';
-import Container from '@material-ui/core/Container';
+import React from 'react';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import RemoveCircleOutlineOutlinedIcon from '@material-ui/icons/RemoveCircleOutlineOutlined';
-import Typography from '@material-ui/core/Typography';
+
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -43,9 +43,8 @@ const useStyles = makeStyles((theme) => ({
   
 export default function AddTransaction(props) {
     const classes = useStyles();
-    console.log(":::", props.initial)
     let frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
-    if (props.recurring == true) { frequencies.shift() }
+    if (props.recurring === true) { frequencies.shift() }
     return (
           <div className={classes.root}>
               {props.transactions.map((element, index) => (
@@ -86,7 +85,7 @@ export default function AddTransaction(props) {
                 {// TODO: fix onChange jugar in both below
                 }
 
-                {element.frequency!="One Time" ? 
+                {element.frequency!=="One Time" ? 
                 (
                 
                   <div>

@@ -1,5 +1,4 @@
 import AppBar from '@material-ui/core/AppBar';
-import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,16 +13,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import axios from 'axios';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import MonthInReview from './MonthInReview';
 import UpcomingPayments from './UpcomingPayments';
 import OneTimePayment from './OneTimePayment';
 
 import Overall from './Overall';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems } from './listItems';
 
 
 const drawerWidth = 240;
@@ -109,10 +107,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard(props) {
 
-
-  console.log(":::")
-  console.log("::::", props.history.location.state)
-
   useEffect(() => {
     axios.get('/index', {})
       .then((response) => {
@@ -124,7 +118,7 @@ export default function Dashboard(props) {
       }, (error) => { // will be called when server sends 401 response
           console.log("error connecting to server");
       });
-  }, [])
+  }, [props.history])
 
 
 

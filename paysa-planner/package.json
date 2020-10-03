@@ -33,12 +33,13 @@
   },
   "proxy": "http://localhost:8080",
   "scripts": {
-    "start-app": "react-scripts start",
-    "start-server": "nodemon src/server/server.js",
+    "app": "react-scripts start",
+    "server": "node src/server/server.js",
+    "dev-server": "nodemon src/server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"npm run start-server\" \"npm run start-app\" --kill-others"
+    "start": "concurrently \"npm run server\" \"npm run app\" --kill-others"
   },
   "eslintConfig": {
     "extends": "react-app"

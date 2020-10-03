@@ -55,7 +55,6 @@ export default function Login (props)  {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false)
-  const [submitted, setSubmitted] = useState(false);
   //---------------------------------------------------->
 
     useEffect(() => {

@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -12,7 +12,7 @@ import axios from 'axios';
 import 'date-fns';
 import useTransactionAdder from '../addTransaction/useTransactionAdder';
 import AddTransaction from '../addTransaction/AddTransaction'
-import { GlobalContext } from '../context/GlobalState';
+// import { GlobalContext } from '../context/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
   root: {
