@@ -4,14 +4,18 @@ import PropTypes from 'prop-types'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
+      paddingBottom: "6px",
       maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
     },
     payment: {
+        paddingTop: "0px",
+        paddingBottom: "0px",
         borderWidth: "2px",
         borderStyle: "solid",
         borderColor: theme.palette.primary,
@@ -35,9 +39,10 @@ export default function Payment({
         <div className={classes.root}>
         <List component="nav" aria-label="payment" className={classes.payment}>
           <ListItem button>
-            <ListItemText primary={description} />
-            <ListItemText secondary={amount} />
             <ListItemText secondary={next_date} />
+            <ListItemText primary={description} />
+            <AttachMoneyIcon></AttachMoneyIcon>
+            <ListItemText primary={amount} />
           </ListItem>
         </List>
       </div>

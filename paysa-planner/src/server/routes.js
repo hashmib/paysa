@@ -94,8 +94,7 @@ routes.post('/logout', (req, res) => {
 
 // api call will be in the form /upcomingpayments?sortBy=
 routes.get('/upcomingpayments', (req, res) => {
-    console.log(";;;", req.session.user)
-    let userID = req.session.user[0].id; // dunno why i have to do this - stupid annoying
+    let userID = req.session.user[0].id; // dunno why i have to do this for Http GET - stupid annoying
     let sortBy = req.query.sortBy;
 
     payments_service.fetchUpcomingPayments(userID, sortBy)
