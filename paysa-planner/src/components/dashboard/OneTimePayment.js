@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import React, {Fragment, useState} from 'react';
+import React from 'react';
 import 'date-fns';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
@@ -94,7 +94,7 @@ export default function OneTimePayment() {
 
   return (
     <div>
-      <Button
+      {/* <Button
       variant="contained"
       color="secondary"
       className={classes.button}
@@ -105,7 +105,7 @@ export default function OneTimePayment() {
   </Button>
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
       <DialogTitle id="form-dialog-title">Add Expense</DialogTitle>
-      <DialogContent>
+      <DialogContent> */}
           <AddTransaction
                   transactions={expenses}
                   add={addExpensesClick}
@@ -113,7 +113,7 @@ export default function OneTimePayment() {
                   handleChange={handleExpensesChange}
                   type={"Expense"}
             />
-      </DialogContent>
+      {/* </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancel
@@ -122,7 +122,7 @@ export default function OneTimePayment() {
           Add
         </Button>
       </DialogActions>
-    </Dialog>
+    </Dialog> */}
     </div>
   );
 }

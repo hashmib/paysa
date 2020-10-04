@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-  Payment.propTypes = {
-      amount: PropTypes.number,
-      description: PropTypes.string,
-      next_date: PropTypes.string
-  }
+Payment.propTypes = {
+    amount: PropTypes.number,
+    description: PropTypes.string,
+    next_date: PropTypes.string
+}
 
 export default function Payment({
     amount = null,

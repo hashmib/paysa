@@ -201,30 +201,37 @@ export default function Dashboard(props) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>
           <Grid container spacing={3}>
+            
             {/* Overall */}
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={4} lg={4}>
               <Paper className={fixedHeightPaper}>
                 <Overall />
               </Paper>
             </Grid>
-            {/* Breakdown */}
-            <Grid item xs={12} md={6} lg={6}>
+            {/* Upcoming Payments */}
+
+            <Grid item xs={12} md={4} lg={4}>
               <Paper className={fixedHeightPaper}>
                 <UpcomingPayments />
               </Paper>
             </Grid>
+            
+
+            {/* Add Transaction */}
+            <Grid item xs={12} md={4} lg={4}>
+              <Paper className={fixedHeightPaper}>
+                <OneTimePayment />
+              </Paper>
+            </Grid>
+
             {/* Month In Review */}
-            <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12} md={12} lg={12}>
               <Paper className={classes.paper}>
                 <MonthInReview />
               </Paper>
             </Grid>
-            {/* Add Transaction */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={classes.paper}>
-                <OneTimePayment />
-              </Paper>
-            </Grid>
+            
+            
           </Grid>
         </Container>
       </main>
