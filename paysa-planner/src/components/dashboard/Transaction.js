@@ -10,16 +10,19 @@ const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
       paddingBottom: "6px",
-      maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
     },
     transaction: {
         paddingTop: "0px",
         paddingBottom: "0px",
+        backgroundColor: props => props.type === "income" ? theme.palette.success.dark : theme.palette.error.dark,
         borderWidth: "2px",
         borderStyle: "solid",
-        borderColor: theme.palette.primary,
+        borderColor: theme.palette.background.default,
         borderRadius: "6px"
+    },
+    clickable: {
+      align: 'center'
     },
   }));
 
@@ -32,19 +35,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Transaction({
     amount = null,
-    type = null,
     description = null,
     next_date = null,
+    ...props
 }) {
 
-    const classes = useStyles();
+    const classes = useStyles(props);
 
     return (
 
         <div className={classes.root}>
         
-        <List component="nav" aria-label="transaction" className={classes.transaction} style={{backgroundColor: type === "income" ? '#388e3c': '#d32f2f'}}>
-          <ListItem button>
+        <List component="nav" aria-label="transaction" className={classes.transaction}>
+          <ListItem button className={classes.clickable}>
             <ListItemText secondary={next_date} />
             <ListItemText primary={description} />
             <AttachMoneyIcon></AttachMoneyIcon>
