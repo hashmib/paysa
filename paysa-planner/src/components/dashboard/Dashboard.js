@@ -17,7 +17,7 @@ import axios from 'axios';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import MonthInReview from './MonthInReview';
-import UpcomingPayments from './UpcomingPayments';
+import UpcomingTransactions from './UpcomingTransactions';
 import OneTimePayment from './OneTimePayment';
 
 import Overall from './Overall';
@@ -212,7 +212,7 @@ export default function Dashboard(props) {
 
             <Grid item xs={12} md={4} lg={4}>
               <Paper className={fixedHeightPaper}>
-                <UpcomingPayments />
+                <UpcomingTransactions />
               </Paper>
             </Grid>
             

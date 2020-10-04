@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
     },
-    payment: {
+    transaction: {
         paddingTop: "0px",
         paddingBottom: "0px",
         borderWidth: "2px",
@@ -23,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-Payment.propTypes = {
-    amount: PropTypes.number,
-    description: PropTypes.string,
-    next_date: PropTypes.string
-}
+  Transaction.propTypes = {
+      amount: PropTypes.number,
+      description: PropTypes.string,
+      next_date: PropTypes.string
+  }
 
-export default function Payment({
+export default function Transaction({
     amount = null,
     description = null,
     next_date = null,
@@ -37,7 +37,7 @@ export default function Payment({
     const classes = useStyles();
     return (
         <div className={classes.root}>
-        <List component="nav" aria-label="payment" className={classes.payment}>
+        <List component="nav" aria-label="transaction" className={classes.transaction}>
           <ListItem button>
             <ListItemText secondary={next_date} />
             <ListItemText primary={description} />

@@ -5,7 +5,7 @@ var async = require('async');
 module.exports = {
     /* high level thinking
     */
-    sortPaymentDates: function(data) {
+    sortTransactionDates: function(data) {
         return new Promise((resolve, reject) => {
             resolve(data.sort(function(a,b){
                 return new Date(a.next_date) - new Date(b.next_date)
@@ -14,7 +14,7 @@ module.exports = {
     },
 
 
-    getNextPaymentDates: function(results, sortBy) {
+    getNextTransactionDates: function(results, sortBy) {
         return new Promise((resolve, reject) => {
             let upcoming = [];
             let endDateFromQuery = new Date(); // initialize new data object
@@ -30,7 +30,7 @@ module.exports = {
                     if (!row.last_date) {
                         if (row.start_date < endDateFromQuery) {
                             
-                            let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(row.start_date)};
+                            let data = {type: row.type, amount: row.amount, description: row.description, next_date: lib.getFormattedDate(row.start_date)};
                             upcoming.push(data);
                             
                             let lastComputedDate = new Date(row.start_date);
@@ -39,7 +39,7 @@ module.exports = {
                                 lastComputedDate.setDate(lastComputedDate.getDate() + 7);
                                 while (lastComputedDate < endDateFromQuery) {
                                     // Push computed date to upcoming
-                                    let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                    let data = {type: row.type, amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
                                     upcoming.push(data);
                                     lastComputedDate.setDate(lastComputedDate.getDate() + 7);
                                 }
@@ -48,7 +48,7 @@ module.exports = {
                                 lastComputedDate.setDate(lastComputedDate.getDate() + 14);
                                 while (lastComputedDate < endDateFromQuery) {
                                     // Push computed date to upcoming
-                                    let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                    let data = {type: row.type, amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
                                     upcoming.push(data);
                                     lastComputedDate.setDate(lastComputedDate.getDate() + 14);
                                 }
@@ -64,7 +64,7 @@ module.exports = {
                             lastComputedDate.setDate(lastComputedDate.getDate() + 7);
                             while (lastComputedDate < endDateFromQuery) {
                                 // Push computed date to upcoming
-                                let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                let data = {type: row.type, amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
                                 upcoming.push(data);
                                 lastComputedDate.setDate(lastComputedDate.getDate() + 7);
                             }
@@ -73,7 +73,7 @@ module.exports = {
                             lastComputedDate.setDate(lastComputedDate.getDate() + 14);
                             while (lastComputedDate < endDateFromQuery) {
                                 // Push computed date to upcoming
-                                let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                let data = {type: row.type, amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
                                 upcoming.push(data);
                                 lastComputedDate.setDate(lastComputedDate.getDate() + 14);
                             }
@@ -83,7 +83,7 @@ module.exports = {
                             lastComputedDate.setDate(lastComputedDate.getDate() + 30);
                             while (lastComputedDate < endDateFromQuery) {
                                 // Push computed date to upcoming
-                                let data = {amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
+                                let data = {type: row.type, amount: row.amount, description: row.description, next_date: lib.getFormattedDate(lastComputedDate)};
                                 upcoming.push(data);
                                 lastComputedDate.setDate(lastComputedDate.getDate() + 30);
                             }
@@ -95,22 +95,42 @@ module.exports = {
         });
     },
 
-    handleGetPayments: async function (userid, sortBy) {
-        let recurringExpenseQuery = 'SELECT amount, description, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ? AND type  = ?';
+
+    handleGetIncomes: async function(userid) {
+        let recurringIncomesQuery = 'SELECT amount, description, type, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ? AND type  = ?';
+        let values = [userid, 'income'];
+
+        // Returns a promise (fetchDB call)
+        return lib.fetchFromDB(recurringIncomesQuery, values)
+    },
+
+    handleGetPayments: async function (userid) {
+        let recurringExpenseQuery = 'SELECT amount, description, type, start_date, end_date, last_date, frequency FROM recurrences WHERE userid = ? AND type  = ?';
         let values = [userid, 'expense'];
 
         // Returns a promise (fetchDB call)
         return lib.fetchFromDB(recurringExpenseQuery, values)
-        .then(results => {
-            // Parse results & return relevant data - return new promise 
-            return this.getNextPaymentDates(results, sortBy)
+    },
+
+    fetchUpcomingTransactions: async function (userid, sortBy) {
+        expenses = this.handleGetPayments(userid)
+        incomes = this.handleGetIncomes(userid)
+        
+        // Merges both arrays
+        return Promise.all([expenses, incomes])
+        .then(([expenseList, incomeList]) => {
+            return (expenseList.concat(incomeList))
         })
+
+        .then(merged => {
+            // Parse results & return relevant data
+            return this.getNextTransactionDates(merged, sortBy)
+        })
+
         .then(data => {
-            return this.sortPaymentDates(data);
+            // Sort list before responding to client
+            return this.sortTransactionDates(data);
         })
     },
 
-    fetchUpcomingPayments: async function (userid, sortBy) {
-        return this.handleGetPayments(userid, sortBy)
-    }
 }

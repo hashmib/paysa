@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import Payment from './Payment';
+import Transaction from './Transaction';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -11,13 +11,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UpcomingPayments() {
+export default function UpcomingTransactions() {
   const classes = useStyles();
-  const [payments, setPayments] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
-  function getPayments() {
-    axios.get('/upcomingpayments', {params: {sortBy: '30days'}})
-    .then((response) => {setPayments(response.data)})
+  function getTransactions() {
+    axios.get('/upcomingtransactions', {params: {sortBy: '30days'}})
+    .then((response) => {setTransactions(response.data)})
   }
 
   function formatDate(date_string) {
@@ -31,18 +31,18 @@ export default function UpcomingPayments() {
   }
   
   useEffect(() => {
-    getPayments()
+    getTransactions()
   }, [])
 
   return (
     <div>
-      <Typography className={classes.heading} variant="h6" align="center">Upcoming Payments</Typography>
+      <Typography className={classes.heading} variant="h6" align="center">Upcoming Transactions</Typography>
       
-      {payments.map((payment) => (
-        <Payment
-          amount={payment.amount}
-          description={payment.description}
-          next_date={formatDate(payment.next_date)}
+      {transactions.map((transaction) => (
+        <Transaction
+          amount={transaction.amount}
+          description={transaction.description}
+          next_date={formatDate(transaction.next_date)}
         />
       ))}
 

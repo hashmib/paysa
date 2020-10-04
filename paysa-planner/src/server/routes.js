@@ -4,7 +4,7 @@ const { response } = require('express');
 const session = require("express-session");
 const lib = require('./library');
 const auth_service = require('./authenticate')
-const payments_service = require('./payments')
+const trans_service = require('./transactions')
 
 
 // -------------------------------- cookie & session ---------------------------- //
@@ -92,15 +92,15 @@ routes.post('/logout', (req, res) => {
 });
 
 
-// api call will be in the form /upcomingpayments?sortBy=
-routes.get('/upcomingpayments', (req, res) => {
+// api call will be in the form /upcomingtransactions?sortBy=
+routes.get('/upcomingtransactions', (req, res) => {
     let userID = req.session.user[0].id; // dunno why i have to do this for Http GET - stupid annoying
     let sortBy = req.query.sortBy;
 
-    payments_service.fetchUpcomingPayments(userID, sortBy)
-    .then(payments => {
-        if (payments && payments.length > 0) {
-            res.status(200).json(payments);
+    trans_service.fetchUpcomingTransactions(userID, sortBy)
+    .then(upcoming => {
+        if (upcoming && upcoming.length > 0) {
+            res.status(200).json(upcoming);
         }
         else {
             res.status(204);

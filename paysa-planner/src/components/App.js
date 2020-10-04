@@ -7,7 +7,6 @@ import Login from "./login/Login";
 import Register from "./register/Register";
 import Configure from "./configure/Configure";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"; //this makes it dark mode
-import UpcomingPayments from './dashboard/UpcomingPayments';
 
 export default function App() {
 	const darkTheme = createMuiTheme({
@@ -25,7 +24,6 @@ export default function App() {
           <Route path="/forgot" component={Forgot} />
           <Route path="/index" component={Index} theme={darkTheme}/>
           <Route path="/configure" component={Configure} /> 
-          <Route path="/dev" component={UpcomingPayments} /> 
           <Route component={Index} />
         </Switch>
       </Router>
