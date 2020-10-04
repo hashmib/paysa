@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
   Transaction.propTypes = {
-      amount: PropTypes.number,
+      amount: PropTypes.string,
       type: PropTypes.string,
       description: PropTypes.string,
       next_date: PropTypes.string
@@ -43,7 +43,8 @@ export default function Transaction({
         <List component="nav" aria-label="transaction" className={classes.transaction}>
           <ListItem button>
             <ListItemText secondary={next_date} />
-            <ListItemText primary={description.toUpperCase()} />
+              <ListItemText primary={description} />
+            
             <div style={{ display: "inline-flex" }}>
               <ListItemText primary={"$" + amount} />
             </div>

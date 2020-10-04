@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const monthNames = ["January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"];
+
 export default function UpcomingTransactions() {
   const classes = useStyles();
   const [transactions, setTransactions] = useState([]);
@@ -21,13 +24,14 @@ export default function UpcomingTransactions() {
   }
 
   function formatDate(date_string) {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-    
     var d = new Date(date_string)
     let formattedDate = monthNames[d.getMonth()] + " " + d.getDate();
 
     return formattedDate;
+  }
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
   }
   
   useEffect(() => {
@@ -40,9 +44,9 @@ export default function UpcomingTransactions() {
       
       {transactions.map((transaction) => (
         <Transaction
-          amount={transaction.amount}
+          amount={numberWithCommas(transaction.amount)}
           type={transaction.type}
-          description={transaction.description}
+          description={transaction.description.charAt(0).toUpperCase() + transaction.description.slice(1)}
           next_date={formatDate(transaction.next_date)}
         />
       ))}
