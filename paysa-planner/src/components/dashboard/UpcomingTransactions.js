@@ -41,6 +41,7 @@ export default function UpcomingTransactions() {
       {transactions.map((transaction) => (
         <Transaction
           amount={transaction.amount}
+          type={transaction.type}
           description={transaction.description}
           next_date={formatDate(transaction.next_date)}
         />

@@ -20,24 +20,30 @@ const useStyles = makeStyles((theme) => ({
         borderStyle: "solid",
         borderColor: theme.palette.primary,
         borderRadius: "6px"
-    }
+    },
   }));
 
   Transaction.propTypes = {
       amount: PropTypes.number,
+      type: PropTypes.string,
       description: PropTypes.string,
       next_date: PropTypes.string
   }
 
 export default function Transaction({
     amount = null,
+    type = null,
     description = null,
     next_date = null,
 }) {
+
     const classes = useStyles();
+
     return (
+
         <div className={classes.root}>
-        <List component="nav" aria-label="transaction" className={classes.transaction}>
+        
+        <List component="nav" aria-label="transaction" className={classes.transaction} style={{backgroundColor: type === "income" ? '#388e3c': '#d32f2f'}}>
           <ListItem button>
             <ListItemText secondary={next_date} />
             <ListItemText primary={description} />
