@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
+import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import Transaction from './Transaction';
@@ -41,7 +42,7 @@ export default function UpcomingTransactions() {
   return (
     <div>
       <Typography className={classes.heading} variant="h6" align="center">Upcoming Transactions</Typography>
-      
+      <Divider className={classes.heading} variant="middle" />
       {transactions.map((transaction) => (
         <Transaction
           amount={numberWithCommas(transaction.amount)}
