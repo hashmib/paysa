@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,10 +18,9 @@ const useStyles = makeStyles((theme) => ({
         borderWidth: "2px",
         borderStyle: "solid",
         borderColor: theme.palette.background.default,
-        borderRadius: "6px"
-    },
-    clickable: {
-      align: 'center'
+        borderRadius: "6px",
+        display: "flex",
+        justifyContent: "space-between"
     },
   }));
 
@@ -39,21 +37,19 @@ export default function Transaction({
     next_date = null,
     ...props
 }) {
-
     const classes = useStyles(props);
-
     return (
-
-        <div className={classes.root}>
-        
+      <div className={classes.root}>
         <List component="nav" aria-label="transaction" className={classes.transaction}>
-          <ListItem button className={classes.clickable}>
+          <ListItem button>
             <ListItemText secondary={next_date} />
-            <ListItemText primary={description} />
-            <AttachMoneyIcon></AttachMoneyIcon>
-            <ListItemText primary={amount} />
+            <ListItemText primary={description.toUpperCase()} />
+            <div style={{ display: "inline-flex" }}>
+              <ListItemText primary={"$" + amount} />
+            </div>
           </ListItem>
         </List>
       </div>
     );
 }
+
