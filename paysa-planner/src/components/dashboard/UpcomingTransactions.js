@@ -4,6 +4,9 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import Transaction from './Transaction';
+import { formatDate } from '../utils';
+import { numberWithCommas } from '../utils';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -12,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const monthNames = ["January", "February", "March", "April", "May", "June",
-"July", "August", "September", "October", "November", "December"];
-
 export default function UpcomingTransactions() {
   const classes = useStyles();
   const [transactions, setTransactions] = useState([]);
@@ -22,17 +22,6 @@ export default function UpcomingTransactions() {
   function getTransactions() {
     axios.get('/upcomingtransactions', {params: {sortBy: '30days'}})
     .then((response) => {setTransactions(response.data)})
-  }
-
-  function formatDate(date_string) {
-    var d = new Date(date_string)
-    let formattedDate = monthNames[d.getMonth()] + " " + d.getDate();
-
-    return formattedDate;
-  }
-
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
   }
   
   useEffect(() => {
