@@ -68,7 +68,6 @@ export default function Configure(props) {
           remove={removeIncomesClick}
           handleChange={handleIncomesChange}
           type={"Income"}
-          recurring={true}
         />
         );
       case 1:
@@ -78,7 +77,6 @@ export default function Configure(props) {
                   remove={removeExpensesClick}
                   handleChange={handleExpensesChange}
                   type={"Expense"}
-                  recurring={true}
                 />);
       case 2:
         return (<Typography className={classes.instructions}>
