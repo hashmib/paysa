@@ -115,9 +115,10 @@ module.exports = {
     fetchUpcomingTransactions: async function (userid, sortBy) {
         expenses = this.handleGetPayments(userid)
         incomes = this.handleGetIncomes(userid)
+    
+        return Promise.all([expenses, incomes])
         
         // Merges both arrays
-        return Promise.all([expenses, incomes])
         .then(([expenseList, incomeList]) => {
             return (expenseList.concat(incomeList))
         })

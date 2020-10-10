@@ -38,6 +38,7 @@ CREATE TABLE Transactions(
     amount INT,
     description VARCHAR(100),
     userid INT,
+    type VARCHAR(10),
     date DATETIME,
     PRIMARY KEY (id)
 );
@@ -55,12 +56,7 @@ CREATE TABLE Recurrences(
     PRIMARY KEY (recurrence_id)
 );
 
-CREATE TABLE Ledger(
-    userid INT,
-    tr_id INT,
-    type VARCHAR(10),
-    PRIMARY KEY (tr_id)
-);
+
 show tables;
 EOFMYSQL
 
