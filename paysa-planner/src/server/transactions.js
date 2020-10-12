@@ -3,8 +3,7 @@ var async = require('async');
 
 
 module.exports = {
-    /* high level thinking
-    */
+
     sortTransactionDates: function(data) {
         return new Promise((resolve, reject) => {
             resolve(data.sort(function(a,b){
