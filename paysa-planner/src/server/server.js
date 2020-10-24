@@ -1,5 +1,6 @@
 // Sets up the express server and middleware
 const app = require('express')();
+const trans = require('./transactions')
 const routes = require('./routes');
 const cors = require('cors');
 const bodyParser = require('body-parser')

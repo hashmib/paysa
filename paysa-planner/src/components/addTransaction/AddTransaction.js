@@ -41,10 +41,12 @@ const useStyles = makeStyles((theme) => ({
     //minWidth: 120,
   },
   child: {
-    display: 'block'
+    display: 'block',
   },
   frequency: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   }
 }));
 
@@ -109,29 +111,35 @@ export default function AddTransaction({
             })}
           </Select>
           </div>
+
+          <div className={classes.child}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disablePast="true"
+                inputVariant="outlined"
+                margin="normal"
+                format="MM/dd/yyyy"
+                id="date-picker-dialog"
+                label="Start Date"
+                value={element.start}
+                name="start"
+                onChange={(event) => handleChange(element, index, { target: { name: "start", value: event } })}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
+
           {element.frequency !== "One Time" &&
             (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div className={classes.child}>
-                  <KeyboardDatePicker
-                    disablePast="true"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="Start Date"
-                    value={element.start}
-                    name="start"
-                    onChange={(event) => handleChange(element, index, { target: { name: "start", value: event } })}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                  </div>
                   <div className={classes.child}>
                     <KeyboardDatePicker
                       minDate={element.start}
                       minDateMessage="Date should not be before start date"
                       format="MM/dd/yyyy"
+                      inputVariant="outlined"
                       margin="normal"
                       id="date-picker-dialog"
                       label="Repeat Until"

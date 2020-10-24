@@ -56,7 +56,7 @@ export default function Register(props) {
     axios.post('/register', { username, password })
       .then((response) => {
         if(response.data.created) {
-          history.push("/configure");
+          history.push("/setup");
         } else {
           alert("Registration failed, " + response.data.message);
         }}, 

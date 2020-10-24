@@ -4,7 +4,7 @@ const { response } = require('express');
 const session = require("express-session");
 const lib = require('./library');
 const auth_service = require('./authenticate')
-const trans_service = require('./transactions')
+const transactions_service = require('./transactions')
 
 
 // -------------------------------- cookie & session ---------------------------- //
@@ -92,12 +92,12 @@ routes.post('/logout', (req, res) => {
 });
 
 
-// api call will be in the form /upcomingtransactions?sortBy=
+//REST Query Parameter Example: /upcomingpayments?sortBy=7days
 routes.get('/upcomingtransactions', (req, res) => {
     let userID = req.session.user[0].id; // dunno why i have to do this for Http GET - stupid annoying
     let sortBy = req.query.sortBy;
 
-    trans_service.fetchUpcomingTransactions(userID, sortBy)
+    transactions_service.fetchUpcomingTransactions(userID, sortBy, true)
     .then(upcoming => {
         if (upcoming && upcoming.length > 0) {
             res.status(200).json(upcoming);
@@ -111,12 +111,12 @@ routes.get('/upcomingtransactions', (req, res) => {
 
 
 // TODO : SANITIZE DATA?
-routes.post('/configure', (req, res) => {
+routes.post('/setup', (req, res) => {
     let income = req.body.incomes;
     let expenses = req.body.expenses;
     let userID = req.session.user;
 
-    lib.handleConfigure(income, expenses, userID)
+    lib.handleSetup(income, expenses, userID)
     .then(completed => {
         if (completed) {
             res.status(200).json({changesConfirmed: true, message: "recurring transactions were added successfully"});

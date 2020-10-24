@@ -4,7 +4,7 @@ import Index from "./index/Index"
 import Forgot from "./forgot/Forgot";
 import Login from "./login/Login";
 import Register from "./register/Register";
-import Configure from "./configure/Configure";
+import Setup from "./setup/Setup";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"; //this makes it dark mode
 
 export default function App() {
@@ -22,7 +22,7 @@ export default function App() {
           <Route path="/register" component={Register} />
           <Route path="/forgot" component={Forgot} />
           <Route path="/index" component={Index} theme={darkTheme}/>
-          <Route path="/configure" component={Configure} /> 
+          <Route path="/setup" component={Setup} /> 
           <Route component={Index} />
         </Switch>
       </Router>

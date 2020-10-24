@@ -149,7 +149,7 @@ module.exports = {
     },
 
     // todo: error handling
-    handleConfigure: async function(income, expenses, userid) {
+    handleSetup: async function(income, expenses, userid) {
         let addedExpenses = this.addRecurringExpense(expenses, userid);
         addedExpenses.then(added => {
             console.log("/configure - expenses added successfully")
