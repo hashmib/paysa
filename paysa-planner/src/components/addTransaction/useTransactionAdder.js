@@ -2,7 +2,7 @@ import {useState} from 'react';
 
 export default function useTransactionAdder() {
     const [transactions, setTransactions] = useState(
-        []
+        [{ value: "", label: "", start: new Date(), end: new Date(), frequency: "One Time" }]
     );
 
     function add() {

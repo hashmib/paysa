@@ -1,7 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import RemoveCircleOutlineOutlinedIcon from '@material-ui/icons/RemoveCircleOutlineOutlined';
 import PropTypes from 'prop-types'
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -10,9 +8,8 @@ import NumberFormat from 'react-number-format';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Grid from '@material-ui/core/Grid';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,17 +25,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   transaction: {
-    //display: 'block'
+    display: 'block'
     // display: "flex",
     // justifyContent: "space-between"
-  },
-  removeButton: {
-    marginTop: theme.spacing(4),
-    marginLeft: theme.spacing(-3),
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    //minWidth: 120,
   },
   child: {
     display: 'block',
@@ -61,8 +50,8 @@ AddTransaction.propTypes = {
 
 export default function AddTransaction({
   transactions = [],
-  add = null,
-  remove = null,
+  element = null,
+  index = null,
   handleChange = null,
   type = "Expense",
   recurring = false
@@ -72,12 +61,10 @@ export default function AddTransaction({
   //if (recurring === true) { frequencies.shift() }
   return (
     <div className={classes.root}>
-      {transactions.map((element, index) => (
+
         <div className={classes.transaction}>
         <div className={classes.child}>
-          <RemoveCircleOutlineOutlinedIcon className={classes.removeButton} variant="contained" color="secondary" onClick={(event) => remove(element, index)}>
-            Remove {type}
-          </RemoveCircleOutlineOutlinedIcon>
+
           <TextField label={type}
             value={element.label}
             onChange={(event) => handleChange(element, index, event)}
@@ -155,10 +142,8 @@ export default function AddTransaction({
             )
           }
         </div>
-      ))}
-      <Button variant="contained" color="primary" onClick={add}>
-        Add {type}
-      </Button>
+
+      
     </div>
   );
 }

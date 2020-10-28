@@ -106,13 +106,13 @@ export default function OneTimePayment() {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
       <DialogTitle id="form-dialog-title">Add Expense</DialogTitle>
       <DialogContent> */}
-          <AddTransaction
+          {/* <AddTransaction
                   transactions={expenses}
                   add={addExpensesClick}
                   remove={removeExpensesClick}
                   handleChange={handleExpensesChange}
                   type={"Expense"}
-            />
+            /> */}
       {/* </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

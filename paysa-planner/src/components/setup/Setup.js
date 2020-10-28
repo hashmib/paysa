@@ -12,6 +12,7 @@ import axios from 'axios';
 import 'date-fns';
 import useTransactionAdder from '../addTransaction/useTransactionAdder';
 import AddTransaction from '../addTransaction/AddTransaction'
+import AddIncomes from './AddIncomes'
 // import { GlobalContext } from '../context/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +72,7 @@ export default function Configure(props) {
     switch (step) {
       case 0:
         return (
-        <AddTransaction
+        <AddIncomes
           transactions={incomes}
           add={addIncomesClick}
           remove={removeIncomesClick}
@@ -80,7 +81,7 @@ export default function Configure(props) {
         />
         );
       case 1:
-        return (<AddTransaction
+        return (<AddIncomes
                   transactions={expenses}
                   add={addExpensesClick}
                   remove={removeExpensesClick}
