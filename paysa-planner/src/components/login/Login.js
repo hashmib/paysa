@@ -14,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link as RouteLink } from "react-router-dom";
+import {auth} from '../../firebase/firebase'
 
 function Copyright() {
   return (
@@ -57,31 +58,36 @@ export default function Login (props)  {
   const [remember, setRemember] = useState(false)
   //---------------------------------------------------->
 
-    useEffect(() => {
-      axios.get('/login', {})
-      .then((response) => {
-        if (response.data.logged_in) {
-          props.history.push("/home");
-        }
-      }, (error) => { // will be called when server sends 500 response
-          console.log("error connecting to server");
-          alert("Server error. Please refresh!")
-      });
-    })
+    // useEffect(() => {
+    //   axios.get('/login', {})
+    //   .then((response) => {
+    //     if (response.data.logged_in) {
+    //       props.history.push("/home");
+    //     }
+    //   }, (error) => { // will be called when server sends 500 response
+    //       console.log("error connecting to server");
+    //       alert("Server error. Please refresh!")
+    //   });
+    // })
 
     function handleSubmit(e) {
         e.preventDefault();
-        axios.post('/login', { username, password })
-        .then((response) => {
-          if(response.data.authenticated) {
-            props.history.push("/index");
-          }
-          else {
-            alert("Sorry that user name password combo doesnt exist.")
-          }
-        }, (error) => { 
-            console.log("unauthorized");
-        });
+        auth.signInWithEmailAndPassword(username, password)
+        .then(() => {
+          props.history.push("/index");
+        })
+        .catch((error) => alert(error.message))
+        // axios.post('/login', { username, password })
+        // .then((response) => {
+        //   if(response.data.authenticated) {
+        //     props.history.push("/index");
+        //   }
+        //   else {
+        //     alert("Sorry that user name password combo doesnt exist.")
+        //   }
+        // }, (error) => { 
+        //     console.log("unauthorized");
+        // });
     }
 
   return (

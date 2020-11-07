@@ -3,6 +3,7 @@ import Dashboard from '../dashboard/Dashboard'
 import InternWork from './InternWork'
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import {auth} from '../../firebase/firebase'
 
 class Index extends React.Component {
     constructor(props) {
@@ -16,15 +17,24 @@ class Index extends React.Component {
         this.checkLoggedIn()
     }
     checkLoggedIn() {
-        axios.get('/index', {})
-        .then((response) => {
-        if (!response.data.logged_in) {
-            this.handleRedirect()
-        } else {
-            this.handleLogin()
-        }}, (error) => { 
-            this.handleError()
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in.
+                this.handleLogin()
+            } else {
+                // No user is signed in.
+                this.handleError()
+            }
         });
+        // axios.get('/index', {})
+        // .then((response) => {
+        // if (!response.data.logged_in) {
+        //     this.handleRedirect()
+        // } else {
+        //     this.handleLogin()
+        // }}, (error) => { 
+        //     this.handleError()
+        // });
     }
 
     // Handlers

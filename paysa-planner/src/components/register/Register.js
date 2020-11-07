@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link as RouteLink } from "react-router-dom";
+import {auth} from '../../firebase/firebase'
 
 function Copyright() {
   return (
@@ -53,16 +54,24 @@ export default function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios.post('/register', { username, password })
-      .then((response) => {
-        if(response.data.created) {
-          history.push("/setup");
-        } else {
-          alert("Registration failed, " + response.data.message);
-        }}, 
-      error => {
-        console.log("registration error");
-  })};
+    auth.createUserWithEmailAndPassword(username, password)
+    .then(() => {
+      props.history.push("/login");
+    })
+    .catch((error) => alert(error.message))
+
+  //   axios.post('/register', { username, password })
+  //     .then((response) => {
+  //       if(response.data.created) {
+  //         history.push("/setup");
+  //       } else {
+  //         alert("Registration failed, " + response.data.message);
+  //       }}, 
+  //     error => {
+  //       console.log("registration error");
+  // })
+
+};
   const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">

@@ -19,6 +19,7 @@ import React, { useEffect } from 'react';
 import MonthInReview from './MonthInReview';
 import UpcomingTransactions from './UpcomingTransactions';
 import OneTimePayment from './OneTimePayment';
+import {auth} from '../../firebase/firebase'
 
 import Overall from './Overall';
 import { mainListItems } from './listItems';
@@ -107,18 +108,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard(props) {
 
-  useEffect(() => {
-    axios.get('/index', {})
-      .then((response) => {
-        if (!response.data.logged_in) {
-          props.history.push("/login");
-        } else {
-          console.log("response.data.logged_in: ", response.data.logged_in)
-        }
-      }, (error) => { // will be called when server sends 401 response
-          console.log("error connecting to server");
-      });
-  }, [props.history])
+  // useEffect(() => {
+  //   axios.get('/index', {})
+  //     .then((response) => {
+  //       if (!response.data.logged_in) {
+  //         props.history.push("/login");
+  //       } else {
+  //         console.log("response.data.logged_in: ", response.data.logged_in)
+  //       }
+  //     }, (error) => { // will be called when server sends 401 response
+  //         console.log("error connecting to server");
+  //     });
+  // }, [props.history])
 
 
 
@@ -137,14 +138,19 @@ export default function Dashboard(props) {
   };
   function handleLogOut(e) {
     e.preventDefault(); // this line prevents the annoying refresh
-
-        //todo: implement callback function when login successful, and add error handling for failure
-        axios.post('/logout')
-        .then((response) => {
-          props.history.push("/login");
-        }, (error) => { // will be called when server sends 401 response
-            console.log("error logging out");
-        });
+    auth.signOut()
+    .then(() => {
+      console.log("::signed out")
+      props.history.push("/login");
+    })
+    .catch((error) => alert(error.message))
+        // //todo: implement callback function when login successful, and add error handling for failure
+        // axios.post('/logout')
+        // .then((response) => {
+        //   props.history.push("/login");
+        // }, (error) => { // will be called when server sends 401 response
+        //     console.log("error logging out");
+        // });
   }
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   return (
