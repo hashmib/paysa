@@ -1,29 +1,27 @@
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import Paper from '@material-ui/core/Paper';
+import {
+  AppBar,
+  Button,
+  Container,
+  CssBaseline,
+  Divider,
+  Drawer,
+  Grid,
+  IconButton,
+  List,
+  Paper,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import MenuIcon from '@material-ui/icons/Menu';
-import axios from 'axios';
+import {ChevronLeft as ChevronLeftIcon, Menu as MenuIcon } from '@material-ui/icons';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { auth } from '../../firebase/firebase';
+import { mainListItems } from './listItems';
 import MonthInReview from './MonthInReview';
 import UpcomingTransactions from './UpcomingTransactions';
 import OneTimePayment from './OneTimePayment';
-import {auth} from '../../firebase/firebase'
-
 import Overall from './Overall';
-import { mainListItems } from './listItems';
-
 
 const drawerWidth = 240;
 

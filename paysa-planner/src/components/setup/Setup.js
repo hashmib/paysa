@@ -1,19 +1,18 @@
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import {
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
 import 'date-fns';
+import React, { useState } from 'react';
 import useTransactionAdder from '../addTransaction/useTransactionAdder';
-import AddTransaction from '../addTransaction/AddTransaction'
-import AddIncomes from './AddIncomes'
-import {db} from "../../firebase/firebase"
+import AddIncomes from './AddIncomes';
 // import { GlobalContext } from '../context/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
@@ -108,21 +107,24 @@ export default function Configure(props) {
   //------------------------------------------------------------------->
   const handleFinishAndRedirect = () => {
     
-    axios.post('/setup', { incomes, expenses })
-      .then((response) => {
-        if (response.data.changesConfirmed) {
-          props.history.push({
-            pathname: '/index',
-            //search: '?query=abc',p
-            state: { incomes, expenses }
-          })
-        } else {
-          alert("Configure failed, " + response.data.message);
-        }
-      },
-        error => {
-          console.log("configure error");
-        })
+    
+
+
+    // axios.post('/setup', { incomes, expenses })
+    //   .then((response) => {
+    //     if (response.data.changesConfirmed) {
+    //       props.history.push({
+    //         pathname: '/index',
+    //         //search: '?query=abc',p
+    //         state: { incomes, expenses }
+    //       })
+    //     } else {
+    //       alert("Configure failed, " + response.data.message);
+    //     }
+    //   },
+    //     error => {
+    //       console.log("configure error");
+    //     })
   
   
   

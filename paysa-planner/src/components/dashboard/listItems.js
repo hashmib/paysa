@@ -1,7 +1,6 @@
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import { 
+  ListItem, ListItemIcon, ListItemText, ListSubheader
+} from '@material-ui/core';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import HistoryIcon from '@material-ui/icons/History';

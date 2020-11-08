@@ -1,16 +1,11 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import PropTypes from 'prop-types'
-import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import NumberFormat from 'react-number-format';
+import { MenuItem, Select, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-
-
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import 'date-fns';
+import PropTypes from 'prop-types';
+import React from 'react';
+import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
   root: {

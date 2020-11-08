@@ -1,19 +1,21 @@
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Link as RouteLink } from "react-router-dom";
-import {auth} from '../../firebase/firebase'
+import { auth } from '../../firebase/firebase';
 
 function Copyright() {
   return (
@@ -27,7 +29,6 @@ function Copyright() {
     </Typography>
   );
 }
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -50,24 +51,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login ({history})  {
   const classes = useStyles();
-
   //-------------------- Hooks ------------------------->
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false)
   //---------------------------------------------------->
-
-    // const handleSubmit = useCallback(async event => {
-    //   event.preventDefault();
-    //   try {
-    //     console.log(username)
-    //     await auth.signInWithEmailAndPassword(username, password);
-    //     history.push("/");
-    //   } catch (error) {
-    //     alert(error);
-    //   } 
-    // }, [history]);
-
     const handleSubmit = async event => {
       event.preventDefault();
       try {
@@ -78,7 +66,6 @@ export default function Login ({history})  {
         alert(error);
       } 
     };
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
