@@ -11,8 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link as RouteLink } from "react-router-dom";
 import {auth} from '../../firebase/firebase'
 
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login (props)  {
+export default function Login ({history})  {
   const classes = useStyles();
 
   //-------------------- Hooks ------------------------->
@@ -58,37 +57,27 @@ export default function Login (props)  {
   const [remember, setRemember] = useState(false)
   //---------------------------------------------------->
 
-    // useEffect(() => {
-    //   axios.get('/login', {})
-    //   .then((response) => {
-    //     if (response.data.logged_in) {
-    //       props.history.push("/home");
-    //     }
-    //   }, (error) => { // will be called when server sends 500 response
-    //       console.log("error connecting to server");
-    //       alert("Server error. Please refresh!")
-    //   });
-    // })
+    // const handleSubmit = useCallback(async event => {
+    //   event.preventDefault();
+    //   try {
+    //     console.log(username)
+    //     await auth.signInWithEmailAndPassword(username, password);
+    //     history.push("/");
+    //   } catch (error) {
+    //     alert(error);
+    //   } 
+    // }, [history]);
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        auth.signInWithEmailAndPassword(username, password)
-        .then(() => {
-          props.history.push("/index");
-        })
-        .catch((error) => alert(error.message))
-        // axios.post('/login', { username, password })
-        // .then((response) => {
-        //   if(response.data.authenticated) {
-        //     props.history.push("/index");
-        //   }
-        //   else {
-        //     alert("Sorry that user name password combo doesnt exist.")
-        //   }
-        // }, (error) => { 
-        //     console.log("unauthorized");
-        // });
-    }
+    const handleSubmit = async event => {
+      event.preventDefault();
+      try {
+        console.log(username)
+        await auth.signInWithEmailAndPassword(username, password);
+        history.push("/");
+      } catch (error) {
+        alert(error);
+      } 
+    };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -102,7 +91,9 @@ export default function Login (props)  {
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
-            onChange={(e)=>setUsername(e.target.value)}
+            onChange={(e)=>{
+              setUsername(e.target.value)
+            }}
             variant="outlined"
             margin="normal"
             required

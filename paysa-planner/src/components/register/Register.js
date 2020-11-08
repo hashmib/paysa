@@ -9,8 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link as RouteLink } from "react-router-dom";
 import {auth} from '../../firebase/firebase'
 
@@ -47,31 +46,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register(props) {
-  const [username, setUsername] = useState('');
+export default function Register({ history=null }) {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = props.history;
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    auth.createUserWithEmailAndPassword(username, password)
-    .then(() => {
-      props.history.push("/login");
-    })
-    .catch((error) => alert(error.message))
-
-  //   axios.post('/register', { username, password })
-  //     .then((response) => {
-  //       if(response.data.created) {
-  //         history.push("/setup");
-  //       } else {
-  //         alert("Registration failed, " + response.data.message);
-  //       }}, 
-  //     error => {
-  //       console.log("registration error");
-  // })
-
-};
+  const handleSubmit = async event => {
+    event.preventDefault();
+    try {
+      await auth.createUserWithEmailAndPassword(email, password);
+      history.push("/");
+    } catch (error) {
+      alert(error);
+    } 
+  };
   const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
@@ -85,7 +71,7 @@ export default function Register(props) {
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
-            onChange={(e)=>setUsername(e.target.value)}
+            onChange={(e)=>setEmail(e.target.value)}
             variant="outlined"
             margin="normal"
             required

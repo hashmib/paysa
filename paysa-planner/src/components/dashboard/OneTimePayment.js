@@ -94,7 +94,7 @@ export default function OneTimePayment() {
 
   return (
     <div>
-      {/* <Button
+      <Button
       variant="contained"
       color="secondary"
       className={classes.button}
@@ -105,15 +105,15 @@ export default function OneTimePayment() {
   </Button>
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg">
       <DialogTitle id="form-dialog-title">Add Expense</DialogTitle>
-      <DialogContent> */}
-          {/* <AddTransaction
+      <DialogContent>
+          <AddTransaction
                   transactions={expenses}
                   add={addExpensesClick}
                   remove={removeExpensesClick}
                   handleChange={handleExpensesChange}
                   type={"Expense"}
-            /> */}
-      {/* </DialogContent>
+            />
+      </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancel
@@ -122,7 +122,7 @@ export default function OneTimePayment() {
           Add
         </Button>
       </DialogActions>
-    </Dialog> */}
+    </Dialog>
     </div>
   );
 }

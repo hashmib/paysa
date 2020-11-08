@@ -60,7 +60,7 @@ export default function AddTransaction({
   let frequencies = ["One Time", "Weekly", "Biweekly", "Monthly"]
   //if (recurring === true) { frequencies.shift() }
   return (
-    <div className={classes.root}>
+    element !== null && <div className={classes.root}>
 
         <div className={classes.transaction}>
         <div className={classes.child}>

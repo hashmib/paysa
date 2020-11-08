@@ -13,6 +13,7 @@ import 'date-fns';
 import useTransactionAdder from '../addTransaction/useTransactionAdder';
 import AddTransaction from '../addTransaction/AddTransaction'
 import AddIncomes from './AddIncomes'
+import {db} from "../../firebase/firebase"
 // import { GlobalContext } from '../context/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
@@ -106,6 +107,7 @@ export default function Configure(props) {
   };
   //------------------------------------------------------------------->
   const handleFinishAndRedirect = () => {
+    
     axios.post('/setup', { incomes, expenses })
       .then((response) => {
         if (response.data.changesConfirmed) {
@@ -121,7 +123,11 @@ export default function Configure(props) {
         error => {
           console.log("configure error");
         })
-  };
+  
+  
+  
+  
+      };
   return (
     <Container component="main" maxWidth="lg">
     <CssBaseline />
